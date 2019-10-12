@@ -46,8 +46,6 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'level:admin']], fun
         return view('dashboard');
     })->name('home.admin');
 
-    // Route::get('/json-menus', 'UserController@menus');
-
     Route::resource('menus', 'PermissionController');
 
     Route::resource('application', 'ParentController');
@@ -65,6 +63,10 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'level:admin']], fun
 
 Route::group(['prefix' => 'user', 'middleware' => ['auth', 'level:user']], function() {
 
+    Route::get('query-balance' , 'QueryController@getData')->name('query.balance');
+
+    // Route::get('query-balance-s' , 'QueryController@palue')->name('query.balance-s');
+
     Route::get('logActivity', 'UserController@logActivity')->name('log.user');
 
     Route::get('/', function () {
@@ -72,24 +74,6 @@ Route::group(['prefix' => 'user', 'middleware' => ['auth', 'level:user']], funct
         return view('dashboard');
     })->name('home.user');
 
-    // Route::get('applications', 'ParentController@showApplication')->name('app');
-
-
-    // Route::get('/json-menus', 'UserController@menus');
-
-    // Route::resource('menus', 'PermissionController');
-
-    // Route::resource('application', 'ParentController');
-
-    // Route::resource('region', 'RegionController');
-
-    // Route::resource('managementunit', 'ManagementUnitController');
-
-    // Route::resource('level', 'LevelController');
-
-    // Route::resource('joblevel', 'JobLevelController');
-
-    // Route::resource('user', 'UserController');
 });
 
 Route::get('/', function () {
@@ -97,8 +81,6 @@ Route::get('/', function () {
 })->name('root');
 
 Auth::routes();
-
-// Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('test', function () {
     return view('test');

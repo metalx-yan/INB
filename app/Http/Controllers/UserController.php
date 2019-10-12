@@ -63,6 +63,7 @@ class UserController extends Controller
     public function store(Request $request)
     {
         // dd($request->all());
+        // dd(isset($request->name));
         $request->validate([
             'name' => 'required|string|max:255',
             'username' => 'required|string|max:20|unique:users',
@@ -86,15 +87,17 @@ class UserController extends Controller
             // 'permissions' => $request->management_unit_id,
         ]);
 
-        foreach ($request['permissions'] as $permission) {
-            // dd($permission->name);
-            $user->permissions()->attach(Permission::find($permission));
+        if (isset($request['permissions'])) {
+            foreach ($request['permissions'] as $permission) {
+                $user->permissions()->attach(Permission::find($permission));
+            }
+        } else {
+            return redirect()->back();
         }
 
         \LogActivity::addToLog(ucfirst(Auth::user()->name) . " Create a User ");
          
         return redirect()->back();
-        // dd($store);
     }
 
     /**
