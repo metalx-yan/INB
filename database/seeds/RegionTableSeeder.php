@@ -16,7 +16,6 @@ class RegionTableSeeder extends Seeder
         foreach ($loops as $loop) {
             Region::create([
                 'name' => $loop,
-                'province_id' => 1
             ]);
         }
         

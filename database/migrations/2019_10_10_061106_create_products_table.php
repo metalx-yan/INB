@@ -18,7 +18,6 @@ class CreateProductsTable extends Migration
             $table->integer('account_type');
             $table->integer('sub_category');
             $table->string('name');
-            $table->string('idpro');
             $table->timestamps();
         });
 

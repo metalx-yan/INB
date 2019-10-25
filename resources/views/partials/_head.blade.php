@@ -31,7 +31,8 @@
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-       
+        {{-- <link rel="stylesheet" href=" {{ asset('css/multiselect.css') }} ">
+        <script src=" {{ asset('js/multiselect.min.js') }} "></script> --}}
         <script>
         (function(i, s, o, g, r, a, m) {
             i['GoogleAnalyticsObject'] = r;

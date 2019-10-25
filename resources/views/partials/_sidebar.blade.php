@@ -72,21 +72,22 @@
                     <li>
                         @if ($parent->permission_id == null)
                         <a class="has-arrow" href="#" aria-expanded="false"><i class="mdi mdi-bullseye"></i><span class="hide-menu">{{ ucwords($parent->name) }}</span></a>
-                        @endif
                         <ul aria-expanded="false" class="collapse">
-                            @foreach (Auth::user()->permissions as $menu)
-                                @if ($menu->permission_id != null)
-                                    <li>
-                                        <a class="has-arrow" href="#" aria-expanded="false"><span class="hide-menu">{{ ucwords($menu->name) }}</span></a>
-                                        @foreach ($menu->sub_menus as $sub)
-                                        <ul>
-                                            <a href=" {{ route('query.balance') }} ">{{ ucwords($sub->name) }}</a>
-                                        </ul>
-                                        @endforeach
-                                    </li>
-                                @endif
+                            @foreach ($parent->permissions->where('permission_id', '!=', 'null') as $menu)
+                                {{-- @if ($parent->permission_id == null) --}}
+                                    
+                                <li>
+                                    <a class="has-arrow" href="#" aria-expanded="false"><span class="hide-menu">{{ ucwords($menu->name) }}</span></a>
+                                    @foreach ($menu->sub_menus as $sub)
+                                    <ul>
+                                        <a href=" {{ route('query.balance') }} ">{{ ucwords($sub->name) }}</a>
+                                    </ul>
+                                    @endforeach
+                                </li>
+                                {{-- @endif --}}
                             @endforeach
                         </ul>
+                        @endif
                      
                     </li>
                     @endforeach

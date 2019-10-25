@@ -28,7 +28,6 @@ Route::group(['middleware' => ['auth']], function() {
     Route::put('/user/resetdata/{id}', 'UserController@resetPassword')->name('resetdata');
 
     Route::put('profile/{id}', 'UserController@uploadPhoto')->name('uploadphoto');
-
 });
 
 

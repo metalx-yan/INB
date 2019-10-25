@@ -20,3 +20,5 @@ use Illuminate\Http\Request;
 Route::get('/json-products', 'QueryController@products');
 
 Route::get('/json-branches', 'QueryController@branches');
+
+Route::get('/json-months', 'QueryController@months');

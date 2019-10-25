@@ -9,7 +9,6 @@
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="javascript:void(0)">Home</a></li>
                     <li class="breadcrumb-item active">Query Balace</li>
-                    {{-- <li class="breadcrumb-item active">List</li> --}}
                 </ol>
             </div>
         </div>
@@ -18,43 +17,150 @@
             <div class="card-title">
                 <br>
                 <div class="container">
-                        <div class="row">
-                            <div class="col-md-3">
-                                <label for="">Jenis</label>
-                                <select name="" id="categories" class="form-control">
-                                    <option value="">=====</option>
-                                    @foreach ($categories as $category)
-                                        <option value="{{ $category->id }}">{{ $category->name }}</option>
+                    <form action="{{ route('query.balance') }}" method="get">
+                            <div class="row">
+
+                                <div class="col-md-3">
+                                    <label for="">Jenis</label>
+                                    <select name="categories" id="categories" class="form-control">
+                                        <option value="">=====</option>
+                                        @foreach ($categories as $category)
+                                            <option value="{{ $category->id }}">{{ ucfirst($category->name) }}</option>
                                     @endforeach
-                                </select>
+                                    </select>
+                                </div>
+                                
+                                <div class="col-md-3">
+                                    <label for="">Region</label>
+                                    <select name="regions" id="regions" class="form-control">
+                                        <option value="">=====</option>
+                                        @foreach ($regions as $region)
+                                        <option value=" {{ $region->id }} ">{{ ucfirst($region->name) }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                
+                                <div class="col-md-3">
+                                    <label for="">Branch</label>
+                                    <select name="branches" id="branches" class="form-control">
+                                    </select>
+                                </div>
+                                
+                                <div class="col-md-3">
+                                    <label for="">Product</label>
+                                    <br>
+                                    {{-- <select name="" id="products" class="form-control" multiple> --}}
+                                    <select name="products" id="products" class="form-control">
+                                    </select>
+                                </div>
                             </div>
+                            <br>
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <label for="">Status</label>
+                                    <br>
+                                    <select name="status" id="status" class="form-control">
+                                        <option value="">=====</option>
+                                        <option value="dormant">Dormant</option>
+                                        <option value="active">Active</option>
+                                    </select>
+                                </div>
 
-                            <div class="col-md-3">
-                                <label for="">Region</label>
-                                <select name="" id="regions" class="form-control">
-                                    <option value="">=====</option>
-                                    @foreach ($regions as $region)
-                                        <option value=" {{ $region->id }} ">{{ $region->name }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
+                                <div class="col-md-3">
+                                    <label for="">Column</label>
+                                    <br>
+                                    <select name="accounts[]" id="accounts" class="form-control" multiple>
+                                        @php
+                                            $new = new App\Models\Account;
+                                        @endphp
+                                        @foreach ($new->getTableColumns() as $column)
+                                            @if ($column != 'updated_at' and $column != 'id' and $column != 'product_id' and $column != 'branch_id')
+                                                @if ($column == 'created_at')
+                                                    <option value="{{ $column }}">ass of date</option>
+                                                @else
+                                                    <option value="{{ $column }}">{{ $column }}</option>
+                                                @endif
+                                            @endif
+                                        @endforeach
+                                    </select>
+                                </div>
 
-                            <div class="col-md-3">
-                                <label for="">Branch</label>
-                                <select name="" id="branches" class="form-control">
-                                </select>
-                            </div>
+                                <div class="col-md-3">
+                                    <label for="">Tahun</label>
+                                    <br>
+                                    <select name="" id="years" class="form-control">
+                                        <option value="">=====</option>
+                                        @foreach ($acc as $accs => $dis)
+                                        <option value="{{ $accs }}">{{ $accs }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                {{-- @foreach ($dis as $item)
+                                    <h6>{{ $item->created_at->format('m') }}</h6>
+                                @endforeach --}}
 
-                            {{-- <input type="button" id="buts" onclick="showData();" value="Submit"> --}}
-                            <div class="col-md-3">
-                                <label for="">Product</label>
-                                <select name="" id="products" class="form-control">
-                                    
-                                </select>
-                            </div>
-                            {{-- Exam : <label for="" id="perint"></label> --}}
+                                <div class="col-md-3">
+                                    <label for="">Bulan</label>
+                                    <br>
+                                    <select name="" id="status" class="form-control">
+                                        <option value="">=====</option>
+                                                <option value=""></option>
+                                    </select>
+                                </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <label for="">&nbsp;</label>
+                                        <br>
+                                        <button type="submit" class="btn btn-primary">Query</button>
+                                    </div>
+                                </div>
+                            </form>
+                            <hr>
+
+                            {{-- @foreach ($job as $jos)
+                                @foreach ($jos->toArray() as $key => $value)
+                                    @if ($value)
+                                    <span>{{ $key }}</span>
+                                    @endif
+                                    @endforeach<br>
+                                    <span>{{ $jos->id }}</span>
+                                    <span>{{ $jos->name }}</span>
+                                    <span>{{ $jos->created_at }}</span>
+                            @endforeach --}}
+
+                            <table class="table table-striped">
+                                    <thead>
+                                      <tr>
+                                            @if ($account != null)
+                                              
+                                                @foreach ($account as $acc)
+                                            
+                                                <th scope="col">{{ $acc }}</th>
+                                                
+                                                @endforeach
+                                          
+                                            @else
+                                                
+                                                <th scope="col"></th>
+        
+                                            @endif
+
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($query as $qr)
+                                        <tr>
+                                                <td>{{ $qr->number }}</td>
+                                                <td>{{ $qr->status }}</td>
+                                            </tr>
+                                        @endforeach
+
+                                    </tbody>
+                                  </table>
                         </div>
-                </div>
+                    </div>
             </div>
         </div>
     </div>
@@ -65,7 +171,7 @@
     <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
     <link rel="stylesheet" href=" {{ asset('css/jquery.multiselect.css') }} ">
     <script src=" {{ asset('js/jquery.multiselect.js') }} "></script>
-    {{-- <script>
+    <script>
     $(document).ready(function(){
         $('#products').multiselect({
         columns  : 3,
@@ -77,7 +183,11 @@
         }
     }); 
     });
-    </script> --}}
+    </script>
+
+    <script>
+        $('#accounts').multiselect();
+    </script>
 
     <script>
     $(document).ready(function(){
@@ -91,7 +201,7 @@
 
                 $.each(data, function(index, branchesObj) {
                     console.log(branchesObj.id + '-' + branchesObj.name);
-                    $('#branches').append('<option value="' + branchesObj.id + '" >' + branchesObj.name + '</option>');
+                    $('#branches').append('<option value="' + branchesObj.id + '" >' + branchesObj.name.substring( 0, 1 ).toUpperCase() + branchesObj.name.substring( 1 ) + '</option>');
                 });
             });
         });
@@ -110,10 +220,12 @@
 
                     $.each(data, function(index, productsObj) {
                         console.log(productsObj.id + '-' + productsObj.name);
-                        $('#products').append('<option value="' + productsObj.id + '" >' + productsObj.name + '</option>');
+                        $('#products').append('<option value="' + productsObj.id + '" >' + productsObj.name.substring( 0, 1 ).toUpperCase() + productsObj.name.substring( 1 ) + '</option>');
                     });
                 });
             });
         });
-        </script>
+    </script>
+
+    
 @endsection
