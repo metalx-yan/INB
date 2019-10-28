@@ -19,14 +19,14 @@
                 <div class="container">
                     <form action="{{ route('query.balance') }}" method="get">
                             <div class="row">
-
+                                
                                 <div class="col-md-3">
                                     <label for="">Jenis</label>
                                     <select name="categories" id="categories" class="form-control">
                                         <option value="">=====</option>
                                         @foreach ($categories as $category)
                                             <option value="{{ $category->id }}">{{ ucfirst($category->name) }}</option>
-                                    @endforeach
+                                        @endforeach
                                     </select>
                                 </div>
                                 
@@ -49,7 +49,6 @@
                                 <div class="col-md-3">
                                     <label for="">Product</label>
                                     <br>
-                                    {{-- <select name="" id="products" class="form-control" multiple> --}}
                                     <select name="products" id="products" class="form-control">
                                     </select>
                                 </div>
@@ -70,41 +69,32 @@
                                     <label for="">Column</label>
                                     <br>
                                     <select name="accounts[]" id="accounts" class="form-control" multiple>
-                                        @php
-                                            $new = new App\Models\Account;
-                                        @endphp
-                                        @foreach ($new->getTableColumns() as $column)
-                                            @if ($column != 'updated_at' and $column != 'id' and $column != 'product_id' and $column != 'branch_id')
-                                                @if ($column == 'created_at')
-                                                    <option value="{{ $column }}">ass of date</option>
-                                                @else
-                                                    <option value="{{ $column }}">{{ $column }}</option>
-                                                @endif
-                                            @endif
-                                        @endforeach
+                                        @for($i = 0; $i < sizeof($columns); $i++)
+                                            <option value="{{ $columns[$i] }}">{{ ucfirst(str_replace('_', ' ',$columns[$i]) )}}</option>
+                                        @endfor
                                     </select>
                                 </div>
 
                                 <div class="col-md-3">
                                     <label for="">Tahun</label>
                                     <br>
-                                    <select name="" id="years" class="form-control">
+                                    <select name="years" id="years" class="form-control">
                                         <option value="">=====</option>
                                         @foreach ($acc as $accs => $dis)
                                         <option value="{{ $accs }}">{{ $accs }}</option>
                                         @endforeach
                                     </select>
                                 </div>
-                                {{-- @foreach ($dis as $item)
-                                    <h6>{{ $item->created_at->format('m') }}</h6>
-                                @endforeach --}}
-
+                               
                                 <div class="col-md-3">
                                     <label for="">Bulan</label>
                                     <br>
-                                    <select name="" id="status" class="form-control">
+                                    <select name="months" id="months" class="form-control">
                                         <option value="">=====</option>
-                                                <option value=""></option>
+                                        @foreach ($accn as $accnt => $disa)
+                                            {{ var_dump($accnt) }}
+                                            <option value="{{ $accnt }}">{{ $accnt }}</option>
+                                        @endforeach
                                     </select>
                                 </div>
                                 </div>
@@ -113,52 +103,44 @@
                                     <div class="col-md-3">
                                         <label for="">&nbsp;</label>
                                         <br>
-                                        <button type="submit" class="btn btn-primary">Query</button>
+                                        <button type="submit" class="btn btn-primary">Execute</button>
                                     </div>
                                 </div>
                             </form>
                             <hr>
 
-                            {{-- @foreach ($job as $jos)
-                                @foreach ($jos->toArray() as $key => $value)
-                                    @if ($value)
-                                    <span>{{ $key }}</span>
-                                    @endif
-                                    @endforeach<br>
-                                    <span>{{ $jos->id }}</span>
-                                    <span>{{ $jos->name }}</span>
-                                    <span>{{ $jos->created_at }}</span>
-                            @endforeach --}}
-
                             <table class="table table-striped">
-                                    <thead>
-                                      <tr>
+                                <thead>
+                                    <tr>
+                                        @for($i = 0; $i < sizeof($columns); $i++)
                                             @if ($account != null)
-                                              
-                                                @foreach ($account as $acc)
-                                            
-                                                <th scope="col">{{ $acc }}</th>
-                                                
+                                                @foreach ($account as $accn)
+                                                    @if ($columns[$i] == $accn)
+                                                        <th>{{ ucfirst(str_replace('_', ' ',$columns[$i]) )}}</th>
+                                                    @endif
                                                 @endforeach
-                                          
                                             @else
-                                                
-                                                <th scope="col"></th>
-        
+                                                <th></th>
                                             @endif
-
+                                        @endfor
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($query as $qr)
-                                        <tr>
-                                                <td>{{ $qr->number }}</td>
-                                                <td>{{ $qr->status }}</td>
+                                        @foreach($records as $row)
+                                            <tr>
+                                                @foreach($row as $key => $data)
+                                                    @if ($account != null)
+                                                        @foreach ($account as $accn)
+                                                            @if ($key == $accn)
+                                                                <td>{{ $data }}</td>
+                                                            @endif
+                                                        @endforeach
+                                                    @endif
+                                                @endforeach
                                             </tr>
                                         @endforeach
-
-                                    </tbody>
-                                  </table>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
             </div>
@@ -223,6 +205,25 @@
                         $('#products').append('<option value="' + productsObj.id + '" >' + productsObj.name.substring( 0, 1 ).toUpperCase() + productsObj.name.substring( 1 ) + '</option>');
                     });
                 });
+            });
+        });
+    </script>
+
+<script>
+        $(document).ready(function(){
+            $('#years').on('change', function(e){
+                console.log(e.target.value);
+                // var category_id = e.target.value;
+                // $.get('/api/json-products?category_id=' + category_id , function(data){
+                //     console.log(data);
+                //     $('#products').empty();
+                //     $('#products').append('<option value="0" selected="true">=======</option>');
+
+                //     $.each(data, function(index, productsObj) {
+                //         console.log(productsObj.id + '-' + productsObj.name);
+                //         $('#products').append('<option value="' + productsObj.id + '" >' + productsObj.name.substring( 0, 1 ).toUpperCase() + productsObj.name.substring( 1 ) + '</option>');
+                //     });
+                // });
             });
         });
     </script>

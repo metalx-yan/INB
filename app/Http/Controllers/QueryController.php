@@ -11,12 +11,15 @@ use App\Models\JobLevel;
 use App\Models\Account;
 use Carbon\Carbon;
 use Request as Req;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
 
 class QueryController extends Controller
 {
     public function getData()
     {
         $regions = Region::all();
+
         $categories = Category::all();
         
         $branch = Req::input('branches');
@@ -24,19 +27,27 @@ class QueryController extends Controller
         $product = Req::input('products');
 
         $account = Req::input('accounts');
-
+        // dd($account);
         $status = Req::input('status');
+
+        $month = Req::input('months');
+
+        $year = Req::input('years');
         
         $acc = Account::all()->groupBy(function ($val) {
             return $val->created_at->format('Y');
         });
+        
+        $accn = Account::all()->groupBy(function ($val) {
+            return $val->created_at->format("m");
+        });
 
-        $query = Account::where('product_id', $product)->where('branch_id', $branch)->where('status', $status)->get();
+        $columns = Schema::getColumnListing('accounts');
 
-        // $job = JobLevel::where('name', 'dbma')->get();
-        // dd($query);
+        $records = DB::table('accounts')->where('product_id', $product)->where('branch_id', $branch)->where('status', $status)->
+                    whereMonth('created_at', $month)->whereYear('created_at', $year)->get();
 
-        return view('query.balance', compact('regions', 'categories', 'account', 'acc', 'query', 'job'));
+        return view('query.balance', compact('regions', 'categories', 'account', 'acc', 'query', 'columns', 'records', 'accn'));
     }
 
     public function branches()
@@ -59,10 +70,10 @@ class QueryController extends Controller
     {
         $created = Req::input('years');
         
-        $products = Account::where($created, '=', $created)->get();
+        $months = Account::whereMonth('created_at', '=', '12')->get();
         dd($created);
 
-        return response()->json($products);
+        return response()->json($months);
     }
 
     // public function queries()
