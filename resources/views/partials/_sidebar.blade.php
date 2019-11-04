@@ -74,17 +74,14 @@
                         <a class="has-arrow" href="#" aria-expanded="false"><i class="mdi mdi-bullseye"></i><span class="hide-menu">{{ ucwords($parent->name) }}</span></a>
                         <ul aria-expanded="false" class="collapse">
                             @foreach ($parent->permissions->where('permission_id', '!=', 'null') as $menu)
-                                {{-- @if ($parent->permission_id == null) --}}
-                                    
                                 <li>
                                     <a class="has-arrow" href="#" aria-expanded="false"><span class="hide-menu">{{ ucwords($menu->name) }}</span></a>
                                     @foreach ($menu->sub_menus as $sub)
                                     <ul>
-                                        <a href=" {{ route('query.balance') }} ">{{ ucwords($sub->name) }}</a>
+                                        <a href=" {{ route($sub->slug) }} ">{{ ucwords($sub->name) }}</a>
                                     </ul>
                                     @endforeach
                                 </li>
-                                {{-- @endif --}}
                             @endforeach
                         </ul>
                         @endif

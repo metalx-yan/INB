@@ -30,7 +30,6 @@ Route::group(['middleware' => ['auth']], function() {
     Route::put('profile/{id}', 'UserController@uploadPhoto')->name('uploadphoto');
 });
 
-
 Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'level:admin']], function() {
 
     Route::get('logActivity', 'UserController@logActivity')->name('log.admin');
@@ -62,9 +61,9 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'level:admin']], fun
 
 Route::group(['prefix' => 'user', 'middleware' => ['auth', 'level:user']], function() {
 
-    Route::get('query-balance' , 'QueryController@getData')->name('query.balance');
+    Route::get('query-balance' , 'QueryController@getBalance')->name('query-balance');
 
-    // Route::get('query-balance-s' , 'QueryController@palue')->name('query.balance-s');
+    Route::get('upload-file' , 'QueryController@getFile')->name('upload-file');
 
     Route::get('logActivity', 'UserController@logActivity')->name('log.user');
 

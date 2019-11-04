@@ -1,6 +1,6 @@
 @extends('main')
 
-@section('title', 'Query Balance')
+@section('title', 'Upload File')
 
 @section('content')
     <div class="container-fluid">
@@ -19,58 +19,35 @@
             <div class="card-title">
                 <br>
                 <div class="container">
-                    <form action="{{ route('query-balance') }}" method="get">
+                    <form action="{{ route('upload-file') }}" method="get" enctype="multipart/form-data">
                             <div class="row">
                                 <input type="hidden" name="id">
-                                <div class="col-md-3">
+                                <div class="col-md-4">
                                     <label for="">Jenis</label>
                                     <select name="categories" id="categories" class="form-control">
                                         <option value="">=====</option>
-                                        <option value="all_category">All Category</option>
                                         @foreach ($categories as $category)
-                                            <option value="{{ $category->id }}">{{ ucfirst($category->name) }}</option>
+                                            <option value="{{ $category->id }}">{{ $category->name }}</option>
                                         @endforeach
                                     </select>
                                 </div>
                                 
-                                <div class="col-md-3">
-                                    <label for="">Region</label>
-                                    <select name="regions" id="regions" class="form-control" >
+                                <div class="col-md-4">
+                                    <label for="">Pilihan Kunci</label>
+                                    <select name="key" id="key" class="form-control" >
                                         <option value="">=====</option>
-                                        <option value="all_region">All Region</option>
-                                        @foreach ($regions as $region)
-                                        <option value=" {{ $region->id }} ">{{ ucfirst($region->name) }}</option>
-                                        @endforeach
                                     </select>
                                 </div>
                                 
-                                <div class="col-md-3">
-                                    <label for="">Branch</label>
-                                    <select name="branches[]" id="branches" class="form-control" multiple style="height: 10px;">
-                                    </select>
+                                <div class="col-md-4">
+                                    <label for="">Upload File</label>
+                                    <input type="file" name="upload" id="upload">
                                 </div>
                                 
-                                <div class="col-md-3">
-                                    <label for="">Product</label>
-                                    <br>
-                                    <select name="products[]" id="products" class="form-control" multiple style="height: 10px;">
-                                    </select>
-                                </div>
                             </div>
                             <br>
                             <div class="row">
-                                <div class="col-md-3">
-                                    <label for="">Status</label>
-                                    <br>
-                                    <select name="status" id="status" class="form-control">
-                                        <option value="">=====</option>
-                                        <option value="">All Region</option>
-                                        <option value="dormant">Dormant</option>
-                                        <option value="active">Active</option>
-                                    </select>
-                                </div>
-
-                                <div class="col-md-3">
+                                <div class="col-md-4">
                                     <label for="">Column</label>
                                     <br>
                                     <select name="accounts[]" id="accounts" class="form-control" multiple>
@@ -80,7 +57,7 @@
                                     </select>
                                 </div>
 
-                                <div class="col-md-3">
+                                <div class="col-md-4">
                                     <label for="">Tahun</label>
                                     <br>
                                     <select name="years" id="years" class="form-control">
@@ -91,7 +68,7 @@
                                     </select>
                                 </div>
                                
-                                <div class="col-md-3">
+                                <div class="col-md-4">
                                     <label for="">Bulan</label>
                                     <br>
                                     <select name="months" id="months" class="form-control">
@@ -114,7 +91,7 @@
                             </form>
                             <hr>
                             {{-- <a href="{{ route('export.file') }}" class="btn btn-success my-3" target="_blank">EXPORT EXCEL</a> --}}
-                            <table class="table border" id="myTable">
+                            {{-- <table class="table border" id="myTable">
                                 <thead>
                                     <tr>
                                         @for($i = 0; $i < sizeof($columns); $i++)
@@ -132,8 +109,8 @@
                                     </thead>
                                     <tbody>
                                         @foreach($records as $row)
-                                        <tr>
-                                            @foreach($row as $key => $data)
+                                            <tr>
+                                                @foreach($row as $key => $data)
                                                     @if ($account != null)
                                                         @foreach ($account as $accn)
                                                             @if ($key == $accn)
@@ -144,9 +121,8 @@
                                                 @endforeach
                                             </tr>
                                         @endforeach
-
                                 </tbody>
-                            </table>
+                            </table> --}}
                         </div>
                     </div>
             </div>
@@ -179,45 +155,39 @@
     {{-- <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script> --}}
     <link rel="stylesheet" href=" {{ asset('css/jquery.multiselect.css') }} ">
     <script src=" {{ asset('js/jquery.multiselect.js') }} "></script>
-   
+    <script>
+    $(document).ready(function(){
+        $('#products').multiselect({
+        columns  : 3,
+        search   : true,
+        selectAll: true,
+        texts    : {
+            placeholder: 'Select States',
+            search     : 'Search States'
+        }
+    }); 
+    });
+    </script>
+
     <script>
         $('#accounts').multiselect();
     </script>
 
     <script>
     $(document).ready(function(){
-        /*$('#regions').change(function(){
-            $(this).val()
-        })*/
         $('#regions').on('change', function(e){
             console.log(e.target.value);
             var region_id = e.target.value;
-            if (region_id=="all_region") {
-                $.get('/api/json-branches' , function(data){
-                // console.log(data);   
-                $('#branches').empty();
-                $('#branches').append('<option value="" disabled="true" >=======</option>');
-                // $('#branches').append('<option value="0" value="all_branch" selected="true"> All Branch</option>');
-
-                $.each(data, function(index, branchesObj) {
-                    // console.log(branchesObj.id + '-' + branchesObj.name);
-                    $('#branches').append('<option value="' + branchesObj.id + '" selected="true">' + branchesObj.name.substring( 0, 1 ).toUpperCase() + branchesObj.name.substring( 1 ) + '</option>');
-                });
-                
-            }); 
-            } else {
-                $.get('/api/json-branches?region_id=' + region_id , function(data){
+            $.get('/api/json-branches?region_id=' + region_id , function(data){
                 console.log(data);
                 $('#branches').empty();
-                // $('#branches').append('<option value="0" disabled="true" selected="true">=======</option>');
+                $('#branches').append('<option value="0" disabled="true" selected="true">=======</option>');
 
                 $.each(data, function(index, branchesObj) {
                     console.log(branchesObj.id + '-' + branchesObj.name);
                     $('#branches').append('<option value="' + branchesObj.id + '" >' + branchesObj.name.substring( 0, 1 ).toUpperCase() + branchesObj.name.substring( 1 ) + '</option>');
                 });
-            });    
-            }
-            
+            });
         });
     });
     </script>
@@ -227,53 +197,16 @@
             $('#categories').on('change', function(e){
                 console.log(e.target.value);
                 var category_id = e.target.value;
-                if (category_id == "all_category") {
-                    $.get('/api/json-products', function(data){
-                    console.log(data);
-                    $('#products').empty();
-                    // $('#products').append('<option value="0" selected="true">=======</option>');
-
-                    $.each(data, function(index, productsObj) {
-                        console.log(productsObj.id + '-' + productsObj.name);
-                        $('#products').append('<option value="' + productsObj.id + '" >' + productsObj.name.substring( 0, 1 ).toUpperCase() + productsObj.name.substring( 1 ) + '</option>');
-                        
-                    }); 
-                    $('#products').multiselect({
-                        columns  : 1,
-                        search   : true,
-                        selectAll: true,
-                        texts    : {
-                            placeholder: 'Select Products',
-                            search     : 'Search Products'
-                        }
-                    });
-                        
-                });
-
-                } else {
-                    
                 $.get('/api/json-products?category_id=' + category_id , function(data){
                     console.log(data);
                     $('#products').empty();
-                    // $('#products').append('<option value="0" selected="true">=======</option>');
+                    $('#products').append('<option value="0" selected="true">=======</option>');
 
                     $.each(data, function(index, productsObj) {
                         console.log(productsObj.id + '-' + productsObj.name);
                         $('#products').append('<option value="' + productsObj.id + '" >' + productsObj.name.substring( 0, 1 ).toUpperCase() + productsObj.name.substring( 1 ) + '</option>');
-                        
-                    }); 
-                        $('#products').multiselect({
-                        columns  : 1,
-                        search   : true,
-                        selectAll: true,
-                        texts    : {
-                            placeholder: 'Select Products',
-                            search     : 'Search Products'
-                        }
-                        
                     });
                 });
-                }
             });
         });
     </script>
