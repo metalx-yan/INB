@@ -19,7 +19,8 @@
             <div class="card-title">
                 <br>
                 <div class="container">
-                    <form action="{{ route('upload-file') }}" method="get" enctype="multipart/form-data">
+                    <form action="{{ route('query-upload.post') }}" method="post" enctype="multipart/form-data">
+                        @csrf
                             <div class="row">
                                 <input type="hidden" name="id">
                                 <div class="col-md-4">
@@ -34,8 +35,10 @@
                                 
                                 <div class="col-md-4">
                                     <label for="">Pilihan Kunci</label>
-                                    <select name="key" id="key" class="form-control" >
-                                        <option value="">=====</option>
+                                    <select name="number" id="number" class="form-control" >
+                                        <option value="">======</option>
+                                        <option value="number">No Account</option>
+                                        <option value="cif_key">BNI Cif Key</option>
                                     </select>
                                 </div>
                                 
@@ -62,8 +65,8 @@
                                     <br>
                                     <select name="years" id="years" class="form-control">
                                         <option value="">=====</option>
-                                        @foreach ($acc as $accs => $dis)
-                                        <option value="{{ $accs }}">{{ $accs }}</option>
+                                        @foreach ($years as $year )
+                                         <option value="{{ $year->year }}">{{ $year->year }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -73,10 +76,7 @@
                                     <br>
                                     <select name="months" id="months" class="form-control">
                                         <option value="">=====</option>
-                                        @foreach ($accn as $accnt => $disa)
-                                            {{ var_dump($accnt) }}
-                                            <option value="{{ $accnt }}">{{ $accnt }}</option>
-                                        @endforeach
+                                       
                                     </select>
                                 </div>
                                 </div>
@@ -90,39 +90,46 @@
                                 </div>
                             </form>
                             <hr>
+
                             {{-- <a href="{{ route('export.file') }}" class="btn btn-success my-3" target="_blank">EXPORT EXCEL</a> --}}
-                            {{-- <table class="table border" id="myTable">
+                            <table class="table border" id="myTable">
                                 <thead>
                                     <tr>
-                                        @for($i = 0; $i < sizeof($columns); $i++)
-                                            @if ($account != null)
-                                                @foreach ($account as $accn)
-                                                    @if ($columns[$i] == $accn)
-                                                        <th>{{ ucfirst(str_replace('_', ' ',$columns[$i]) )}}</th>
-                                                    @endif
-                                                @endforeach
-                                            @else
-                                                <th></th>
-                                            @endif
-                                        @endfor
-                                        </tr>
+                                        @if ($query == null)
+                                            <th></th>
+                                        @else
+                                            @for($i = 0; $i < sizeof($columns); $i++)
+                                                @if ($account != null)
+                                                    @foreach ($account as $accn)
+                                                        @if ($columns[$i] == $accn)
+                                                            <th>{{ ucfirst(str_replace('_', ' ',$columns[$i]) )}}</th>
+                                                        @endif
+                                                    @endforeach
+                                                @else
+                                                    <th></th>
+                                                @endif
+                                            @endfor
+                                        @endif
+                                    </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach($records as $row)
+                                        @if ($query == null)
+                                            <td></td>
+                                        @else
+                                            @foreach ($query as $row) 
                                             <tr>
-                                                @foreach($row as $key => $data)
-                                                    @if ($account != null)
-                                                        @foreach ($account as $accn)
-                                                            @if ($key == $accn)
-                                                                <td>{{ $data }}</td>
+                                                    @foreach ($row->toArray() as $column => $value)
+                                                        @foreach ($account as $acct)
+                                                            @if ($acct == $column)
+                                                                <td>{{ ucwords($value) }}</td>
                                                             @endif
                                                         @endforeach
-                                                    @endif
                                                 @endforeach
                                             </tr>
-                                        @endforeach
+                                            @endforeach
+                                        @endif
                                 </tbody>
-                            </table> --}}
+                            </table>
                         </div>
                     </div>
             </div>
@@ -132,7 +139,7 @@
 @endsection
 
 @section('scripts')
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    {{-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script> --}}
     <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/1.5.6/js/dataTables.buttons.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/1.5.6/js/buttons.flash.min.js"></script>
@@ -148,7 +155,6 @@
                     dom: 'Bfrtip',
                     buttons: ['excel']
                 });
-            
         });
     </script>
 
@@ -211,21 +217,21 @@
         });
     </script>
 
-<script>
+    <script>
         $(document).ready(function(){
             $('#years').on('change', function(e){
                 console.log(e.target.value);
-                // var category_id = e.target.value;
-                // $.get('/api/json-products?category_id=' + category_id , function(data){
-                //     console.log(data);
-                //     $('#products').empty();
-                //     $('#products').append('<option value="0" selected="true">=======</option>');
+                var year = e.target.value;
+                $.get('/api/json-month-upload?created_at=' + year , function(data){
+                    console.log(data);
+                    $('#months').empty();
+                    $('#months').append('<option value="0" selected="true">=====</option>');
 
-                //     $.each(data, function(index, productsObj) {
-                //         console.log(productsObj.id + '-' + productsObj.name);
-                //         $('#products').append('<option value="' + productsObj.id + '" >' + productsObj.name.substring( 0, 1 ).toUpperCase() + productsObj.name.substring( 1 ) + '</option>');
-                //     });
-                // });
+                    $.each(data, function(index, monthsObj) {
+                        console.log(monthsObj.month);
+                        $('#months').append('<option value="' + monthsObj.month + '" >' + monthsObj.month + '</option>');
+                    });
+                });
             });
         });
     </script>

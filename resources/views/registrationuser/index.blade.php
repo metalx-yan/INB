@@ -130,7 +130,7 @@
                 </div>
             </div>
             <div class="card-body">
-                <table class="table border" id="myTable">
+                <table class="table border" id="myTable" style="font-size: 14px;">
                     <thead>
                         <th>id</th>
                         <th>Nama</th>

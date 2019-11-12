@@ -12,11 +12,13 @@ class RegionTableSeeder extends Seeder
      */
     public function run()
     {
-        $loops = ['Jakarta', 'Jogja', 'Madiun'];
-        foreach ($loops as $loop) {
-            Region::create([
-                'name' => $loop,
-            ]);
+        $codes = ['WKJ', 'WYG', 'WMD'];
+        $names = ['Jakarta', 'Jogja', 'Madiun'];
+        foreach (array_combine($codes, $names) as $code => $name) {
+                Region::create([
+                    'name' => $name,
+                    'code' => $code
+                ]);
         }
         
     }

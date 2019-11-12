@@ -17,8 +17,20 @@ use Illuminate\Http\Request;
 //     return $request->user();
 // });
 
-Route::get('/json-products', 'QueryController@products');
+Route::get('/json-products', 'ApiController@products');
 
-Route::get('/json-branches', 'QueryController@branches');
+Route::get('/json-branches', 'ApiController@branches');
 
-Route::get('/json-months', 'QueryController@months');
+Route::get('/json-groups', 'ApiController@groups');
+
+Route::get('/json-prods', 'ApiController@prods');
+
+Route::get('/json-regions', 'ApiController@regions');
+
+Route::get('/json-months', 'ApiController@months');
+
+Route::get('/json-days', 'ApiController@days');
+
+Route::get('/json-month-balance', 'ApiController@monthBalance');
+
+Route::get('/json-month-upload', 'ApiController@monthUpload');

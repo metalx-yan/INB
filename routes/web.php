@@ -63,7 +63,13 @@ Route::group(['prefix' => 'user', 'middleware' => ['auth', 'level:user']], funct
 
     Route::get('query-balance' , 'QueryController@getBalance')->name('query-balance');
 
-    Route::get('upload-file' , 'QueryController@getFile')->name('upload-file');
+    Route::get('query-upload' , 'QueryController@getFile')->name('query-upload');
+
+    Route::post('query-upload' , 'QueryController@getFilePost')->name('query-upload.post');
+
+    Route::get('saldo-posisi' , 'QueryController@getPosition')->name('saldo-posisi');
+
+    Route::get('saldo-average' , 'QueryController@getAverage')->name('saldo-average');
 
     Route::get('logActivity', 'UserController@logActivity')->name('log.user');
 

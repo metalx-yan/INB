@@ -40,9 +40,10 @@
     <!-- ============================================================== -->
     <!-- background-image:url(../assets/images/background/login-register.jpg); -->
     <section id="wrapper">
-        <div class="login-register" style="background-color:lavender">        
-            <div class="login-box card" style="border-radius: 15px">
-            <div class="card-body" >
+        <div class="login-register" style="background-color:lavender;">        
+                {{-- <br> --}}
+            <div class="login-box card" style="border-radius: 15px; margin-top: -80px;">
+            <div class="card-body">
                 <center>
                     <img src="https://upload.wikimedia.org/wikipedia/id/thumb/5/55/BNI_logo.svg/1280px-BNI_logo.svg.png" height="70%" width="80%" alt="">
                     <p>

@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Region extends Model
 {
-    protected $fillable = ['name'];
+    protected $fillable = ['name', 'code'];
 
     public function users()
     {
@@ -27,4 +27,10 @@ class Region extends Model
     {
         return $this->belongsTo(Province::class);
     }
+
+    public function regional_savings()
+    {
+        return $this->hasMany(RegionalSaving::class);
+    }
+
 }

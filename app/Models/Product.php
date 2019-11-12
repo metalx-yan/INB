@@ -12,4 +12,15 @@ class Product extends Model
     {
         return $this->belongsTo(Category::class);
     }
+
+    public function accounts()
+    {
+        return $this->hasMany(Account::class);
+    }
+
+    public function regional_savings()
+    {
+        return $this->hasMany(RegionalSaving::class);
+    }
+   
 }
