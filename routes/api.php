@@ -14,11 +14,13 @@ use Illuminate\Http\Request;
 */
 
 // Route::middleware('auth:api')->get('/user', function (Request $request) {
-//     return $request->user();
-// });
+    //     return $request->user();
+    // });
+    
+Route::get('/json-group-matrix', 'ApiController@groupMatrix');
 
 Route::get('/json-products', 'ApiController@products');
-
+    
 Route::get('/json-branches', 'ApiController@branches');
 
 Route::get('/json-groups', 'ApiController@groups');
@@ -34,3 +36,8 @@ Route::get('/json-days', 'ApiController@days');
 Route::get('/json-month-balance', 'ApiController@monthBalance');
 
 Route::get('/json-month-upload', 'ApiController@monthUpload');
+
+Route::get('/json-acc-matrix', 'ApiController@accMatrix');
+
+
+

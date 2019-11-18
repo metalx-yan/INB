@@ -68,14 +68,17 @@
                         <a class="" href="{{ route('home.user') }}" aria-expanded="false"><i class="mdi mdi-gauge"></i><span class="hide-menu">Dashboard</span></a>
                         </li>
 
-                    @foreach (Auth::user()->permissions as $parent)
+                    @foreach (Auth::user()->permissions->where('permission_id', null) as $parent)
                     <li>
-                        @if ($parent->permission_id == null)
                         <a class="has-arrow" href="#" aria-expanded="false"><i class="mdi mdi-bullseye"></i><span class="hide-menu">{{ ucwords($parent->name) }}</span></a>
                         <ul aria-expanded="false" class="collapse">
-                            @foreach ($parent->permissions->where('permission_id', '!=', 'null') as $menu)
+                            @foreach (Auth::user()->permissions->where('permission_id', '!=', null) as $menu)
                                 <li>
-                                    <a class="has-arrow" href="#" aria-expanded="false"><span class="hide-menu">{{ ucwords($menu->name) }}</span></a>
+                                    @if ($menu->slug == "funding-key-performance-matrix")
+                                        <a href="{{ route($menu->slug) }}">{{ ucwords($menu->name) }}</a>
+                                    @else
+                                        <a class="has-arrow" href="#" aria-expanded="false"><span class="hide-menu">{{ ucwords($menu->name) }}</span></a>
+                                    @endif
                                     @foreach ($menu->sub_menus as $sub)
                                     <ul>
                                         <a href=" {{ route($sub->slug) }} ">{{ ucwords($sub->name) }}</a>
@@ -84,8 +87,6 @@
                                 </li>
                             @endforeach
                         </ul>
-                        @endif
-                     
                     </li>
                     @endforeach
                     

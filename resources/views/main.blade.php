@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
     @include('partials._head')
+    @yield('links')
 <body class="fix-header fix-sidebar card-no-border">
     <div class="preloader">
             <svg class="circular" viewBox="25 25 50 50">

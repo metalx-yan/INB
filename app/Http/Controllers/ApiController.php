@@ -11,6 +11,7 @@ use App\Models\Account;
 use App\Models\Product;
 use App\Models\GroupProduct;
 use App\Models\RegionalSaving;
+use App\Models\ParameterProduct;
 use Illuminate\Support\Facades\DB;
 
 
@@ -119,5 +120,27 @@ class ApiController extends Controller
         }
 
         return response()->json($regions);
+    }
+
+    public function groupMatrix()
+    {
+        $type_product = Req::input('type_product_id');
+        
+        if (isset($type_product)) {
+            $parameter =  ParameterProduct::select('group_product_third as group')->where('type_product_id', $type_product)->distinct()->orderBy('group')->get();
+        } else {
+            $parameter =  ParameterProduct::select('group_product_third as group')->distinct()->orderBy('group')->get();
+        }
+        
+        return response()->json($parameter);
+    }
+
+    public function accMatrix()
+    {
+        $group = Req::input('group_product_third');
+
+        $option = ParameterProduct::select('acc_type as type', 'product_id')->where('group_product_third', $group)->distinct()->orderBy('type')->get()->load('product');
+
+        return response()->json($option);
     }
 }

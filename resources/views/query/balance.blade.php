@@ -110,6 +110,10 @@
                                 </div>
                             </form>
                             <hr>
+                            @if ($status == null)
+                                
+                            @else
+                                
                             {{-- <a href="{{ route('export.file') }}" class="btn btn-success my-3" target="_blank">EXPORT EXCEL</a> --}}
                             <table class="table border" id="myTable">
                                 <thead>
@@ -147,6 +151,8 @@
                                         @endif
                                 </tbody>
                             </table>
+                            @endif
+
                         </div>
                     </div>
             </div>

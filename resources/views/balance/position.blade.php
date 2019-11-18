@@ -48,10 +48,9 @@
                                 <label for="">Region</label>
                                 <br>
                                 <select name="regions[]" id="regions" class="form-control">
-                                    <option value="">=====</option>
-                                    <option value="{{ $regions }}">All Region</option>
+                                    <option value="">All Region</option>
                                     @foreach ($regions as $region)
-                                    <option value="{{ $region->id }}">{{ $region->code }}</option>
+                                        <option value="{{ $region->id }}">{{ $region->code }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -98,6 +97,10 @@
                         <hr>
 
                         <br>
+                        @if ($null)
+                            
+                        @else
+                            
                         {{-- <a href="{{ route('export.file') }}" class="btn btn-success my-3" target="_blank">EXPORT EXCEL</a> --}}
                         <table class="table border" id="myTable">
                             <thead>
@@ -241,6 +244,8 @@
                         <div class="container" id="container" style="min-widh: 310px; height:400px; margin: 0 auto;">
 
                         </div>
+                        @endif
+
                     </div>
                 </div>
         </div>
@@ -332,8 +337,8 @@
                     $('#month').append('<option value="0" selected="true">=====</option>');
 
                     $.each(data, function(index, monthsObj) {
-                        console.log(monthsObj.month);
-                        $('#month').append('<option value="' + monthsObj.month + '" >' + monthsObj.month + '</option>');
+                        console.log(String("00" + monthsObj.month).slice(-2));
+                        $('#month').append('<option value="' + String("00" + monthsObj.month).slice(-2) + '" >' + String("00" + monthsObj.month).slice(-2) + '</option>');
                     });
                 });
             });
@@ -351,8 +356,8 @@
                     $('#day').append('<option value="0" selected="true">=====</option>');
 
                     $.each(data, function(index, monthsObj) {
-                        console.log(monthsObj.day);
-                        $('#day').append('<option value="' + monthsObj.day + '" >' + monthsObj.day + '</option>');
+                        console.log(String("00" + monthsObj.day).slice(-2));
+                        $('#day').append('<option value="' + String("00" + monthsObj.day).slice(-2) + '" >' + String("00" + monthsObj.day).slice(-2) + '</option>');
                     });
                 });
             });

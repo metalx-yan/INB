@@ -22,5 +22,9 @@ class Product extends Model
     {
         return $this->hasMany(RegionalSaving::class);
     }
-   
+    
+    public function parameter_products()
+    {
+        return $this->hasMany(ParameterProduct::class);
+    }
 }

@@ -17,14 +17,16 @@
         <div class="card-title">
             <br>
             <div class="container">
-                <form action="{{ route('saldo-posisi') }}" method="get">
+                <form action="{{ route('saldo-average') }}" method="get" id="req">
                         <div class="row">
                             <input type="hidden" name="id">
                             <div class="col-md-3">
                                 <label for="">Tahun</label>
                                 <select name="year" id="year" class="form-control">
                                     <option value="">=====</option>
-                                    
+                                    @foreach ($years as $year)
+                                        <option value="{{ $year->year }}">{{ $year->year }}</option>
+                                    @endforeach
                                 </select>
                             </div>
                             
@@ -46,8 +48,10 @@
                                 <label for="">Region</label>
                                 <br>
                                 <select name="regions[]" id="regions" class="form-control">
-                                    <option value="">=====</option>
-                                   
+                                    <option value="">All Region</option>
+                                    @foreach ($regions as $region)
+                                        <option value="{{ $region->id }}">{{ $region->code }}</option>
+                                    @endforeach                                   
                                 </select>
                             </div>
                         </div>
@@ -84,15 +88,19 @@
                                 <div class="col-md-3">
                                     <label for="">&nbsp;</label>
                                     <br>
-                                    <button type="submit" id="buttonsa" class="btn btn-primary" style="margin-left: 404%;">Execute</button>
+                                    <input type="submit" id="buttonsa" class="btn btn-primary" style="margin-left: 404%;" value="Execute">
                                 </div>
                             </div>
                         </form>
                         <hr>
-
+                       
                         <br>
+
+                        @if ($null)
+                        
+                        @else
                         {{-- <a href="{{ route('export.file') }}" class="btn btn-success my-3" target="_blank">EXPORT EXCEL</a> --}}
-                        <table class="table border" id="myTable">
+                        <table class="table border" id="myTable" >
                             <thead>
                                 <tr style="background-color: #2157f1; color:white;">
                                     <td>Keterangan</td>
@@ -123,16 +131,85 @@
                                     @isset($tidak_berbayar)
                                     <td>{{ ucwords($tidak_berbayar->type_product->name) }}</td>
                                     @endisset
-                                    <td>{{ number_format($int1) }}</td>
+                                    <td>{{ number_format($int1,2) }}</td>
+                                </tr>
+
+                                @php
+                                    $int2 = 0;
+                                @endphp
+
+                                @foreach ($result2 as $berbayar)
+                                    @isset($berbayar)
+                                        <tr>
+                                            <td>{{ $berbayar->type_product->name }}</td>
+                                            <td>{{ $berbayar->group_product->name }}</td>
+                                            <td>{{ number_format($berbayar->balance,2) }}</td>
+                                        </tr>
+                                        @php
+                                            $int2 += $berbayar->balance;
+                                        @endphp
+                                    @endisset
+                                @endforeach
+
+                                <tr style="background-color: #2157f1; color:white;">
+                                    <td style="text-align:right">Total Reguler</td>
+                                    @isset($berbayar)
+                                    <td>{{ ucwords($berbayar->type_product->name) }}</td>
+                                    @endisset
+                                    <td>{{ number_format($int2,2) }}</td>
+                                </tr>
+
+                                @php
+                                    $int3 = 0;
+                                @endphp
+
+                                @foreach ($result3 as $mandatory)
+                                    @isset($mandatory)
+                                        <tr>
+                                            <td>{{ $mandatory->type_product->name }}</td>
+                                            <td>{{ $mandatory->group_product->name }}</td>
+                                            <td>{{ number_format($mandatory->balance,2) }}</td>
+                                        </tr>
+                                        @php
+                                            $int3 += $mandatory->balance;
+                                        @endphp
+                                    @endisset
+                                @endforeach
+
+                                <tr style="background-color: #2157f1; color:white;">
+                                    <td style="text-align:right">Total Reguler</td>
+                                    @isset($mandatory)
+                                    <td>{{ ucwords($mandatory->type_product->name) }}</td>
+                                    @endisset
+                                    <td>{{ number_format($int3,2) }}</td>
+                                </tr>
+
+                                @php
+                                    $int4 = 0;
+                                @endphp
+
+                                @foreach ($result4 as $result)
+                                    @isset($result)
+                                        @php
+                                            $int4 += $result->balance;
+                                        @endphp
+                                    @endisset
+                                @endforeach
+
+                                <tr style="background-color: #2157f1; color:white;">
+                                    <td style="text-align:right">Total</td>
+                                    <td> Tabungan</td>
+                                    <td>{{ number_format($int4,2) }}</td>
                                 </tr>
                             </tbody>
                         </table>
 
-                   
                         <br>
                         <div class="container" id="container" style="min-widh: 310px; height:400px; margin: 0 auto;">
-
                         </div>
+                        @endif
+
+                        {{-- </div> --}}
                     </div>
                 </div>
         </div>
@@ -152,7 +229,14 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
     <script src="https://cdn.datatables.net/buttons/1.5.6/js/buttons.html5.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/1.5.6/js/buttons.print.min.js"></script>
-   
+    
+    {{-- <script>
+        $('#req').submit(function() {
+            location.reload();
+            $('#muncul').css({"visibility" : "visible"});
+        });
+    </script>
+     --}}
     <script type="text/javascript"> 
         $(document).ready(function () {
                 $('#myTable').DataTable({
@@ -164,11 +248,12 @@
                 });
         });
     </script>
+    
 
-    {{-- <script>
+    <script>
     Highcharts.chart('container', {
         chart: {
-            type: 'column'
+            type: 'column',
         },
         title: {
             text: 'Performance Tabungan Perwilayah'
@@ -204,14 +289,10 @@
             name: 'Saldo',
             data: {!! json_encode($balance) !!}
 
-        }, {
-            name: 'Noa',
-            data: {!! json_encode($number_account) !!}
-
         }]
     });
     
-    </script> --}}
+    </script>
 
     <script>
         $(document).ready(function(){
@@ -224,8 +305,8 @@
                     $('#month').append('<option value="0" selected="true">=====</option>');
 
                     $.each(data, function(index, monthsObj) {
-                        console.log(monthsObj.month);
-                        $('#month').append('<option value="' + monthsObj.month + '" >' + monthsObj.month + '</option>');
+                        console.log(String("00" + monthsObj.month).slice(-2));
+                        $('#month').append('<option value="' + String("00" + monthsObj.month).slice(-2) + '" >' + String("00" + monthsObj.month).slice(-2) + '</option>');
                     });
                 });
             });
@@ -243,8 +324,8 @@
                     $('#day').append('<option value="0" selected="true">=====</option>');
 
                     $.each(data, function(index, monthsObj) {
-                        console.log(monthsObj.day);
-                        $('#day').append('<option value="' + monthsObj.day + '" >' + monthsObj.day + '</option>');
+                        console.log(String("00" + monthsObj.day).slice(-2));
+                        $('#day').append('<option value="' + String("00" + monthsObj.day).slice(-2) + '" >' + String("00" + monthsObj.day).slice(-2) + '</option>');
                     });
                 });
             });
@@ -321,5 +402,6 @@
             });
         });
     </script>
-    
+
+       
 @endsection

@@ -52,8 +52,8 @@
                             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
                                 Edit Password
                             </button>
-                            <div class="col-md-9"></div>
-                            <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#photoModal" style="margin-left: 45px;">
+                            {{-- <div class="col-md-3"></div> --}}
+                            <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#photoModal" style="margin-left: 16px;">
                                 Upload Photo
                             </button>
                         </div>
