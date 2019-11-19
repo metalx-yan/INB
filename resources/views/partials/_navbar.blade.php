@@ -17,7 +17,7 @@
                     <!-- Logo text -->
                     <span>
                      <!-- dark Logo text -->
-                     <img src=" https://upload.wikimedia.org/wikipedia/id/thumb/5/55/BNI_logo.svg/1280px-BNI_logo.svg.png " height="40%" width="50%" alt="homepage" class="dark-logo" />
+                     <img src="http://infobanknews.com/wp-content/uploads/2018/05/logo-BNI-46-1.png" height="50%" width="65%" alt="homepage" class="dark-logo" />
                      <!-- Light Logo text -->    
                      <img src="{{ asset('images/logo-light-text.png') }}" class="light-logo" alt="homepage" /></span> </a>
             </div>

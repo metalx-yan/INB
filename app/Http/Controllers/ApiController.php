@@ -139,7 +139,7 @@ class ApiController extends Controller
     {
         $group = Req::input('group_product_third');
 
-        $option = ParameterProduct::select('acc_type as type', 'product_id')->where('group_product_third', $group)->distinct()->orderBy('type')->get()->load('product');
+        $option = ParameterProduct::select('acc_type_id', 'product_id')->where('group_product_third', $group)->distinct()->orderBy('acc_type_id')->get()->load('product', 'acc_type');
 
         return response()->json($option);
     }

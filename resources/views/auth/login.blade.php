@@ -42,11 +42,10 @@
     <section id="wrapper">
         <div class="login-register" style="background-color:lavender;">        
                 {{-- <br> --}}
-            <div class="login-box card" style="border-radius: 15px; margin-top: -64px;">
-            <div class="card-body">
+            <div class="login-box card" style="border-radius: 15px; margin-top: -90px;">
+            <div class="card-body" style="height:550px;">
                 <center>
-                    <img src="https://upload.wikimedia.org/wikipedia/id/thumb/5/55/BNI_logo.svg/1280px-BNI_logo.svg.png" height="70%" width="80%" alt="">
-                    <p>
+                    <img src="http://infobanknews.com/wp-content/uploads/2018/05/logo-BNI-46-1.png" height="80%" width="90%" alt="">
                 </center>
                     <!-- <h3 class="box-title m-b-20"><b>SIGN IN</b></h3> -->
                 <!-- <hr> -->
@@ -77,12 +76,12 @@
                                 </span>
                             @enderror
                     </div>
-                    <br>
+                    <br><br>
                         <div class="col-xs-12">
-                            <button class="btn btn-warning btn-lg btn-block  waves-effect waves-light" type="submit">Log In</button>
+                            <button class="btn btn-warning btn-lg btn-block  waves-effect waves-light" style="background:#e17225; border: 1px solid #205b6f;" type="submit">Sign In</button>
                         </div>
                         <br>
-                        <a href="{{ route('root') }}" class="btn btn-danger btn-lg btn-block  waves-effect waves-light">Back to Home</a>
+                        <a href="{{ route('root') }}" class="btn btn-danger btn-lg btn-block  waves-effect waves-light" style="background:#205b6f; border: 1px solid #e17225;">Back to Home</a>
                 </form>
                
             </div>

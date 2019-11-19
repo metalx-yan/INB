@@ -62,7 +62,7 @@
                             <div class="col-md-3">
                                 <label for="">....</label>
                                 <select name="perorangan" id="perorangan" class="form-control">
-                                    {{-- <option value="*">All</option> --}}
+                                    <option value="*">All</option>
                                 </select>
                             </div>
                             
@@ -76,7 +76,7 @@
                             <div class="col-md-3">
                                 <label for="">Region</label>
                                 <select name="region" id="region" class="form-control">
-                                    {{-- <option value="*">All Region</option> --}}
+                                    <option value="*">All Region</option>
                                     @foreach ($regions as $region)
                                         <option value="{{ $region->id }}">{{ $region->name }}</option>
                                     @endforeach
@@ -108,14 +108,17 @@
                                 <div class="dropdown">
                                     <button class="btn btn-default dropdown-toggle" type="button" 
                                             id="dropdownMenu1" data-toggle="dropdown" 
-                                            aria-haspopup="true" aria-expanded="true" >
+                                            aria-haspopup="true" aria-expanded="true" style="border-color:#ced4da; width:100%;">
                                         <i class="glyphicon glyphicon-cog"></i>
-                                        <span class="caret"></span>
+                                        <span class="caret" style="margin-left:98%;"></span>
                                     </button>
-                                    <ul class="dropdown-menu checkbox-menu allow-focus" aria-labelledby="dropdownMenu1">
-                                        <div id="options">
+                                    <ul class="dropdown-menu checkbox-menu allow-focus" id="menu" aria-labelledby="dropdownMenu1" style="width:100%;">
+                                            <input type="text" id="myInput" class="form-control" placeholder="Search Data" onkeyup="myFunction()" title="Type in a name" style="width:95%; margin-left:6px; padding: 12px 20px 12px 40px; background-repeat:no-repeat; background-size: 35px; background-image:url('https://cdn1.iconfinder.com/data/icons/venetian-red-to-beautify-your-website/512/Search_Magnifying_Glass_Find-512.png');">
+                                            <p style="margin-top:14px; margin-left:15px; margin-bottom:1px;">
+                                            <b><input type="checkbox" name="select-all" id="select-all"> Select All</b>
+                                            <div id="options">
 
-                                        </div>
+                                            </div>
                                         
                                     </ul>
                                 </div>
@@ -149,6 +152,10 @@
                         <div class="container" id="container6" style="min-widh: 310px; height:400px; margin: 0 auto;"></div>
 
                         <div class="container" id="container7" style="min-widh: 310px; height:400px; margin: 0 auto;"></div>
+                        <hr>
+                        <div class="container" id="container8" style="min-widh: 310px; height:400px; margin: 0 auto;"></div>
+
+                        <div class="container" id="container9" style="min-widh: 310px; height:400px; margin: 0 auto;"></div>
         </div>
     </div>
 </div>
@@ -166,7 +173,41 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
     <script src="https://cdn.datatables.net/buttons/1.5.6/js/buttons.html5.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/1.5.6/js/buttons.print.min.js"></script>
-   
+    
+    <script>
+        $('#select-all').click(function(event) {   
+            if(this.checked) {
+                // Iterate each checkbox
+                $(':checkbox').each(function() {
+                    this.checked = true;                        
+                });
+            } else {
+                $(':checkbox').each(function() {
+                    this.checked = false;                       
+                });
+            }
+        });
+    </script>
+
+    <script>
+        function myFunction() {
+            var FilterValue, input, ul, li, i;
+                input = document.getElementById('myInput');
+                FilterValue = input.value;
+                ul = document.getElementById('menu');
+                li = ul.getElementsByTagName('li');
+
+                for (i = 0; i < li.length ; i++) {
+                    var a = li[i].getElementsByTagName('label')[0];
+                    if (a.innerHTML.indexOf(FilterValue) > -1 ) {
+                        li[i].style.display = "";
+                    } else {
+                        li[i].style.display = "none";
+                    }
+                }
+            }
+    </script>
+    
     <script type="text/javascript"> 
         $(document).ready(function () {
                 $('#myTable').DataTable({
@@ -278,7 +319,7 @@
             type: 'column'
         },
         title: {
-            text: 'Total Account'
+            text: 'Total Closed Account MTD'
         },
         subtitle: {
             text: 'Source: X'
@@ -555,6 +596,100 @@
     </script>
 
     <script>
+        Highcharts.chart('container8', {
+        chart: {
+            type: 'column'
+        },
+        title: {
+            text: 'New Account Cur Bal MTD'
+        },
+        subtitle: {
+            text: 'Source: X'
+        },
+        xAxis: {
+            categories: {!! json_encode($month) !!},
+            crosshair: true
+        },
+        yAxis: {
+            min: 0,
+            title: {
+                text: ''
+            }
+        },
+        tooltip: {
+            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                '<td style="padding:0"><b>{point.y}</b></td></tr>',
+            footerFormat: '</table>',
+            shared: true,
+            useHTML: true
+        },
+        plotOptions: {
+            column: {
+                pointPadding: 0.2,
+                borderWidth: 0
+            }
+        },
+        series: [{
+            name: '2018',
+            data: {!! json_encode($total15) !!}
+
+        },{
+            name: '2019',
+            data: {!! json_encode($total16) !!}
+
+        }]
+    });
+    </script>
+
+    <script>
+        Highcharts.chart('container9', {
+        chart: {
+            type: 'column'
+        },
+        title: {
+            text: 'New Account Cur Bal YTD'
+        },
+        subtitle: {
+            text: 'Source: X'
+        },
+        xAxis: {
+            categories: {!! json_encode($month) !!},
+            crosshair: true
+        },
+        yAxis: {
+            min: 0,
+            title: {
+                text: ''
+            }
+        },
+        tooltip: {
+            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                '<td style="padding:0"><b>{point.y}</b></td></tr>',
+            footerFormat: '</table>',
+            shared: true,
+            useHTML: true
+        },
+        plotOptions: {
+            column: {
+                pointPadding: 0.2,
+                borderWidth: 0
+            }
+        },
+        series: [{
+            name: '2018',
+            data: {!! json_encode($total17) !!}
+
+        },{
+            name: '2019',
+            data: {!! json_encode($total18) !!}
+
+        }]
+    });
+    </script>
+
+    <script>
         $(".checkbox-menu").on("change", "input[type='checkbox']", function() {
             $(this).closest("li").toggleClass("active", this.checked);
             });
@@ -609,7 +744,7 @@
                     // $('#option').append('<option value="0" selected="true">=======</option>');
 
                     $.each(data, function(index, optionObj) {
-                        $('#options').append('<li><label><input type="checkbox">' + optionObj.type + '  ' + optionObj.product.name + '</label></li>');
+                        $('#options').append('<li><label><input name="options[]" type="checkbox" value="'+ optionObj.acc_type.acc +'">' + optionObj.acc_type.acc + '  ' + optionObj.product.name + '</label></li>');
                     });
                 });
             });

@@ -214,6 +214,7 @@ class QueryController extends Controller
 
     public function getMatrix(Request $request)
     {
+        // dd($request->all());
         $regions = Region::all();
 
         $parameter = ParameterProduct::select('type_product_id')->distinct()->get();
@@ -329,6 +330,34 @@ class QueryController extends Controller
                 })
                 ->whereYear('date', '2019')->where('region_id', 'LIKE', 1)->where('position_product', 'LIKE', 'out murni')->where('type_product_id', 'LIKE', 1)->where('group_product_third', 'LIKE', 'prod3')->whereIn('account_ytds.acc_type_id', [1])
                 ->groupBy('month')->orderBy('month')->get();
+        
+        $newcurmtd1 = AccountMtd::select(DB::raw('MONTH(date) as month, sum(end) as end'))
+                ->leftJoin('parameter_products', function($join) {
+                        $join->on('account_mtds.acc_type_id', '=', 'parameter_products.acc_type_id');
+                })
+                ->whereYear('date', '2018')->where('region_id', 'LIKE', 1)->where('position_product', 'LIKE', 'new murni')->where('type_product_id', 'LIKE', 1)->where('group_product_third', 'LIKE', 'prod3')->whereIn('account_mtds.acc_type_id', [1])
+                ->groupBy('month')->orderBy('month')->get();
+        // dd($newcurmtd1);
+        $newcurmtd2 = AccountMtd::select(DB::raw('MONTH(date) as month, sum(end) as end'))
+                ->leftJoin('parameter_products', function($join) {
+                        $join->on('account_mtds.acc_type_id', '=', 'parameter_products.acc_type_id');
+                })
+                ->whereYear('date', '2019')->where('region_id', 'LIKE', 1)->where('position_product', 'LIKE', 'new murni')->where('type_product_id', 'LIKE', 1)->where('group_product_third', 'LIKE', 'prod3')->whereIn('account_mtds.acc_type_id', [1])
+                ->groupBy('month')->orderBy('month')->get();
+
+        $newcurytd1 = AccountYtd::select(DB::raw('MONTH(date) as month, sum(end) as end'))
+                ->leftJoin('parameter_products', function($join) {
+                        $join->on('account_ytds.acc_type_id', '=', 'parameter_products.acc_type_id');
+                })
+                ->whereYear('date', '2018')->where('region_id', 'LIKE', 1)->where('position_product', 'LIKE', 'new murni')->where('type_product_id', 'LIKE', 1)->where('group_product_third', 'LIKE', 'prod3')->whereIn('account_ytds.acc_type_id', [1])
+                ->groupBy('month')->orderBy('month')->get();
+
+        $newcurytd2 = AccountYtd::select(DB::raw('MONTH(date) as month, sum(end) as end'))
+                ->leftJoin('parameter_products', function($join) {
+                        $join->on('account_ytds.acc_type_id', '=', 'parameter_products.acc_type_id');
+                })
+                ->whereYear('date', '2019')->where('region_id', 'LIKE', 1)->where('position_product', 'LIKE', 'new murni')->where('type_product_id', 'LIKE', 1)->where('group_product_third', 'LIKE', 'prod3')->whereIn('account_ytds.acc_type_id', [1])
+                ->groupBy('month')->orderBy('month')->get();
 
         $balance = [];
         $balance2 = [];
@@ -346,6 +375,10 @@ class QueryController extends Controller
         $total12 = [];
         $total13 = [];
         $total14 = [];
+        $total15 = [];
+        $total16 = [];
+        $total17 = [];
+        $total18 = [];
         $month = [];
         $month2 = [];
 
@@ -418,8 +451,24 @@ class QueryController extends Controller
         foreach ($closedcurytd2 as $chart) {
                 $total14[] = (int)$chart->start;
         }
+
+        foreach ($newcurmtd1 as $chart) {
+                $total15[] = (int)$chart->end;
+        }
         
-        return view('matrix.performance', compact('regions', 'parameter', 'balance', 'month' , 'balance2', 'month2', 'total1' , 'total2', 'total3' , 'total4', 'total5' , 'total6', 'total7' , 'total8', 'total9' , 'total10', 'total11' , 'total12', 'total13' , 'total14'));
+        foreach ($newcurmtd2 as $chart) {
+                $total16[] = (int)$chart->end;
+        }
+
+        foreach ($newcurytd1 as $chart) {
+                $total17[] = (int)$chart->end;
+        }
+        
+        foreach ($newcurytd2 as $chart) {
+                $total18[] = (int)$chart->end;
+        }
+        
+        return view('matrix.performance', compact('regions', 'parameter', 'balance', 'month' , 'balance2', 'month2', 'total1' , 'total2', 'total3' , 'total4', 'total5' , 'total6', 'total7' , 'total8', 'total9' , 'total10', 'total11' , 'total12', 'total13' , 'total14', 'total15' , 'total16', 'total17' , 'total18'));
     }
 
 }

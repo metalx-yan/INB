@@ -15,4 +15,9 @@ class ParameterProduct extends Model
     {
         return $this->belongsTo(Product::class);
     }
+
+    public function acc_type()
+    {
+        return $this->belongsTo(AccType::class);
+    }
 }
