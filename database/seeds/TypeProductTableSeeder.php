@@ -1,11 +1,9 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use App\Models\JobLevel;
-// use Faker\Factory as Faker;
+use App\Models\TypeProduct;
 
-
-class JobLevelTableSeeder extends Seeder
+class TypeProductTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -17,8 +15,8 @@ class JobLevelTableSeeder extends Seeder
         $faker = Faker\Factory::create();
         
         for ($i=0; $i < 5; $i++) { 
-            JobLevel::create([
-                'name' => $faker->jobTitle
+            TypeProduct::create([
+                'name' => $faker->creditCardType
             ]);
         }
     }

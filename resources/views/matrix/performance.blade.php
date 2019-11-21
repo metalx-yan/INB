@@ -62,21 +62,21 @@
                             <div class="col-md-3">
                                 <label for="">....</label>
                                 <select name="perorangan" id="perorangan" class="form-control">
-                                    <option value="*">All</option>
+                                    <option value="">All</option>
                                 </select>
                             </div>
                             
                             <div class="col-md-3">
                                 <label for="">Tabungan</label>
                                 <select name="tabungan" id="tabungan" class="form-control">
-                                    <option value="tabungan">Tabungan</option>
+                                    <option value="">Tabungan</option>
                                 </select>
                             </div>
                             
                             <div class="col-md-3">
                                 <label for="">Region</label>
                                 <select name="region" id="region" class="form-control">
-                                    <option value="*">All Region</option>
+                                    <option value="">All Region</option>
                                     @foreach ($regions as $region)
                                         <option value="{{ $region->id }}">{{ $region->name }}</option>
                                     @endforeach
@@ -87,7 +87,7 @@
                                 <label for="">Jenis</label>
                                 <br>
                                 <select name="type" id="type" class="form-control">
-                                    <option value="all_type">All Jenis</option>
+                                    <option value="">All Jenis</option>
                                     @foreach ($parameter as $type)
                                         <option value="{{ $type->type_product->id }}">{{ $type->type_product->name }}</option>
                                     @endforeach
@@ -100,6 +100,7 @@
                                 <label for="">Group</label>
                                 <br>
                                 <select name="group" id="group" class="form-control">
+                                    <option value="">All Group</option>
                                 </select>
                             </div>
 
@@ -108,18 +109,18 @@
                                 <div class="dropdown">
                                     <button class="btn btn-default dropdown-toggle" type="button" 
                                             id="dropdownMenu1" data-toggle="dropdown" 
-                                            aria-haspopup="true" aria-expanded="true" style="border-color:#ced4da; width:100%;">
+                                            aria-haspopup="true" aria-expanded="true" style="border-color:#ced4da; width:100%;">All
                                         <i class="glyphicon glyphicon-cog"></i>
-                                        <span class="caret" style="margin-left:98%;"></span>
+                                        <span class="caret" style="margin-left:88%;"></span>
                                     </button>
                                     <ul class="dropdown-menu checkbox-menu allow-focus" id="menu" aria-labelledby="dropdownMenu1" style="width:100%;">
                                             <input type="text" id="myInput" class="form-control" placeholder="Search Data" onkeyup="myFunction()" title="Type in a name" style="width:95%; margin-left:6px; padding: 12px 20px 12px 40px; background-repeat:no-repeat; background-size: 35px; background-image:url('https://cdn1.iconfinder.com/data/icons/venetian-red-to-beautify-your-website/512/Search_Magnifying_Glass_Find-512.png');">
-                                            <p style="margin-top:14px; margin-left:15px; margin-bottom:1px;">
+                                            <p style="margin-top:14px; margin-left:15px;">
                                             <b><input type="checkbox" name="select-all" id="select-all"> Select All</b>
+                                            <hr>
                                             <div id="options">
-
                                             </div>
-                                        
+                                            
                                     </ul>
                                 </div>
                             </div>
@@ -129,33 +130,97 @@
                                 <div class="col-md-3">
                                     <label for="">&nbsp;</label>
                                     <br>
-                                    <button type="submit" id="buttonsa" class="btn btn-primary" style="margin-left: 404%;">Execute</button>
+                                    <button type="submit" id="buttonsa" value="button" name="button" class="btn btn-primary" style="margin-left: 404%;">Execute</button>
                                 </div>
                             </div>
                         </form>
                         <hr>
-
-                        <br>
                         
+                        <br>
+
+                        @if($obj)
+                        
+                        @if ($balance == [] && $balance2 == [])
+                            
+                        @else
+                            
+
                         <div class="container" id="container" style="min-widh: 310px; height:400px; margin: 0 auto;"></div>
                         <hr>
+
+                        @endif
+
+                        @if ($total1 == [] && $total2 == [])
+                            
+                        @else
+                            
                         <div class="container" id="container1" style="min-widh: 310px; height:400px; margin: 0 auto;"></div>
                         <hr>
+                        @endif
+
+                        @if ($total3 == [] && $total4 == [])
+                            
+                        @else
+                            
                         <div class="container" id="container2" style="min-widh: 310px; height:400px; margin: 0 auto;"></div>
 
+                        @endif
+
+                        @if ($total5 == [] && $total6 == [])
+                            
+                        @else
+                            
                         <div class="container" id="container3" style="min-widh: 310px; height:400px; margin: 0 auto;"></div>
                         <hr>
-                        <div class="container" id="container4" style="min-widh: 310px; height:400px; margin: 0 auto;"></div>
+                        @endif
 
+                        @if ($total7 == [] && $total8 == [])
+                            
+                        @else
+                            
+                        <div class="container" id="container4" style="min-widh: 310px; height:400px; margin: 0 auto;"></div>
+                        @endif
+
+                        @if ($total9 == [] && $total10 == [])
+                            
+                        @else
+                            
                         <div class="container" id="container5" style="min-widh: 310px; height:400px; margin: 0 auto;"></div>
                         <hr>
-                        <div class="container" id="container6" style="min-widh: 310px; height:400px; margin: 0 auto;"></div>
+                        @endif
 
+                        @if ($total11 == [] && $total12)
+                            
+                        @else
+                            
+                        <div class="container" id="container6" style="min-widh: 310px; height:400px; margin: 0 auto;"></div>
+                        @endif
+
+                        @if ($total13 == [] && $total14 == [])
+                            
+                        @else
+                            
                         <div class="container" id="container7" style="min-widh: 310px; height:400px; margin: 0 auto;"></div>
                         <hr>
-                        <div class="container" id="container8" style="min-widh: 310px; height:400px; margin: 0 auto;"></div>
+                        @endif
 
+                        @if ($total15 == [] && $total16 == [])
+                            
+                        @else
+                            
+                        <div class="container" id="container8" style="min-widh: 310px; height:400px; margin: 0 auto;"></div>
+                        @endif
+
+                        @if ($total17 == [] && $total18 == [])
+                            
+                        @else
+                            
                         <div class="container" id="container9" style="min-widh: 310px; height:400px; margin: 0 auto;"></div>
+                        @endif
+                        
+                        @else
+
+                        @endif
         </div>
     </div>
 </div>
@@ -740,11 +805,12 @@
                 var group_product_third = e.target.value;
                 $.get('/api/json-acc-matrix?group_product_third=' + group_product_third , function(data){
                     console.log(data);
+                    // $('#options').append('<li><label><input name="options" type="checkbox" value="">All Group</label></li>');
                     $('#options').empty();
-                    // $('#option').append('<option value="0" selected="true">=======</option>');
 
                     $.each(data, function(index, optionObj) {
-                        $('#options').append('<li><label><input name="options[]" type="checkbox" value="'+ optionObj.acc_type.acc +'">' + optionObj.acc_type.acc + '  ' + optionObj.product.name + '</label></li>');
+                        // console.log(optionObj.acc_type_id);
+                        $('#options').append('<li><label><input name="options[]" type="checkbox" value="'+ optionObj.acc_type_id +'">' + optionObj.acc_type.acc + '  ' + optionObj.product.name + '</label></li>');
                     });
                 });
             });

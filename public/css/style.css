@@ -408,7 +408,7 @@ html body .bg-success {
   background-color: #55ce63 !important; }
 
 html body .bg-info {
-  background-color: #009efb !important; }
+  background-color: #216994 !important; }
 
 html body .bg-warning {
   background-color: #ffbc34 !important; }
@@ -935,8 +935,8 @@ Buttons
 
 .btn-primary,
 .btn-primary.disabled {
-  background: #7460ee;
-  border: 1px solid #7460ee; }
+  background: #205b6f;
+  border: 1px solid #e17327; }
   .btn-primary:hover,
   .btn-primary.disabled:hover {
     background: #7460ee;
@@ -1008,8 +1008,8 @@ Buttons
 
 .btn-danger,
 .btn-danger.disabled {
-  background: #f62d51;
-  border: 1px solid #f62d51; }
+  background: #205b6f;
+  border: 2px solid #e2772d; }
   .btn-danger:hover,
   .btn-danger.disabled:hover {
     background: #f62d51;
@@ -2294,7 +2294,7 @@ ul#themecolors {
   border-color: #009efb; }
 
 .card-primary {
-  background: #7460ee;
+  background: #e24d4d;
   border-color: #7460ee; }
 
 .card-outline-info {

@@ -18,5 +18,8 @@ class DatabaseSeeder extends Seeder
         $this->call(ManagementUnitTableSeeder::class);
         // $this->call(ParentTableSeeder::class);
         $this->call(UserTableSeeder::class);
+        $this->call(TypeProductTableSeeder::class);
+        $this->call(BranchTableSeeder::class);
+        $this->call(AccTypeTableSeeder::class);
     }
 }

@@ -1,5 +1,45 @@
 @extends('main')
 
+@section('links')
+    <style>
+        /* body {
+  padding: 15px;
+    } */
+
+    .checkbox-menu li label {
+        display: block;
+        padding: 3px 10px;
+        clear: both;
+        font-weight: normal;
+        line-height: 1.42857143;
+        color: #333;
+        white-space: nowrap;
+        margin:0;
+        transition: background-color .4s ease;
+    }
+    .checkbox-menu li input {
+        margin: 0px 5px;
+        top: 2px;
+        position: relative;
+    }
+
+    .checkbox-menu li.active label {
+        background-color: #cbcbff;
+        font-weight:bold;
+    }
+
+    .checkbox-menu li label:hover,
+    .checkbox-menu li label:focus {
+        background-color: #f5f5f5;
+    }
+
+    .checkbox-menu li.active label:hover,
+    .checkbox-menu li.active label:focus {
+        background-color: #b8b8ff;
+    }
+    </style>
+@endsection
+
 @section('title', 'Query Balance')
 
 @section('content')
@@ -25,7 +65,7 @@
                                 <div class="col-md-3">
                                     <label for="">Jenis</label>
                                     <select name="categories" id="categories" class="form-control">
-                                        <option value="">=====</option>
+                                        <option value="null">=====</option>
                                         <option value="all_category">All Category</option>
                                         @foreach ($categories as $category)
                                             <option value="{{ $category->id }}">{{ ucfirst($category->name) }}</option>
@@ -36,7 +76,7 @@
                                 <div class="col-md-3">
                                     <label for="">Region</label>
                                     <select name="regions" id="regions" class="form-control" >
-                                        <option value="">=====</option>
+                                        <option value="null">=====</option>
                                         <option value="all_region">All Region</option>
                                         @foreach ($regions as $region)
                                         <option value=" {{ $region->id }} ">{{ ucfirst($region->name) }}</option>
@@ -46,15 +86,47 @@
                                 
                                 <div class="col-md-3">
                                     <label for="">Branch</label>
-                                    <select name="branches[]" id="branches" class="form-control" multiple style="height: 10px;">
-                                    </select>
+                                    <div class="dropdown">
+                                        <button class="btn btn-default dropdown-toggle" type="button" 
+                                                id="dropdownMenu1" data-toggle="dropdown" 
+                                                aria-haspopup="true" aria-expanded="true" style="border-color:#ced4da; width:100%;">
+                                            <i class="glyphicon glyphicon-cog"></i>
+                                            <span class="caret" style="margin-left:88%;"></span>
+                                        </button>
+                                        <ul class="dropdown-menu checkbox-menu allow-focus" id="menu" aria-labelledby="dropdownMenu1" style="width:100%;">
+                                                <input type="text" id="myInput" class="form-control" placeholder="Search Data" onkeyup="myFunction()" title="Type in a name" style="width:95%; margin-left:6px; padding: 12px 20px 12px 40px; background-repeat:no-repeat; background-size: 35px; background-image:url('https://cdn1.iconfinder.com/data/icons/venetian-red-to-beautify-your-website/512/Search_Magnifying_Glass_Find-512.png');">
+                                                <p style="margin-top:14px; margin-left:15px;">
+                                                <b><input type="checkbox" name="select-all" id="select-all"> Select All</b>
+                                                <hr>
+                                                <div id="branches">
+                                                </div>
+                                                
+                                        </ul>
+                                    </div>
+                                    
                                 </div>
                                 
                                 <div class="col-md-3">
                                     <label for="">Product</label>
                                     <br>
-                                    <select name="products[]" id="products" class="form-control" multiple style="height: 10px;">
-                                    </select>
+                                    <div class="dropdown">
+                                        <button class="btn btn-default dropdown-toggle" type="button" 
+                                                id="dropdownMenu1" data-toggle="dropdown" 
+                                                aria-haspopup="true" aria-expanded="true" style="border-color:#ced4da; width:100%;">
+                                            <i class="glyphicon glyphicon-cog"></i>
+                                            <span class="caret" style="margin-left:88%;"></span>
+                                        </button>
+                                        <ul class="dropdown-menu checkbox-menu allow-focus" id="menus" aria-labelledby="dropdownMenu1" style="width:100%;">
+                                                <input type="text" id="myInputs" class="form-control" placeholder="Search Data" onkeyup="myFunctions()" title="Type in a name" style="width:95%; margin-left:6px; padding: 12px 20px 12px 40px; background-repeat:no-repeat; background-size: 35px; background-image:url('https://cdn1.iconfinder.com/data/icons/venetian-red-to-beautify-your-website/512/Search_Magnifying_Glass_Find-512.png');">
+                                                <p style="margin-top:14px; margin-left:15px;">
+                                                <b><input type="checkbox" name="select-all" id="select-alls"> Select All</b>
+                                                <hr>
+                                                <div id="products">
+                                                </div>
+                                                
+                                        </ul>
+                                    </div>
+                                    
                                 </div>
                             </div>
                             <br>
@@ -202,12 +274,12 @@
                 $.get('/api/json-branches' , function(data){
                 // console.log(data);   
                 $('#branches').empty();
-                $('#branches').append('<option value="" disabled="true" >=======</option>');
+                // $('#branches').append('<option value="" disabled="true" >=======</option>');
                 // $('#branches').append('<option value="0" value="all_branch" selected="true"> All Branch</option>');
 
                 $.each(data, function(index, branchesObj) {
                     // console.log(branchesObj.id + '-' + branchesObj.name);
-                    $('#branches').append('<option value="' + branchesObj.id + '" selected="true">' + branchesObj.name.substring( 0, 1 ).toUpperCase() + branchesObj.name.substring( 1 ) + '</option>');
+                    $('#branches').append('<li><label><input name="branches[]" type="checkbox" value="'+ branchesObj.id +'">' + branchesObj.name +  '</label></li>');
                 });
                 
             }); 
@@ -219,7 +291,7 @@
 
                 $.each(data, function(index, branchesObj) {
                     console.log(branchesObj.id + '-' + branchesObj.name);
-                    $('#branches').append('<option value="' + branchesObj.id + '" >' + branchesObj.name.substring( 0, 1 ).toUpperCase() + branchesObj.name.substring( 1 ) + '</option>');
+                    $('#branches').append('<li><label><input name="branches[]" type="checkbox" value="'+ branchesObj.id +'">' + branchesObj.name +  '</label></li>');
                 });
             });    
             }
@@ -241,19 +313,9 @@
 
                     $.each(data, function(index, productsObj) {
                         console.log(productsObj.id + '-' + productsObj.name);
-                        $('#products').append('<option value="' + productsObj.id + '" >' + productsObj.name.substring( 0, 1 ).toUpperCase() + productsObj.name.substring( 1 ) + '</option>');
+                        $('#products').append('<li><label><input name="products[]" type="checkbox" value="'+ productsObj.id +'">' + productsObj.name +  '</label></li>');
                         
                     }); 
-                    $('#products').multiselect({
-                        columns  : 1,
-                        search   : true,
-                        selectAll: true,
-                        texts    : {
-                            placeholder: 'Select Products',
-                            search     : 'Search Products'
-                        }
-                    });
-                        
                 });
 
                 } else {
@@ -265,26 +327,17 @@
 
                     $.each(data, function(index, productsObj) {
                         console.log(productsObj.id + '-' + productsObj.name);
-                        $('#products').append('<option value="' + productsObj.id + '" >' + productsObj.name.substring( 0, 1 ).toUpperCase() + productsObj.name.substring( 1 ) + '</option>');
+                        $('#products').append('<li><label><input name="products[]" type="checkbox" value="'+ productsObj.id +'">' + productsObj.name + '</label></li>');
                         
                     }); 
-                        $('#products').multiselect({
-                        columns  : 1,
-                        search   : true,
-                        selectAll: true,
-                        texts    : {
-                            placeholder: 'Select Products',
-                            search     : 'Search Products'
-                        }
                         
-                    });
                 });
                 }
             });
         });
     </script>
 
-<script>
+    <script>
         $(document).ready(function(){
             $('#years').on('change', function(e){
                 console.log(e.target.value);
@@ -302,6 +355,74 @@
             });
         });
     </script>
+
+<script>
+    $('#select-all').click(function(event) {   
+        if(this.checked) {
+            // Iterate each checkbox
+            $(':checkbox').each(function() {
+                this.checked = true;                        
+            });
+        } else {
+            $(':checkbox').each(function() {
+                this.checked = false;                       
+            });
+        }
+    });
+</script>
+
+<script>
+    function myFunction() {
+        var FilterValue, input, ul, li, i;
+            input = document.getElementById('myInput');
+            FilterValue = input.value;
+            ul = document.getElementById('menu');
+            li = ul.getElementsByTagName('li');
+
+            for (i = 0; i < li.length ; i++) {
+                var a = li[i].getElementsByTagName('label')[0];
+                if (a.innerHTML.indexOf(FilterValue) > -1 ) {
+                    li[i].style.display = "";
+                } else {
+                    li[i].style.display = "none";
+                }
+            }
+        }
+</script>
+
+<script>
+    $('#select-alls').click(function(event) {   
+        if(this.checked) {
+            // Iterate each checkbox
+            $(':checkbox').each(function() {
+                this.checked = true;                        
+            });
+        } else {
+            $(':checkbox').each(function() {
+                this.checked = false;                       
+            });
+        }
+    });
+</script>
+
+<script>
+    function myFunctions() {
+        var FilterValue, input, ul, li, i;
+            input = document.getElementById('myInputs');
+            FilterValue = input.value;
+            ul = document.getElementById('menus');
+            li = ul.getElementsByTagName('li');
+
+            for (i = 0; i < li.length ; i++) {
+                var a = li[i].getElementsByTagName('label')[0];
+                if (a.innerHTML.indexOf(FilterValue) > -1 ) {
+                    li[i].style.display = "";
+                } else {
+                    li[i].style.display = "none";
+                }
+            }
+        }
+</script>
 
     
 @endsection

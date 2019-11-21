@@ -56,9 +56,7 @@
                     </li>
                     @endforeach
                     
-                    <li class="nav-small-cap">EXTRA COMPONENTS</li>
-                    
-                    <li class="nav-small-cap">FORMS, TABLE &amp; WIDGETS</li>
+                   
                     @endif
                     
 
@@ -89,9 +87,6 @@
                         </ul>
                     </li>
                     @endforeach
-                    
-                    <li class="nav-small-cap">FORMS, TABLE &amp; WIDGETS</li>
-                    <li class="nav-small-cap">EXTRA COMPONENTS</li>
                     
                     @endif
                 </ul>

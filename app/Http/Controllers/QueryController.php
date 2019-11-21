@@ -146,7 +146,6 @@ class QueryController extends Controller
 
     public function getAverage(Request $request)
     {
-        // dd($request->all());
         $getYear = Carbon::now()->format('Y');
         
         $startDate = new Carbon($getYear .'-01-01');
@@ -214,6 +213,10 @@ class QueryController extends Controller
 
     public function getMatrix(Request $request)
     {
+        // dd(is_null($request->options));
+
+        $obj = isset($request->button);
+
         // dd($request->all());
         $regions = Region::all();
 
@@ -223,141 +226,362 @@ class QueryController extends Controller
                 ->leftJoin('parameter_products', function($join) {
                         $join->on('cur_balances.acc_type_id', '=', 'parameter_products.acc_type_id');
                 })
-                ->whereYear('date', '2018')->where('region_id', 'LIKE', 1)->where('type_product_id', 'LIKE', 1)->where('group_product_third', 'LIKE', 'prod3')->whereIn('cur_balances.acc_type_id', [1])
-                ->groupBy('month')->orderBy('month')->get();
+                ->whereYear('date', '2018');
         
+        if ($request->perorangan == null && $request->tabungan == null && $request->region == null && $request->type == null && $request->group == null) {
+                $query1 = $totalcurl1->groupBy('month')->get();
+        } elseif ($request->options == null) {
+                $query1 = $totalcurl1->where('region_id', 'LIKE', $request->region)->where('type_product_id', 'LIKE', $request->type)->where('group_product_third', 'LIKE', $request->group)
+                ->groupBy('month')->get();
+                // dd($query1);
+        } else {
+                $query1 = $totalcurl1->where('region_id', 'LIKE', $request->region)->where('type_product_id', 'LIKE', $request->type)->where('group_product_third', 'LIKE', $request->group)->whereIn('cur_balances.acc_type_id', $request->options)
+                ->groupBy('month')->get();
+        }
+
+
+
         $totalcurl2 = CurBalance::select(DB::raw('MONTH(date) as month, sum(balance) as balance'))
                 ->leftJoin('parameter_products', function($join) {
                         $join->on('cur_balances.acc_type_id', '=', 'parameter_products.acc_type_id');
                 })
-                ->whereYear('date', '2019')->where('region_id', 'LIKE', 1)->where('type_product_id', 'LIKE', 1)->where('group_product_third', 'LIKE', 'prod3')->whereIn('cur_balances.acc_type_id', [1])
-                ->groupBy('month')->orderBy('month')->get();
+                ->whereYear('date', '2019');
+
+        if ($request->perorangan == null && $request->tabungan == null && $request->region == null && $request->type == null && $request->group == null) {
+                $query2 = $totalcurl2->groupBy('month')->get();
+        } elseif ($request->options == null) {
+                $query2 = $totalcurl2->where('region_id', 'LIKE', $request->region)->where('type_product_id', 'LIKE', $request->type)->where('group_product_third', 'LIKE', $request->group)
+                ->groupBy('month')->get();
+        } else {
+                $query2 = $totalcurl2->where('region_id', 'LIKE', $request->region)->where('type_product_id', 'LIKE', $request->type)->where('group_product_third', 'LIKE', $request->group)->whereIn('cur_balances.acc_type_id', $request->options)
+                ->groupBy('month')->get();
+        }
+
+
 
         $totalaccount1 = AccountMtd::select(DB::raw('MONTH(date) as month, sum(total_acc) as total'))
                 ->leftJoin('parameter_products', function($join) {
                         $join->on('account_mtds.acc_type_id', '=', 'parameter_products.acc_type_id');
                 })
-                ->whereYear('date', '2018')->where('region_id', 'LIKE', 1)->where('type_product_id', 'LIKE', 1)->where('group_product_third', 'LIKE', 'prod3')->whereIn('account_mtds.acc_type_id', [1])
-                ->groupBy('month')->orderBy('month')->get();
+                ->whereYear('date', '2018');
+
+        if ($request->perorangan == null && $request->tabungan == null && $request->region == null && $request->type == null && $request->group == null) {
+                $query3 = $totalaccount1->groupBy('month')->get();
+        } elseif ($request->options == null) {
+                $query3 = $totalaccount1->where('region_id', 'LIKE', $request->region)->where('type_product_id', 'LIKE', $request->type)->where('group_product_third', 'LIKE', $request->group)
+                ->groupBy('month')->get();
+        } else {
+                $query3 = $totalaccount1->where('region_id', 'LIKE', $request->region)->where('type_product_id', 'LIKE', $request->type)->where('group_product_third', 'LIKE', $request->group)->whereIn('account_mtds.acc_type_id', $request->options)
+                ->groupBy('month')->get();
+        }
+
+
 
         $totalaccount2 = AccountMtd::select(DB::raw('MONTH(date) as month, sum(total_acc) as total'))
                 ->leftJoin('parameter_products', function($join) {
                         $join->on('account_mtds.acc_type_id', '=', 'parameter_products.acc_type_id');
                 })
-                ->whereYear('date', '2019')->where('region_id', 'LIKE', 1)->where('type_product_id', 'LIKE', 1)->where('group_product_third', 'LIKE', 'prod3')->whereIn('account_mtds.acc_type_id', [1])
-                ->groupBy('month')->orderBy('month')->get();
+                ->whereYear('date', '2019');
+        
+        if ($request->perorangan == null && $request->tabungan == null && $request->region == null && $request->type == null && $request->group == null) {
+                $query4 = $totalaccount2->groupBy('month')->get();
+        } elseif ($request->options == null) {
+                $query4 = $totalaccount2->where('region_id', 'LIKE', $request->region)->where('type_product_id', 'LIKE', $request->type)->where('group_product_third', 'LIKE', $request->group)
+                ->groupBy('month')->get();
+        } else {
+                $query4 = $totalaccount2->where('region_id', 'LIKE', $request->region)->where('type_product_id', 'LIKE', $request->type)->where('group_product_third', 'LIKE', $request->group)->whereIn('account_mtds.acc_type_id', $request->options)
+                ->groupBy('month')->get();
+        }
+
+
 
         $totalmtd1 = AccountMtd::select(DB::raw('MONTH(date) as month, sum(total_acc) as total'))
                 ->leftJoin('parameter_products', function($join) {
                         $join->on('account_mtds.acc_type_id', '=', 'parameter_products.acc_type_id');
                 })
-                ->whereYear('date', '2018')->where('region_id', 'LIKE', 1)->where('position_product', 'LIKE', 'out murni')->where('type_product_id', 'LIKE', 1)->where('group_product_third', 'LIKE', 'prod3')->whereIn('account_mtds.acc_type_id', [1])
-                ->groupBy('month')->orderBy('month')->get();
+                ->whereYear('date', '2018');
+
+        if ($request->perorangan == null && $request->tabungan == null && $request->region == null && $request->type == null && $request->group == null) {
+                $query5 = $totalmtd1->groupBy('month')->get();
+        } elseif ($request->options == null) {
+                $query5 = $totalmtd1->where('region_id', 'LIKE', $request->region)->where('type_product_id', 'LIKE', $request->type)->where('group_product_third', 'LIKE', $request->group)
+                ->groupBy('month')->get();
+        } else {
+                $query5 = $totalmtd1->where('region_id', 'LIKE', $request->region)->where('type_product_id', 'LIKE', $request->type)->where('group_product_third', 'LIKE', $request->group)->whereIn('account_mtds.acc_type_id', $request->options)
+                ->groupBy('month')->get();
+        }
+
+
 
         $totalmtd2 = AccountMtd::select(DB::raw('MONTH(date) as month, sum(total_acc) as total'))
                 ->leftJoin('parameter_products', function($join) {
                         $join->on('account_mtds.acc_type_id', '=', 'parameter_products.acc_type_id');
                 })
-                ->whereYear('date', '2019')->where('region_id', 'LIKE', 1)->where('position_product', 'LIKE', 'out murni')->where('type_product_id', 'LIKE', 1)->where('group_product_third', 'LIKE', 'prod3')->whereIn('account_mtds.acc_type_id', [1])
-                ->groupBy('month')->orderBy('month')->get();
+                ->whereYear('date', '2019');
+
+        if ($request->perorangan == null && $request->tabungan == null && $request->region == null && $request->type == null && $request->group == null) {
+                $query6 = $totalmtd2->groupBy('month')->get();
+        } elseif ($request->options == null) {
+                $query6 = $totalmtd2->where('region_id', 'LIKE', $request->region)->where('type_product_id', 'LIKE', $request->type)->where('group_product_third', 'LIKE', $request->group)
+                ->groupBy('month')->get();        
+        } else {
+                $query6 = $totalmtd2->where('region_id', 'LIKE', $request->region)->where('type_product_id', 'LIKE', $request->type)->where('group_product_third', 'LIKE', $request->group)->whereIn('account_mtds.acc_type_id', $request->options)
+                ->groupBy('month')->get();
+        }
+
+
 
         $totalytd1 = AccountYtd::select(DB::raw('MONTH(date) as month, sum(total_acc) as total'))
                 ->leftJoin('parameter_products', function($join) {
                         $join->on('account_ytds.acc_type_id', '=', 'parameter_products.acc_type_id');
                 })
-                ->whereYear('date', '2018')->where('region_id', 'LIKE', 1)->where('position_product', 'LIKE', 'out murni')->where('type_product_id', 'LIKE', 1)->where('group_product_third', 'LIKE', 'prod3')->whereIn('account_ytds.acc_type_id', [1])
-                ->groupBy('month')->orderBy('month')->get();
+                ->whereYear('date', '2018');
+
+        if ($request->perorangan == null && $request->tabungan == null && $request->region == null && $request->type == null && $request->group == null) {
+                $query7 = $totalytd1->groupBy('month')->get();
+        } elseif ($request->options == null) {
+                $query7 = $totalytd1->where('region_id', 'LIKE', $request->region)->where('type_product_id', 'LIKE', $request->type)->where('group_product_third', 'LIKE', $request->group)
+                ->groupBy('month')->get();        
+        } else {
+                $query7 = $totalytd1->where('region_id', 'LIKE', $request->region)->where('type_product_id', 'LIKE', $request->type)->where('group_product_third', 'LIKE', $request->group)->whereIn('account_ytds.acc_type_id', $request->options)
+                ->groupBy('month')->get();
+        }
+
+
 
         $totalytd2 = AccountYtd::select(DB::raw('MONTH(date) as month, sum(total_acc) as total'))
                 ->leftJoin('parameter_products', function($join) {
                         $join->on('account_ytds.acc_type_id', '=', 'parameter_products.acc_type_id');
                 })
-                ->whereYear('date', '2019')->where('region_id', 'LIKE', 1)->where('position_product', 'LIKE', 'out murni')->where('type_product_id', 'LIKE', 1)->where('group_product_third', 'LIKE', 'prod3')->whereIn('account_ytds.acc_type_id', [1])
-                ->groupBy('month')->orderBy('month')->get();
+                ->whereYear('date', '2019');
         
+        if ($request->perorangan == null && $request->tabungan == null && $request->region == null && $request->type == null && $request->group == null) {
+                $query8 = $totalytd2->groupBy('month')->get();
+        } elseif ($request->options == null) {
+                $query8 = $totalytd2->where('region_id', 'LIKE', $request->region)->where('type_product_id', 'LIKE', $request->type)->where('group_product_third', 'LIKE', $request->group)
+                ->groupBy('month')->get();                
+        } else {
+                $query8 = $totalytd2->where('region_id', 'LIKE', $request->region)->where('type_product_id', 'LIKE', $request->type)->where('group_product_third', 'LIKE', $request->group)->whereIn('account_ytds.acc_type_id', $request->options)
+                ->groupBy('month')->get();
+        }
+
+
+
         $totalmtdnew1 = AccountMtd::select(DB::raw('MONTH(date) as month, sum(total_acc) as total'))
                 ->leftJoin('parameter_products', function($join) {
                         $join->on('account_mtds.acc_type_id', '=', 'parameter_products.acc_type_id');
                 })
-                ->whereYear('date', '2018')->where('region_id', 'LIKE', 1)->where('position_product', 'LIKE', 'new murni')->where('type_product_id', 'LIKE', 1)->where('group_product_third', 'LIKE', 'prod3')->whereIn('account_mtds.acc_type_id', [1])
-                ->groupBy('month')->orderBy('month')->get();
+                ->whereYear('date', '2018');
+
+        if ($request->perorangan == null && $request->tabungan == null && $request->region == null && $request->type == null && $request->group == null) {
+                $query9 = $totalmtdnew1->where('position_product', 'LIKE', 'new murni')->groupBy('month')->get();
+        } elseif ($request->options == null) {
+                $query9 = $totalmtdnew1->where('region_id', 'LIKE', $request->region)->where('position_product', 'LIKE', 'new murni')->where('type_product_id', 'LIKE', $request->type)->where('group_product_third', 'LIKE', $request->group)
+                ->groupBy('month')->get();
+        } else {
+                $query9 = $totalmtdnew1->where('region_id', 'LIKE', $request->region)->where('position_product', 'LIKE', 'new murni')->where('type_product_id', 'LIKE', $request->type)->where('group_product_third', 'LIKE', $request->group)->whereIn('account_mtds.acc_type_id', $request->options)
+                ->groupBy('month')->get();
+        }
+
+
 
         $totalmtdnew2 = AccountMtd::select(DB::raw('MONTH(date) as month, sum(total_acc) as total'))
                 ->leftJoin('parameter_products', function($join) {
                         $join->on('account_mtds.acc_type_id', '=', 'parameter_products.acc_type_id');
                 })
-                ->whereYear('date', '2019')->where('region_id', 'LIKE', 1)->where('position_product', 'LIKE', 'new murni')->where('type_product_id', 'LIKE', 1)->where('group_product_third', 'LIKE', 'prod3')->whereIn('account_mtds.acc_type_id', [1])
-                ->groupBy('month')->orderBy('month')->get();
+                ->whereYear('date', '2019');
+
+        if ($request->perorangan == null && $request->tabungan == null && $request->region == null && $request->type == null && $request->group == null) {
+                $query10 = $totalmtdnew2->where('position_product', 'LIKE', 'new murni')->groupBy('month')->get();
+        } elseif ($request->options == null) {
+                $query10 = $totalmtdnew2->where('region_id', 'LIKE', $request->region)->where('position_product', 'LIKE', 'new murni')->where('type_product_id', 'LIKE', $request->type)->where('group_product_third', 'LIKE', $request->group)
+                ->groupBy('month')->get();
+        } else {
+                $query10 = $totalmtdnew2->where('region_id', 'LIKE', $request->region)->where('position_product', 'LIKE', 'new murni')->where('type_product_id', 'LIKE', $request->type)->where('group_product_third', 'LIKE', $request->group)->whereIn('account_mtds.acc_type_id', $request->options)
+                ->groupBy('month')->get();
+        }
+
+
 
         $totalytdnew1 = AccountYtd::select(DB::raw('MONTH(date) as month, sum(total_acc) as total'))
                 ->leftJoin('parameter_products', function($join) {
                         $join->on('account_ytds.acc_type_id', '=', 'parameter_products.acc_type_id');
                 })
-                ->whereYear('date', '2018')->where('region_id', 'LIKE', 1)->where('position_product', 'LIKE', 'new murni')->where('type_product_id', 'LIKE', 1)->where('group_product_third', 'LIKE', 'prod3')->whereIn('account_ytds.acc_type_id', [1])
-                ->groupBy('month')->orderBy('month')->get();
+                ->whereYear('date', '2018');
+
+        if ($request->perorangan == null && $request->tabungan == null && $request->region == null && $request->type == null && $request->group == null) {
+                $query11 = $totalytdnew1->where('position_product', 'LIKE', 'new murni')->groupBy('month')->get();
+        } elseif ($request->options == null) {
+                $query11 = $totalytdnew1->where('region_id', 'LIKE', $request->region)->where('position_product', 'LIKE', 'new murni')->where('type_product_id', 'LIKE', $request->type)->where('group_product_third', 'LIKE', $request->group)
+                ->groupBy('month')->get();
+        } else {
+                $query11 = $totalytdnew1->where('region_id', 'LIKE', $request->region)->where('position_product', 'LIKE', 'new murni')->where('type_product_id', 'LIKE', $request->type)->where('group_product_third', 'LIKE', $request->group)->whereIn('account_ytds.acc_type_id', $request->options)
+                ->groupBy('month')->get();
+        }
+
+
 
         $totalytdnew2 = AccountYtd::select(DB::raw('MONTH(date) as month, sum(total_acc) as total'))
                 ->leftJoin('parameter_products', function($join) {
                         $join->on('account_ytds.acc_type_id', '=', 'parameter_products.acc_type_id');
                 })
-                ->whereYear('date', '2019')->where('region_id', 'LIKE', 1)->where('position_product', 'LIKE', 'new murni')->where('type_product_id', 'LIKE', 1)->where('group_product_third', 'LIKE', 'prod3')->whereIn('account_ytds.acc_type_id', [1])
-                ->groupBy('month')->orderBy('month')->get();
+                ->whereYear('date', '2019');
         
+        if ($request->perorangan == null && $request->tabungan == null && $request->region == null && $request->type == null && $request->group == null) {
+                $query12 = $totalytdnew2->where('position_product', 'LIKE', 'new murni')->groupBy('month')->get();
+        } elseif ($request->options == null) {
+                $query12 = $totalytdnew2->where('region_id', 'LIKE', $request->region)->where('position_product', 'LIKE', 'new murni')->where('type_product_id', 'LIKE', $request->type)->where('group_product_third', 'LIKE', $request->group)
+                ->groupBy('month')->get();
+        } else {
+                $query12 = $totalytdnew2->where('region_id', 'LIKE', $request->region)->where('position_product', 'LIKE', 'new murni')->where('type_product_id', 'LIKE', $request->type)->where('group_product_third', 'LIKE', $request->group)->whereIn('account_ytds.acc_type_id', $request->options)
+                ->groupBy('month')->get();
+        }
+
+
+
         $closedcurmtd1 = AccountMtd::select(DB::raw('MONTH(date) as month, sum(start) as start'))
                 ->leftJoin('parameter_products', function($join) {
                         $join->on('account_mtds.acc_type_id', '=', 'parameter_products.acc_type_id');
                 })
-                ->whereYear('date', '2018')->where('region_id', 'LIKE', 1)->where('position_product', 'LIKE', 'out murni')->where('type_product_id', 'LIKE', 1)->where('group_product_third', 'LIKE', 'prod3')->whereIn('account_mtds.acc_type_id', [1])
-                ->groupBy('month')->orderBy('month')->get();
+                ->whereYear('date', '2018');
+
+        if ($request->perorangan == null && $request->tabungan == null && $request->region == null && $request->type == null && $request->group == null) {
+                $query13 = $closedcurmtd1->where('position_product', 'LIKE', 'out murni')->groupBy('month')->get();
+        } elseif ($request->options == null) {
+                $query13 = $closedcurmtd1->where('region_id', 'LIKE', $request->region)->where('position_product', 'LIKE', 'out murni')->where('type_product_id', 'LIKE', $request->type)->where('group_product_third', 'LIKE', $request->group)
+                ->groupBy('month')->get();
+        } else {
+                $query13 = $closedcurmtd1->where('region_id', 'LIKE', $request->region)->where('position_product', 'LIKE', 'out murni')->where('type_product_id', 'LIKE', $request->type)->where('group_product_third', 'LIKE', $request->group)->whereIn('account_mtds.acc_type_id', $request->options)
+                ->groupBy('month')->get();
+        }
+
+
 
         $closedcurmtd2 = AccountMtd::select(DB::raw('MONTH(date) as month, sum(start) as start'))
                 ->leftJoin('parameter_products', function($join) {
                         $join->on('account_mtds.acc_type_id', '=', 'parameter_products.acc_type_id');
                 })
-                ->whereYear('date', '2019')->where('region_id', 'LIKE', 1)->where('position_product', 'LIKE', 'out murni')->where('type_product_id', 'LIKE', 1)->where('group_product_third', 'LIKE', 'prod3')->whereIn('account_mtds.acc_type_id', [1])
-                ->groupBy('month')->orderBy('month')->get();
+                ->whereYear('date', '2019');
+
+        if ($request->perorangan == null && $request->tabungan == null && $request->region == null && $request->type == null && $request->group == null) {
+                $query14 = $closedcurmtd2->where('position_product', 'LIKE', 'out murni')->groupBy('month')->get();
+        } elseif ($request->options == null) {
+                $query14 = $closedcurmtd2->where('region_id', 'LIKE', $request->region)->where('position_product', 'LIKE', 'out murni')->where('type_product_id', 'LIKE', $request->type)->where('group_product_third', 'LIKE', $request->group)
+                ->groupBy('month')->get();
+        } else {
+                $query14 = $closedcurmtd2->where('region_id', 'LIKE', $request->region)->where('position_product', 'LIKE', 'out murni')->where('type_product_id', 'LIKE', $request->type)->where('group_product_third', 'LIKE', $request->group)->whereIn('account_mtds.acc_type_id', $request->options)
+                ->groupBy('month')->get();
+        }
+
+
 
         $closedcurytd1 = AccountYtd::select(DB::raw('MONTH(date) as month, sum(start) as start'))
                 ->leftJoin('parameter_products', function($join) {
                         $join->on('account_ytds.acc_type_id', '=', 'parameter_products.acc_type_id');
                 })
-                ->whereYear('date', '2018')->where('region_id', 'LIKE', 1)->where('position_product', 'LIKE', 'out murni')->where('type_product_id', 'LIKE', 1)->where('group_product_third', 'LIKE', 'prod3')->whereIn('account_ytds.acc_type_id', [1])
-                ->groupBy('month')->orderBy('month')->get();
+                ->whereYear('date', '2018');
+
+        if ($request->perorangan == null && $request->tabungan == null && $request->region == null && $request->type == null && $request->group == null) {
+                $query15 = $closedcurytd1->where('position_product', 'LIKE', 'out murni')->groupBy('month')->get();
+        } elseif ($request->options == null) {
+                $query15 = $closedcurytd1->where('region_id', 'LIKE', $request->region)->where('position_product', 'LIKE', 'out murni')->where('type_product_id', 'LIKE', $request->type)->where('group_product_third', 'LIKE', $request->group)
+                ->groupBy('month')->get();
+        } else {
+                $query15 = $closedcurytd1->where('region_id', 'LIKE', $request->region)->where('position_product', 'LIKE', 'out murni')->where('type_product_id', 'LIKE', $request->type)->where('group_product_third', 'LIKE', $request->group)->whereIn('account_ytds.acc_type_id', $request->options)
+                ->groupBy('month')->get();
+        }
+
+
 
         $closedcurytd2 = AccountYtd::select(DB::raw('MONTH(date) as month, sum(start) as start'))
                 ->leftJoin('parameter_products', function($join) {
                         $join->on('account_ytds.acc_type_id', '=', 'parameter_products.acc_type_id');
                 })
-                ->whereYear('date', '2019')->where('region_id', 'LIKE', 1)->where('position_product', 'LIKE', 'out murni')->where('type_product_id', 'LIKE', 1)->where('group_product_third', 'LIKE', 'prod3')->whereIn('account_ytds.acc_type_id', [1])
-                ->groupBy('month')->orderBy('month')->get();
+                ->whereYear('date', '2019');
         
+        if ($request->perorangan == null && $request->tabungan == null && $request->region == null && $request->type == null && $request->group == null) {
+                $query16 = $closedcurytd2->where('position_product', 'LIKE', 'out murni')->groupBy('month')->get();
+        } elseif ($request->options == null) {
+                $query16 = $closedcurytd2->where('region_id', 'LIKE', $request->region)->where('position_product', 'LIKE', 'out murni')->where('type_product_id', 'LIKE', $request->type)->where('group_product_third', 'LIKE', $request->group)
+                ->groupBy('month')->get();                
+        } else {
+                $query16 = $closedcurytd2->where('region_id', 'LIKE', $request->region)->where('position_product', 'LIKE', 'out murni')->where('type_product_id', 'LIKE', $request->type)->where('group_product_third', 'LIKE', $request->group)->whereIn('account_ytds.acc_type_id', $request->options)
+                ->groupBy('month')->get();
+        }
+
+
+
         $newcurmtd1 = AccountMtd::select(DB::raw('MONTH(date) as month, sum(end) as end'))
                 ->leftJoin('parameter_products', function($join) {
                         $join->on('account_mtds.acc_type_id', '=', 'parameter_products.acc_type_id');
                 })
-                ->whereYear('date', '2018')->where('region_id', 'LIKE', 1)->where('position_product', 'LIKE', 'new murni')->where('type_product_id', 'LIKE', 1)->where('group_product_third', 'LIKE', 'prod3')->whereIn('account_mtds.acc_type_id', [1])
-                ->groupBy('month')->orderBy('month')->get();
-        // dd($newcurmtd1);
+                ->whereYear('date', '2018');
+        
+        if ($request->perorangan == null && $request->tabungan == null && $request->region == null && $request->type == null && $request->group == null) {
+                $query17 = $newcurmtd1->where('position_product', 'LIKE', 'new murni')->groupBy('month')->get();
+        } elseif ($request->options == null) {
+                $query17 = $newcurmtd1->where('region_id', 'LIKE', $request->region)->where('position_product', 'LIKE', 'new murni')->where('type_product_id', 'LIKE', $request->type)->where('group_product_third', 'LIKE', $request->group)
+                ->groupBy('month')->get();                
+        } else {
+                $query17 = $newcurmtd1->where('region_id', 'LIKE', $request->region)->where('position_product', 'LIKE', 'new murni')->where('type_product_id', 'LIKE', $request->type)->where('group_product_third', 'LIKE', $request->group)->whereIn('account_mtds.acc_type_id', $request->options)
+                ->groupBy('month')->get();
+        }
+
+
+                // dd($newcurmtd1);
         $newcurmtd2 = AccountMtd::select(DB::raw('MONTH(date) as month, sum(end) as end'))
                 ->leftJoin('parameter_products', function($join) {
                         $join->on('account_mtds.acc_type_id', '=', 'parameter_products.acc_type_id');
                 })
-                ->whereYear('date', '2019')->where('region_id', 'LIKE', 1)->where('position_product', 'LIKE', 'new murni')->where('type_product_id', 'LIKE', 1)->where('group_product_third', 'LIKE', 'prod3')->whereIn('account_mtds.acc_type_id', [1])
-                ->groupBy('month')->orderBy('month')->get();
+                ->whereYear('date', '2019');
+
+        if ($request->perorangan == null && $request->tabungan == null && $request->region == null && $request->type == null && $request->group == null) {
+                $query18 = $newcurmtd2->where('position_product', 'LIKE', 'new murni')->groupBy('month')->get();
+        } elseif ($request->options == null) {
+                $query18 = $newcurmtd2->where('region_id', 'LIKE', $request->region)->where('position_product', 'LIKE', 'new murni')->where('type_product_id', 'LIKE', $request->type)->where('group_product_third', 'LIKE', $request->group)
+                ->groupBy('month')->get();                
+        } else {
+                $query18 = $newcurmtd2->where('region_id', 'LIKE', $request->region)->where('position_product', 'LIKE', 'new murni')->where('type_product_id', 'LIKE', $request->type)->where('group_product_third', 'LIKE', $request->group)->whereIn('account_mtds.acc_type_id', $request->options)
+                ->groupBy('month')->get();
+        }
+
+
 
         $newcurytd1 = AccountYtd::select(DB::raw('MONTH(date) as month, sum(end) as end'))
                 ->leftJoin('parameter_products', function($join) {
                         $join->on('account_ytds.acc_type_id', '=', 'parameter_products.acc_type_id');
                 })
-                ->whereYear('date', '2018')->where('region_id', 'LIKE', 1)->where('position_product', 'LIKE', 'new murni')->where('type_product_id', 'LIKE', 1)->where('group_product_third', 'LIKE', 'prod3')->whereIn('account_ytds.acc_type_id', [1])
-                ->groupBy('month')->orderBy('month')->get();
+                ->whereYear('date', '2018');
+
+        if ($request->perorangan == null && $request->tabungan == null && $request->region == null && $request->type == null && $request->group == null) {
+                $query19 = $newcurytd1->where('position_product', 'LIKE', 'new murni')->groupBy('month')->get();
+                // dd($query19);          
+        } elseif ($request->options == null) {
+                $query19 = $newcurytd1->where('region_id', 'LIKE', $request->region)->where('position_product', 'LIKE', 'new murni')->where('type_product_id', 'LIKE', $request->type)->where('group_product_third', 'LIKE', $request->group)
+                ->groupBy('month')->get();
+        } else {
+                $query19 = $newcurytd1->where('region_id', 'LIKE', $request->region)->where('position_product', 'LIKE', 'new murni')->where('type_product_id', 'LIKE', $request->type)->where('group_product_third', 'LIKE', $request->group)->whereIn('account_ytds.acc_type_id', $request->options)
+                ->groupBy('month')->get();
+        }
+
+
 
         $newcurytd2 = AccountYtd::select(DB::raw('MONTH(date) as month, sum(end) as end'))
                 ->leftJoin('parameter_products', function($join) {
                         $join->on('account_ytds.acc_type_id', '=', 'parameter_products.acc_type_id');
                 })
-                ->whereYear('date', '2019')->where('region_id', 'LIKE', 1)->where('position_product', 'LIKE', 'new murni')->where('type_product_id', 'LIKE', 1)->where('group_product_third', 'LIKE', 'prod3')->whereIn('account_ytds.acc_type_id', [1])
-                ->groupBy('month')->orderBy('month')->get();
+                ->whereYear('date', '2019');
+
+        if ($request->perorangan == null && $request->tabungan == null && $request->region == null && $request->type == null && $request->group == null) {
+                $query20 = $newcurytd2->where('position_product', 'LIKE', 'new murni')->groupBy('month')->get();
+        } elseif ($request->options == null) {
+                $query20 = $newcurytd2->where('region_id', 'LIKE', $request->region)->where('position_product', 'LIKE', 'new murni')->where('type_product_id', 'LIKE', $request->type)->where('group_product_third', 'LIKE', $request->group)
+                ->groupBy('month')->get();
+        } else {
+                $query20 = $newcurytd2->where('region_id', 'LIKE', $request->region)->where('position_product', 'LIKE', 'new murni')->where('type_product_id', 'LIKE', $request->type)->where('group_product_third', 'LIKE', $request->group)->whereIn('account_ytds.acc_type_id', $request->options)
+                ->groupBy('month')->get();
+        }
+
 
         $balance = [];
         $balance2 = [];
@@ -382,93 +606,93 @@ class QueryController extends Controller
         $month = [];
         $month2 = [];
 
-        foreach ($totalcurl1 as $chart) {
+        foreach ($query1 as $chart) {
                 $balance[] = $chart->balance;
                 $con = DateTime::createFromFormat('!m', $chart->month);
                 $vert = $con->format('F');
                 $month[] = $vert;
         }
 
-        foreach ($totalcurl2 as $chart) {
+        foreach ($query2 as $chart) {
                 $balance2[] = $chart->balance;
                 $con = DateTime::createFromFormat('!m', $chart->month);
                 $vert = $con->format('F');
                 $month2[] = $vert;
         }
 
-        foreach ($totalaccount1 as $chart) {
+        foreach ($query3 as $chart) {
                 $total1[] = (int)$chart->total;
         }
         
-        foreach ($totalaccount2 as $chart) {
+        foreach ($query4 as $chart) {
                 $total2[] = (int)$chart->total;
         }
 
-        foreach ($totalmtd1 as $chart) {
+        foreach ($query5 as $chart) {
                 $total3[] = (int)$chart->total;
         }
         
-        foreach ($totalmtd2 as $chart) {
+        foreach ($query6 as $chart) {
                 $total4[] = (int)$chart->total;
         }
 
-        foreach ($totalytd1 as $chart) {
+        foreach ($query7 as $chart) {
                 $total5[] = (int)$chart->total;
         }
         
-        foreach ($totalytd2 as $chart) {
+        foreach ($query8 as $chart) {
                 $total6[] = (int)$chart->total;
         }
 
-        foreach ($totalmtdnew1 as $chart) {
+        foreach ($query9 as $chart) {
                 $total7[] = (int)$chart->total;
         }
         
-        foreach ($totalmtdnew2 as $chart) {
+        foreach ($query10 as $chart) {
                 $total8[] = (int)$chart->total;
         }
 
-        foreach ($totalytdnew1 as $chart) {
+        foreach ($query11 as $chart) {
                 $total9[] = (int)$chart->total;
         }
         
-        foreach ($totalytdnew2 as $chart) {
+        foreach ($query12 as $chart) {
                 $total10[] = (int)$chart->total;
         }
 
-        foreach ($closedcurmtd1 as $chart) {
+        foreach ($query13 as $chart) {
                 $total11[] = (int)$chart->start;
         }
         
-        foreach ($closedcurmtd2 as $chart) {
+        foreach ($query14 as $chart) {
                 $total12[] = (int)$chart->start;
         }
 
-        foreach ($closedcurytd1 as $chart) {
+        foreach ($query15 as $chart) {
                 $total13[] = (int)$chart->start;
         }
         
-        foreach ($closedcurytd2 as $chart) {
+        foreach ($query16 as $chart) {
                 $total14[] = (int)$chart->start;
         }
 
-        foreach ($newcurmtd1 as $chart) {
+        foreach ($query17 as $chart) {
                 $total15[] = (int)$chart->end;
         }
         
-        foreach ($newcurmtd2 as $chart) {
+        foreach ($query18 as $chart) {
                 $total16[] = (int)$chart->end;
         }
 
-        foreach ($newcurytd1 as $chart) {
+        foreach ($query19 as $chart) {
                 $total17[] = (int)$chart->end;
         }
         
-        foreach ($newcurytd2 as $chart) {
+        foreach ($query20 as $chart) {
                 $total18[] = (int)$chart->end;
         }
         
-        return view('matrix.performance', compact('regions', 'parameter', 'balance', 'month' , 'balance2', 'month2', 'total1' , 'total2', 'total3' , 'total4', 'total5' , 'total6', 'total7' , 'total8', 'total9' , 'total10', 'total11' , 'total12', 'total13' , 'total14', 'total15' , 'total16', 'total17' , 'total18'));
+        return view('matrix.performance', compact('regions', 'parameter', 'balance', 'month' , 'balance2', 'month2', 'total1' , 'total2', 'total3' , 'total4', 'total5' , 'total6', 'total7' , 'total8', 'total9' , 'total10', 'total11' , 'total12', 'total13' , 'total14', 'total15' , 'total16', 'total17' , 'total18', 'perorangan', 'type', 'group', 'tabungan', 'region', 'obj'));
     }
 
 }

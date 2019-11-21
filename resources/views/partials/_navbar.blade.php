@@ -58,10 +58,10 @@
                 <!-- User profile and search -->
                 <!-- ============================================================== -->
                 <ul class="navbar-nav my-lg-0">
-                    <li class="nav-item hidden-sm-down">
+                    {{-- <li class="nav-item hidden-sm-down">
                         <form class="app-search">
                             <input type="text" class="form-control" placeholder="Search for..."> <a class="srh-btn"><i class="ti-search"></i></a> </form>
-                    </li>
+                    </li> --}}
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle text-muted waves-effect waves-dark" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src=" /images/profile/{{ Auth::user()->avatar }}" alt="user" class="profile-pic" /></a>
                         <div class="dropdown-menu dropdown-menu-right animated flipInY">
@@ -88,7 +88,8 @@
 
                                 @if (Auth::user()->level->name == 'user')
                                     
-                                <li><a href=" {{ route('log.user') }} "><i class="ti-clipboard"></i> Log Activity</a></li>
+                                <li><a style=" :hover { color: red; }" href=" {{ route('log.user') }} "><i class="ti-clipboard"></i> Log Activity</a></li>
+                                
                                 @endif
                                 {{-- <li><a href="#"><i class="ti-wallet"></i> My Balance</a></li>
                                 <li><a href="#"><i class="ti-email"></i> Inbox</a></li> --}}

@@ -1,11 +1,9 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use App\Models\JobLevel;
-// use Faker\Factory as Faker;
+use App\Models\AccType;
 
-
-class JobLevelTableSeeder extends Seeder
+class AccTypeTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -15,11 +13,11 @@ class JobLevelTableSeeder extends Seeder
     public function run()
     {
         $faker = Faker\Factory::create();
-        
+
         for ($i=0; $i < 5; $i++) { 
-            JobLevel::create([
-                'name' => $faker->jobTitle
-            ]);
-        }
+            AccType::create([
+                'acc' => $faker->postcode. '-'. $faker->buildingNumber,
+                ]);
+            }
     }
 }
