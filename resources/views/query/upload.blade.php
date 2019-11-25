@@ -125,7 +125,13 @@
                                                     @foreach ($row->toArray() as $column => $value)
                                                         @foreach ($account as $acct)
                                                             @if ($acct == $column)
-                                                                <td>{{ ucwords($value) }}</td>
+                                                                @if ($row->product_id == $value)
+                                                                    <td>{{ $row->product->name }}</td>
+                                                                @elseif($row->branch_id == $value)
+                                                                    <td>{{ $row->branch->name }}</td>
+                                                                @else
+                                                                    <td>{{ $value }}</td>
+                                                                @endif
                                                             @endif
                                                         @endforeach
                                                 @endforeach

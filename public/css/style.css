@@ -992,8 +992,8 @@ Buttons
 
 .btn-warning,
 .btn-warning.disabled {
-  background: #ffbc34;
-  border: 1px solid #ffbc34;
+  background: #205b6f;
+  border: 1px solid #e17327;
   color: #ffffff; }
   .btn-warning:hover,
   .btn-warning.disabled:hover {

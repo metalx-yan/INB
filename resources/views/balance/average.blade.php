@@ -47,7 +47,7 @@
                             <div class="col-md-3">
                                 <label for="">Region</label>
                                 <br>
-                                <select name="regions[]" id="regions" class="form-control">
+                                <select name="region" id="regions" class="form-control">
                                     <option value="">All Region</option>
                                     @foreach ($regions as $region)
                                         <option value="{{ $region->id }}">{{ $region->code }}</option>
@@ -63,7 +63,9 @@
                                 <select name="types[]" id="types" class="form-control">
                                     <option value="">=====</option>
                                     <option value="">All Type</option>
-                                    
+                                    @foreach ($types as $type)
+                                        <option value="{{ $type->id }}">{{ $type->name }}</option>
+                                    @endforeach
                                 </select>
                             </div>
 
@@ -127,10 +129,10 @@
                                 @endforeach
 
                                 <tr style="background-color: #2157f1; color:white;">
-                                    <td style="text-align:right">Total Reguler</td>
                                     @isset($tidak_berbayar)
-                                    <td>{{ ucwords($tidak_berbayar->type_product->name) }}</td>
+                                    <td style="text-align:right">Total Reguler {{ ucwords($tidak_berbayar->type_product->name) }}</td>
                                     @endisset
+                                    <td></td>
                                     <td>{{ number_format($int1,2) }}</td>
                                 </tr>
 
@@ -152,10 +154,10 @@
                                 @endforeach
 
                                 <tr style="background-color: #2157f1; color:white;">
-                                    <td style="text-align:right">Total Reguler</td>
                                     @isset($berbayar)
-                                    <td>{{ ucwords($berbayar->type_product->name) }}</td>
+                                    <td style="text-align:right">Total Reguler {{ ucwords($berbayar->type_product->name) }}</td>
                                     @endisset
+                                    <td></td>
                                     <td>{{ number_format($int2,2) }}</td>
                                 </tr>
 

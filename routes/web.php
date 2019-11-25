@@ -67,7 +67,7 @@ Route::group(['prefix' => 'user', 'middleware' => ['auth', 'level:user']], funct
 
     Route::post('query-upload' , 'QueryController@getFilePost')->name('query-upload.post');
 
-    Route::get('funding-key-performance-matrix' , 'QueryController@getMatrix')->name('funding-key-performance-matrix');
+    Route::get('key-performance-matrix' , 'QueryController@getMatrix')->name('key-performance-matrix');
 
     Route::get('saldo-posisi' , 'QueryController@getPosition')->name('saldo-posisi');
 

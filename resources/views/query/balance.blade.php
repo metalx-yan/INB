@@ -119,7 +119,7 @@
                                         <ul class="dropdown-menu checkbox-menu allow-focus" id="menus" aria-labelledby="dropdownMenu1" style="width:100%;">
                                                 <input type="text" id="myInputs" class="form-control" placeholder="Search Data" onkeyup="myFunctions()" title="Type in a name" style="width:95%; margin-left:6px; padding: 12px 20px 12px 40px; background-repeat:no-repeat; background-size: 35px; background-image:url('https://cdn1.iconfinder.com/data/icons/venetian-red-to-beautify-your-website/512/Search_Magnifying_Glass_Find-512.png');">
                                                 <p style="margin-top:14px; margin-left:15px;">
-                                                <b><input type="checkbox" name="select-all" id="select-alls"> Select All</b>
+                                                <b><input type="checkbox" name="select-alls" id="select-alls"> Select All</b>
                                                 <hr>
                                                 <div id="products">
                                                 </div>
@@ -207,19 +207,23 @@
                                         @if ($account == null)
                                             <td></td>
                                         @else
-                                        @foreach($records as $row)
-                                        <tr>
-                                            @foreach($row as $key => $data)
-                                                    @if ($account != null)
-                                                        @foreach ($account as $accn)
-                                                            @if ($key == $accn)
-                                                                <td>{{ $data }}</td>
+                                            @foreach ($records as $row)
+                                                <tr>
+                                                    @foreach ($row->toArray() as $item => $val)
+                                                        @foreach ($account as $same)
+                                                            @if ($same == $item)
+                                                                @if ($row->product_id == $val)
+                                                                    <td>{{ $row->product->name }}</td>
+                                                                @elseif($row->branch_id == $val)
+                                                                    <td>{{ $row->branch->name }}</td>
+                                                                @else
+                                                                    <td>{{ $val }}</td>
+                                                                @endif
                                                             @endif
                                                         @endforeach
-                                                    @endif
-                                                @endforeach
-                                            </tr>
-                                        @endforeach
+                                                    @endforeach
+                                                </tr>
+                                            @endforeach
                                         @endif
                                 </tbody>
                             </table>
@@ -279,7 +283,7 @@
 
                 $.each(data, function(index, branchesObj) {
                     // console.log(branchesObj.id + '-' + branchesObj.name);
-                    $('#branches').append('<li><label><input name="branches[]" type="checkbox" value="'+ branchesObj.id +'">' + branchesObj.name +  '</label></li>');
+                    $('#branches').append('<li><label><input name="branches[]" type="checkbox" class="bran" value="'+ branchesObj.id +'">' + branchesObj.name +  '</label></li>');
                 });
                 
             }); 
@@ -291,7 +295,7 @@
 
                 $.each(data, function(index, branchesObj) {
                     console.log(branchesObj.id + '-' + branchesObj.name);
-                    $('#branches').append('<li><label><input name="branches[]" type="checkbox" value="'+ branchesObj.id +'">' + branchesObj.name +  '</label></li>');
+                    $('#branches').append('<li><label><input name="branches[]" type="checkbox" class="bran" value="'+ branchesObj.id +'">' + branchesObj.name +  '</label></li>');
                 });
             });    
             }
@@ -313,7 +317,7 @@
 
                     $.each(data, function(index, productsObj) {
                         console.log(productsObj.id + '-' + productsObj.name);
-                        $('#products').append('<li><label><input name="products[]" type="checkbox" value="'+ productsObj.id +'">' + productsObj.name +  '</label></li>');
+                        $('#products').append('<li><label><input name="products[]" type="checkbox" class="brans" value="'+ productsObj.id +'">' + productsObj.name +  '</label></li>');
                         
                     }); 
                 });
@@ -327,7 +331,7 @@
 
                     $.each(data, function(index, productsObj) {
                         console.log(productsObj.id + '-' + productsObj.name);
-                        $('#products').append('<li><label><input name="products[]" type="checkbox" value="'+ productsObj.id +'">' + productsObj.name + '</label></li>');
+                        $('#products').append('<li><label><input name="products[]" type="checkbox" class="brans" value="'+ productsObj.id +'">' + productsObj.name + '</label></li>');
                         
                     }); 
                         
@@ -360,11 +364,11 @@
     $('#select-all').click(function(event) {   
         if(this.checked) {
             // Iterate each checkbox
-            $(':checkbox').each(function() {
+            $('.bran').each(function() {
                 this.checked = true;                        
             });
         } else {
-            $(':checkbox').each(function() {
+            $('.bran').each(function() {
                 this.checked = false;                       
             });
         }
@@ -394,11 +398,11 @@
     $('#select-alls').click(function(event) {   
         if(this.checked) {
             // Iterate each checkbox
-            $(':checkbox').each(function() {
+            $('.brans').each(function() {
                 this.checked = true;                        
             });
         } else {
-            $(':checkbox').each(function() {
+            $('.brans').each(function() {
                 this.checked = false;                       
             });
         }

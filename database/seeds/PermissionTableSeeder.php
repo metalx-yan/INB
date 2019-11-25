@@ -12,24 +12,20 @@ class PermissionTableSeeder extends Seeder
      */
     public function run()
     {
-        $loops = ['menu tf', 'menu add'];
         
-        // $per = [1,2];
-
-        // foreach ($per as $mis) {
+            Permission::create([
+                'name' => 'funding',
+                'slug' => 'funding'
+            ]);
+            
+            $loops = ['form query', 'tabungan performance', 'key performance matrix'];
+            
             foreach ($loops as $loop) {
                 Permission::create([
                     'name' => $loop,
                     'permission_id' => 1,
                     'slug' => Str::slug($loop)
                 ]);
-
-                // Permission::create([
-                //     'name' => $loop,
-                //     'permission_id' => 2
-                //     'slug' => Str::slug($loop)
-                // ]);
-            // }
-        }
+            }
     }
 }

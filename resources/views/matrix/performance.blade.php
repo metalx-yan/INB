@@ -189,7 +189,7 @@
                         <hr>
                         @endif
 
-                        @if ($total11 == [] && $total12)
+                        @if ($total11 == [] && $total12 == [])
                             
                         @else
                             

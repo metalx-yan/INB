@@ -47,7 +47,7 @@
                             <div class="col-md-3">
                                 <label for="">Region</label>
                                 <br>
-                                <select name="regions[]" id="regions" class="form-control">
+                                <select name="region" id="region" class="form-control">
                                     <option value="">All Region</option>
                                     @foreach ($regions as $region)
                                         <option value="{{ $region->id }}">{{ $region->code }}</option>

@@ -55,8 +55,8 @@ class QueryController extends Controller
 
         $dataProduct = is_array($product) ? $product : array($product);
 
-        $records = DB::table('accounts')->whereIn('product_id', $dataProduct)->whereIn('branch_id', $dataBranch)->where('status', $status)->whereMonth('created_at', $month)->whereYear('created_at', $year)->get();
-        
+        $records = Account::whereIn('product_id', $dataProduct)->whereIn('branch_id', $dataBranch)->where('status', $status)->whereMonth('created_at', $month)->whereYear('created_at', $year)->get();
+
         return view('query.balance', compact('regions', 'categories', 'account', 'query', 'status' ,'columns', 'records', 'years'));
     }
 
@@ -98,31 +98,56 @@ class QueryController extends Controller
     {
         $types = TypeProduct::all();
 
-        $result1 = RegionalSaving::select('type_product_id', 'group_product_id', DB::raw('sum(balance) as balance, sum(number_account) as number_account'))
-                ->where('type_product_id', 1)->whereYear('date', $request->year)->whereMonth('date', $request->month)->whereDay('date', $request->day)->where('region_id', 1)
-                ->groupBy('type_product_id', 'group_product_id')->get();
-
-        $result2 = RegionalSaving::select('type_product_id', 'group_product_id', DB::raw('sum(balance) as balance, sum(number_account) as number_account'))
-                ->where('type_product_id', 2)->whereYear('date', $request->year)->whereMonth('date', $request->month)->whereDay('date', $request->day)->where('region_id', 1)
-                ->groupBy('type_product_id', 'group_product_id')->get();
-
-        $result3 = RegionalSaving::select('type_product_id', 'group_product_id', DB::raw('sum(balance) as balance, sum(number_account) as number_account'))
-                ->where('type_product_id', 3)->whereYear('date', $request->year)->whereMonth('date', $request->month)->whereDay('date', $request->day)->where('region_id', 1)
-                ->groupBy('type_product_id', 'group_product_id')->get();
-
-        $result4 = RegionalSaving::select('type_product_id', 'group_product_id', DB::raw('sum(balance) as balance, sum(number_account) as number_account'))
-                ->whereYear('date', $request->year)->whereMonth('date', $request->month)->whereDay('date', $request->day)->where('region_id', 1)
-                ->groupBy('type_product_id', 'group_product_id')->get();
+        // dd($request->region);
         
-        // ->where('region_id', 1)->where('type_product_id')->where('group_product_id')->where('product_id')
-                
+        if ($request->region == null) {
+                $result1 = RegionalSaving::select('type_product_id', 'group_product_id', DB::raw('sum(balance) as balance, sum(number_account) as number_account'))
+                        ->where('type_product_id', 1)->whereYear('date', $request->year)->whereMonth('date', $request->month)->whereDay('date', $request->day)
+                        ->groupBy('type_product_id', 'group_product_id')->get();
+                // dd($result1);
+        } else {
+                $result1 = RegionalSaving::select('type_product_id', 'group_product_id', DB::raw('sum(balance) as balance, sum(number_account) as number_account'))
+                        ->where('type_product_id', 1)->whereYear('date', $request->year)->whereMonth('date', $request->month)->whereDay('date', $request->day)->where('region_id', $request->region)
+                        ->groupBy('type_product_id', 'group_product_id')->get();
+        }
+        
+        if ($request->region == null) {
+                $result2 = RegionalSaving::select('type_product_id', 'group_product_id', DB::raw('sum(balance) as balance, sum(number_account) as number_account'))
+                        ->where('type_product_id', 2)->whereYear('date', $request->year)->whereMonth('date', $request->month)->whereDay('date', $request->day)
+                        ->groupBy('type_product_id', 'group_product_id')->get();
+        } else {
+                $result2 = RegionalSaving::select('type_product_id', 'group_product_id', DB::raw('sum(balance) as balance, sum(number_account) as number_account'))
+                        ->where('type_product_id', 2)->whereYear('date', $request->year)->whereMonth('date', $request->month)->whereDay('date', $request->day)->where('region_id', $request->region)
+                        ->groupBy('type_product_id', 'group_product_id')->get();
+        }
+        
+        if ($request->region == null) {
+                $result3 = RegionalSaving::select('type_product_id', 'group_product_id', DB::raw('sum(balance) as balance, sum(number_account) as number_account'))
+                        ->where('type_product_id', 3)->whereYear('date', $request->year)->whereMonth('date', $request->month)->whereDay('date', $request->day)
+                        ->groupBy('type_product_id', 'group_product_id')->get();
+        } else {
+                $result3 = RegionalSaving::select('type_product_id', 'group_product_id', DB::raw('sum(balance) as balance, sum(number_account) as number_account'))
+                        ->where('type_product_id', 3)->whereYear('date', $request->year)->whereMonth('date', $request->month)->whereDay('date', $request->day)->where('region_id', $request->region)
+                        ->groupBy('type_product_id', 'group_product_id')->get();
+        }
+
+        if ($request->region == null) {
+                $result4 = RegionalSaving::select('type_product_id', 'group_product_id', DB::raw('sum(balance) as balance, sum(number_account) as number_account'))
+                        ->whereYear('date', $request->year)->whereMonth('date', $request->month)->whereDay('date', $request->day)
+                        ->groupBy('type_product_id', 'group_product_id')->get();
+        } else {
+                $result4 = RegionalSaving::select('type_product_id', 'group_product_id', DB::raw('sum(balance) as balance, sum(number_account) as number_account'))
+                        ->whereYear('date', $request->year)->whereMonth('date', $request->month)->whereDay('date', $request->day)->where('region_id', $request->region)
+                        ->groupBy('type_product_id', 'group_product_id')->get();
+        }
+        
         $charts = RegionalSaving::select('region_id', DB::raw('sum(balance) as balance, sum(number_account) as number_account'))
-        ->whereYear('date', '2019')->whereMonth('date', '11')->whereDay('date', '08');
+        ->whereYear('date', $request->year)->whereMonth('date', $request->month)->whereDay('date', $request->day);
         
-        if (is_null($request->regions[0])) {
+        if (is_null($request->region)) {
                $c = $charts->groupBy('region_id')->orderBy('region_id', 'asc')->get();
         } else {
-               $c = $charts->where('region_id', $request->regions)->groupBy('region_id')->orderBy('region_id', 'asc')->get();
+               $c = $charts->where('region_id', $request->region)->groupBy('region_id')->orderBy('region_id', 'asc')->get();
         }
 
         $null = is_null($request->year);
@@ -167,31 +192,60 @@ class QueryController extends Controller
 
         $count = count($all_dates);
 
-        $result1 = RegionalSaving::select('type_product_id', 'group_product_id', DB::raw("(sum(balance)/$count) as balance"))
-                ->where('type_product_id', 1)->where('date', '>=', $start)->where('date', '<=', $end)->where('region_id', 1)
-                ->groupBy('type_product_id', 'group_product_id')->get();
+        if ($request->region == null) {
+                $result1 = RegionalSaving::select('type_product_id', 'group_product_id', DB::raw("(sum(balance)/$count) as balance"))
+                        ->where('type_product_id', 1)->where('date', '>=', $start)->where('date', '<=', $end)
+                        ->groupBy('type_product_id', 'group_product_id')->get();
+        } else {
+                $result1 = RegionalSaving::select('type_product_id', 'group_product_id', DB::raw("(sum(balance)/$count) as balance"))
+                        ->where('type_product_id', 1)->where('date', '>=', $start)->where('date', '<=', $end)->where('region_id', $request->region)
+                        ->groupBy('type_product_id', 'group_product_id')->get();
+        }
+        
 
-        $result2 = RegionalSaving::select('type_product_id', 'group_product_id', DB::raw("(sum(balance)/$count) as balance"))
-                ->where('type_product_id', 2)->where('date', '>=', $start)->where('date', '<=', $end)->where('region_id', 1)
-                ->groupBy('type_product_id', 'group_product_id')->get();
+        if ($request->region == null) {
+                $result2 = RegionalSaving::select('type_product_id', 'group_product_id', DB::raw("(sum(balance)/$count) as balance"))
+                        ->where('type_product_id', 2)->where('date', '>=', $start)->where('date', '<=', $end)
+                        ->groupBy('type_product_id', 'group_product_id')->get();                
+        } else {
+                $result2 = RegionalSaving::select('type_product_id', 'group_product_id', DB::raw("(sum(balance)/$count) as balance"))
+                        ->where('type_product_id', 2)->where('date', '>=', $start)->where('date', '<=', $end)->where('region_id', $request->region)
+                        ->groupBy('type_product_id', 'group_product_id')->get();
+        }
+        
 
-        $result3 = RegionalSaving::select('type_product_id', 'group_product_id', DB::raw("(sum(balance)/$count) as balance"))
-                ->where('type_product_id', 3)->where('date', '>=', $start)->where('date', '<=', $end)->where('region_id', 1)
-                ->groupBy('type_product_id', 'group_product_id')->get();
+        if ($request->region == null) {
+                $result3 = RegionalSaving::select('type_product_id', 'group_product_id', DB::raw("(sum(balance)/$count) as balance"))
+                        ->where('type_product_id', 3)->where('date', '>=', $start)->where('date', '<=', $end)
+                        ->groupBy('type_product_id', 'group_product_id')->get();
+        } else {
+                $result3 = RegionalSaving::select('type_product_id', 'group_product_id', DB::raw("(sum(balance)/$count) as balance"))
+                        ->where('type_product_id', 3)->where('date', '>=', $start)->where('date', '<=', $end)->where('region_id', 1)
+                        ->groupBy('type_product_id', 'group_product_id')->get();
+        }
+        
 
-        $result4 = RegionalSaving::select('type_product_id', 'group_product_id', DB::raw("(sum(balance)/$count) as balance"))
-                ->where('date', '>=', $start)->where('date', '<=', $end)->where('region_id', 1)
-                ->groupBy('type_product_id', 'group_product_id')->get();
-        // dd(is_null($request->year));
+        if ($request->region == null) {
+                $result4 = RegionalSaving::select('type_product_id', 'group_product_id', DB::raw("(sum(balance)/$count) as balance"))
+                        ->where('date', '>=', $start)->where('date', '<=', $end)
+                        ->groupBy('type_product_id', 'group_product_id')->get();
+        } else {
+                $result4 = RegionalSaving::select('type_product_id', 'group_product_id', DB::raw("(sum(balance)/$count) as balance"))
+                        ->where('date', '>=', $start)->where('date', '<=', $end)->where('region_id', $request->region)
+                        ->groupBy('type_product_id', 'group_product_id')->get();
+        }
+
+        $types = TypeProduct::all();
+        
         $regions = Region::all();
 
         $charts = RegionalSaving::select('region_id', DB::raw("(sum(balance)/$count) as balance"))
                 ->where('date', '>=', $start)->where('date', '<=', $end);
 
-        if (is_null($request->regions[0])) {
+        if (is_null($request->region)) {
                 $c = $charts->groupBy('region_id')->get();
         } else {
-                $c = $charts->where('region_id', $request->regions)->groupBy('region_id')->get();
+                $c = $charts->where('region_id', $request->region)->groupBy('region_id')->get();
         }
 
         $years = RegionalSaving::select(DB::raw('YEAR(date) as year'))->distinct()->orderBy('year')->get();
@@ -208,16 +262,14 @@ class QueryController extends Controller
 
         $null = is_null($request->year);
         // dd(is_null($null));
-        return view('balance.average', compact('result1', 'result2', 'result3', 'result4','regions', 'reg', 'balance', 'years', 'ar', 'date', 'null'));
+        return view('balance.average', compact('result1', 'result2', 'result3', 'result4','regions', 'reg', 'balance', 'years', 'ar', 'date', 'null', 'types'));
     }
 
     public function getMatrix(Request $request)
     {
-        // dd(is_null($request->options));
-
+        // dd($request->all());
         $obj = isset($request->button);
 
-        // dd($request->all());
         $regions = Region::all();
 
         $parameter = ParameterProduct::select('type_product_id')->distinct()->get();
@@ -233,7 +285,6 @@ class QueryController extends Controller
         } elseif ($request->options == null) {
                 $query1 = $totalcurl1->where('region_id', 'LIKE', $request->region)->where('type_product_id', 'LIKE', $request->type)->where('group_product_third', 'LIKE', $request->group)
                 ->groupBy('month')->get();
-                // dd($query1);
         } else {
                 $query1 = $totalcurl1->where('region_id', 'LIKE', $request->region)->where('type_product_id', 'LIKE', $request->type)->where('group_product_third', 'LIKE', $request->group)->whereIn('cur_balances.acc_type_id', $request->options)
                 ->groupBy('month')->get();

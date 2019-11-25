@@ -11,7 +11,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // $this->call(ProvincesTableSeeder::class);
+        $this->call(PermissionTableSeeder::class);
+        $this->call(SubMenuTableSeeder::class);
         $this->call(RegionTableSeeder::class);
         $this->call(JobLevelTableSeeder::class);
         $this->call(LevelTableSeeder::class);
@@ -21,5 +22,11 @@ class DatabaseSeeder extends Seeder
         $this->call(TypeProductTableSeeder::class);
         $this->call(BranchTableSeeder::class);
         $this->call(AccTypeTableSeeder::class);
+        $this->call(CategoryTableSeeder::class);
+        $this->call(TypeProductTableSeeder::class);
+        $this->call(GroupProductTableSeeder::class);
+        $this->call(ProductTableSeeder::class);
+        $this->call(AccountTableSeeder::class);
+        $this->call(RegionalSavingTableSeeder::class);
     }
 }

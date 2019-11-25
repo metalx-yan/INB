@@ -19,8 +19,8 @@ class CreateAccountsTable extends Migration
             $table->bigInteger('cif_key');
             $table->date('cif_created_at');
             $table->date('account_open');
-            $table->float('average');
-            $table->float('current_balance');
+            $table->float('average', 12,2);
+            $table->float('current_balance', 12,2);
             $table->string('currency');
             $table->date('birth_date');
             $table->string('handphone');
@@ -28,7 +28,7 @@ class CreateAccountsTable extends Migration
             $table->string('company');
             $table->string('occupation');
             $table->string('status');
-            $table->decimal('monthly_income');
+            $table->decimal('monthly_income', 10, 2);
             $table->boolean('gender');
             $table->string('work_phone');
             $table->string('home_phone');

@@ -26,6 +26,17 @@ class UserTableSeeder extends Seeder
                             'job_level_id' => 1,
                             'management_unit_id' => 1
                         ]);
+
+                        User::create([
+                            'name' => 'user',
+                            // 'email' => 'aldian@gmail.com',
+                            'username' => 'user',
+                            'password' => 'user',
+                            'region_id' => 1,
+                            'level_id' => 2,
+                            'job_level_id' => 1,
+                            'management_unit_id' => 1
+                        ]);
         //             }
         //         }
         //     }

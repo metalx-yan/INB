@@ -72,7 +72,7 @@
                         <ul aria-expanded="false" class="collapse">
                             @foreach (Auth::user()->permissions->where('permission_id', '!=', null) as $menu)
                                 <li>
-                                    @if ($menu->slug == "funding-key-performance-matrix")
+                                    @if ($menu->slug == "key-performance-matrix")
                                         <a href="{{ route($menu->slug) }}">{{ ucwords($menu->name) }}</a>
                                     @else
                                         <a class="has-arrow" href="#" aria-expanded="false"><span class="hide-menu">{{ ucwords($menu->name) }}</span></a>
