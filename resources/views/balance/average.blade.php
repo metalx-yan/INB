@@ -47,7 +47,7 @@
                             <div class="col-md-3">
                                 <label for="">Region</label>
                                 <br>
-                                <select name="region" id="regions" class="form-control">
+                                <select name="region" id="region" class="form-control">
                                     <option value="">All Region</option>
                                     @foreach ($regions as $region)
                                         <option value="{{ $region->id }}">{{ $region->code }}</option>
@@ -57,6 +57,14 @@
                         </div>
                         <br>
                         <div class="row">
+                            <div class="col-md-3">
+                                <label for="">Branch</label>
+                                <br>
+                                <select name="branch" id="branch" class="form-control">
+                                    <option value="">All Branch</option>
+                                </select>
+                            </div>
+
                             <div class="col-md-3">
                                 <label for="">Jenis</label>
                                 <br>
@@ -311,6 +319,38 @@
                         $('#month').append('<option value="' + String("00" + monthsObj.month).slice(-2) + '" >' + String("00" + monthsObj.month).slice(-2) + '</option>');
                     });
                 });
+            });
+        });
+    </script>
+
+    <script>
+        $(document).ready(function(){
+            $('#region').on('change', function(e){
+                console.log(e.target.value);
+                var region_id = e.target.value;
+                if (region_id == "") {
+                    $.get('/api/json-branches', function(data){
+                        console.log(data);
+                        $('#branch').empty();
+                        $('#branch').append('<option value="0" selected="true">All Region</option>');
+
+                        $.each(data, function(index, monthsObj) {
+                            console.log(monthsObj.name);
+                            $('#branch').append('<option value="' + monthsObj.id + '" >' + monthsObj.name + '</option>');
+                        });
+                    });
+                } else {
+                    $.get('/api/json-branches?region_id=' + region_id , function(data){
+                        console.log(data);
+                        $('#branch').empty();
+                        $('#branch').append('<option value="0" selected="true">=====</option>');
+
+                        $.each(data, function(index, monthsObj) {
+                            console.log(monthsObj.name);
+                            $('#branch').append('<option value="' + monthsObj.id + '" >' + monthsObj.name + '</option>');
+                        });
+                    });
+                }
             });
         });
     </script>

@@ -16,6 +16,7 @@ use Illuminate\Http\Request;
 // Route::middleware('auth:api')->get('/user', function (Request $request) {
     //     return $request->user();
     // });
+Route::get('/json-day-topbot', 'ApiController@getTopBotDay');
     
 Route::get('/json-group-matrix', 'ApiController@groupMatrix');
 
@@ -38,6 +39,9 @@ Route::get('/json-month-balance', 'ApiController@monthBalance');
 Route::get('/json-month-upload', 'ApiController@monthUpload');
 
 Route::get('/json-acc-matrix', 'ApiController@accMatrix');
+
+Route::get('/json-month-topbot', 'ApiController@getTopBot');
+
 
 
 

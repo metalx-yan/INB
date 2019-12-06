@@ -30,7 +30,7 @@ class QueryController extends Controller
 {
     public function getBalance(Request $request)
     {   
-        // dd();
+
         $regions = Region::all();
 
         $categories = Category::all();
@@ -97,14 +97,11 @@ class QueryController extends Controller
     public function getPosition(Request $request)
     {
         $types = TypeProduct::all();
-
-        // dd($request->region);
         
         if ($request->region == null) {
                 $result1 = RegionalSaving::select('type_product_id', 'group_product_id', DB::raw('sum(balance) as balance, sum(number_account) as number_account'))
                         ->where('type_product_id', 1)->whereYear('date', $request->year)->whereMonth('date', $request->month)->whereDay('date', $request->day)
                         ->groupBy('type_product_id', 'group_product_id')->get();
-                // dd($result1);
         } else {
                 $result1 = RegionalSaving::select('type_product_id', 'group_product_id', DB::raw('sum(balance) as balance, sum(number_account) as number_account'))
                         ->where('type_product_id', 1)->whereYear('date', $request->year)->whereMonth('date', $request->month)->whereDay('date', $request->day)->where('region_id', $request->region)
@@ -169,6 +166,127 @@ class QueryController extends Controller
         return view('balance.position', compact('regions', 'years', 'types', 'result1', 'result2', 'result3', 'result4', 'charts', 'reg', 'balance', 'number_account', 'null'));
     }
 
+    public function getTopBottom(Request $request)
+    {
+        // dd($request->all());
+        $null = is_null($request->day);
+        $tb = DB::select('SHOW TABLES');
+
+        $tahun = [];
+        $bulan = [];
+        $tanggal = [];
+        $a = [];
+        $b = [];
+        $f = [];
+        $getLast = [];
+
+        foreach ($tb as $value) {
+                foreach ($value as $item) {
+                        
+                        if (strpos($item, 'deposit_prod_20') !== false) {
+                                $tahun[] = substr($item, 13,4);
+                                $bulan[] = substr($item, 17,2);
+                                $tanggal[] = substr($item, 19,2);
+                                $convt = substr($item, 13,6);
+                                $a[] = $item;
+
+                                if ($request->cats == 'mtd') {
+                                        if (strpos($item, 'deposit_prod_'. str_replace('-','',Carbon::parse($request->date)->subMonth()->format('Y-m'))) !== false) {
+                                                if (str_replace('-','',Carbon::parse($request->date)->subMonth()->format('Y-m')) == $convt) {
+                                                        $getLast[] = $item;
+                                                }
+                                        }
+                                }
+                        } 
+             
+                        if (strpos($item, 'deposit_prod_') !== false) {
+                                $conv = substr($item, 13,7);
+                                if ($request->cats == 'ytd') {
+                                        if (strpos($item, 'deposit_prod_'. str_replace('-','',Carbon::parse($request->date)->subMonth()->subYear()->format('m_Y'))) !== false) {
+                                                if (Carbon::parse($request->date)->subMonth()->subYear()->format('m_Y') == $conv) {
+                                                        $b[] = $item;
+                                                }
+                                        }
+                                }
+                        }
+                }
+        }
+
+        if ($request->cats == 'dtd' && in_array('deposit_prod_' . str_replace('-','',Carbon::parse($request->date)->subDay()->format('Y-m-d')) ,$a, true)) {
+
+                $sa = DB::table('deposit_prod_'.str_replace('-','', $request->date))
+                ->select('regions.name as region' ,'deposit_prod_'. str_replace('-','', $request->date) .'.id_number','deposit_prod_'. str_replace('-','', $request->date) .'.product_name', DB::raw("sum(deposit_prod_". str_replace("-","", $request->date) .".bni_cur_book_bal_idr) as saldo1, sum(deposit_prod_". str_replace("-","",Carbon::parse($request->date)->subDay()->format("Y-m-d")) ." .bni_cur_book_bal_idr) as saldo2"))   
+                ->join('branches', 'branches.branch_code', '=', 'deposit_prod_'.str_replace('-','', $request->date). '.branch_code')
+                ->join('regions', 'regions.id', '=', 'branches.region_id')
+                ->leftJoin('deposit_prod_'. str_replace('-','',Carbon::parse($request->date)->subDay()->format('Y-m-d')), 'deposit_prod_'. str_replace('-','', $request->date) .'.id_number', '=', 'deposit_prod_'.str_replace('-','',Carbon::parse($request->date)->subDay()->format('Y-m-d').'.id_number'))
+                ->where('deposit_prod_' . str_replace('-','', $request->date) . '.as_of_date', substr($request->year, 13). '-' .substr($request->month, 17). '-'.$request->day)->where('deposit_prod_' . str_replace('-','', $request->date) . '.branch_code', $request->branch)
+                ->where('deposit_prod_'. str_replace('-','', $request->date) . '.bni_account_status', $request->types)->where('deposit_prod_'. str_replace('-','', $request->date) .'.product_name', $request->products)
+                ->groupBy('regions.name' ,'deposit_prod_'. str_replace('-','', $request->date) .'.id_number','deposit_prod_'. str_replace('-','', $request->date) .'.product_name')->orderBy('deposit_prod_'.str_replace('-','', $request->date). '.id_number', $request->order)->take($request->filter)->get();
+                
+        } elseif ($request->cats == 'mtd') {
+                if ($getLast == null) {
+                        
+                        return redirect()->back();
+
+                } else {
+                
+                $sa = DB::table('deposit_prod_'.str_replace('-','', $request->date))
+                ->select('regions.name as region' ,'deposit_prod_'. str_replace('-','', $request->date) .'.id_number','deposit_prod_'. str_replace('-','', $request->date) .'.product_name', DB::raw("sum(deposit_prod_". str_replace("-","", $request->date) .".bni_cur_book_bal_idr) as saldo1, sum(deposit_prod_". substr(max($getLast),13,8) ." .bni_cur_book_bal_idr) as saldo2"))   
+                ->join('branches', 'branches.branch_code', '=', 'deposit_prod_'.str_replace('-','', $request->date). '.branch_code')
+                ->join('regions', 'regions.id', '=', 'branches.region_id')
+                ->leftJoin('deposit_prod_' . substr(max($getLast),13,8), 'deposit_prod_'. str_replace('-','', $request->date) .'.id_number', '=', 'deposit_prod_'.substr(max($getLast),13,8).'.id_number')
+                ->where('deposit_prod_' . str_replace('-','', $request->date) . '.as_of_date', substr($request->year, 13). '-' .substr($request->month, 17). '-'.$request->day)->where('deposit_prod_' . str_replace('-','', $request->date) . '.branch_code', $request->branch)
+                ->where('deposit_prod_'. str_replace('-','', $request->date) . '.bni_account_status', $request->types)->where('deposit_prod_'. str_replace('-','', $request->date) .'.product_name', $request->products)
+                ->groupBy('regions.name' ,'deposit_prod_'. str_replace('-','', $request->date) .'.id_number','deposit_prod_'. str_replace('-','', $request->date) .'.product_name')->orderBy('deposit_prod_'.str_replace('-','', $request->date). '.id_number', $request->order)->take($request->filter)->get();
+                }
+
+        } elseif ($request->cats == 'ytd') {
+                if ($b == null) {
+                        return redirect()->back();
+                } else {
+                        
+                $sa = DB::table('deposit_prod_'.str_replace('-','', $request->date))
+                ->select('regions.name as region' ,'deposit_prod_'. str_replace('-','', $request->date) .'.id_number','deposit_prod_'. str_replace('-','', $request->date) .'.product_name', DB::raw("sum(deposit_prod_". str_replace("-","", $request->date) .".bni_cur_book_bal_idr) as saldo1, sum(deposit_prod_". substr($b[0], 13,7) ." .bni_cur_book_bal_idr) as saldo2"))   
+                ->join('branches', 'branches.branch_code', '=', 'deposit_prod_'.str_replace('-','', $request->date). '.branch_code')
+                ->join('regions', 'regions.id', '=', 'branches.region_id')
+                ->leftJoin('deposit_prod_' . substr($b[0], 13,7), 'deposit_prod_'. str_replace('-','', $request->date) .'.id_number', '=', 'deposit_prod_'.substr($b[0], 13,7).'.id_number')
+                ->where('deposit_prod_' . str_replace('-','', $request->date) . '.as_of_date', substr($request->year, 13). '-' .substr($request->month, 17). '-'.$request->day)->where('deposit_prod_' . str_replace('-','', $request->date) . '.branch_code', $request->branch)
+                ->where('deposit_prod_'. str_replace('-','', $request->date) . '.bni_account_status', $request->types)->where('deposit_prod_'. str_replace('-','', $request->date) .'.product_name', $request->products)
+                ->groupBy('regions.name' ,'deposit_prod_'. str_replace('-','', $request->date) .'.id_number','deposit_prod_'. str_replace('-','', $request->date) .'.product_name')->orderBy('deposit_prod_'.str_replace('-','', $request->date). '.id_number', $request->order)->take($request->filter)->get();
+                }
+
+        } elseif (is_null($request->date)) {
+                $sa = null;
+        } else {
+                return redirect()->back();
+        }
+
+        $reg = [];
+        $balance = [];
+        $balance2 = [];
+                
+        if ($sa == null) {
+                
+        } else {
+                foreach ($sa as $chart) {
+                        $reg[] = $chart->region;
+                        $balance[] = $chart->saldo1;
+                        $balance2[] = $chart->saldo2;
+                }
+        }
+
+        $types = DB::table('deposit_prod_20191128')->distinct('bni_account_status')->get();
+
+        $prod = DB::table('products')->select('name')->distinct('name')->get();
+
+        $regions = Region::all();
+        
+        // $null = is_null($request->year);
+        // $years = RegionalSaving::select(DB::raw('YEAR(date) as year'))->distinct()->orderBy('year')->get();
+
+        return view('topbottom.index', compact('years', 'regions', 'types', 'tb', 'a', 'prod', 'reg', 'balance', 'balance2', 'bulan', 'tanggal', 'tahun', 'sa', 'null'));
+    }
+    
     public function getAverage(Request $request)
     {
         $getYear = Carbon::now()->format('Y');
@@ -745,5 +863,7 @@ class QueryController extends Controller
         
         return view('matrix.performance', compact('regions', 'parameter', 'balance', 'month' , 'balance2', 'month2', 'total1' , 'total2', 'total3' , 'total4', 'total5' , 'total6', 'total7' , 'total8', 'total9' , 'total10', 'total11' , 'total12', 'total13' , 'total14', 'total15' , 'total16', 'total17' , 'total18', 'perorangan', 'type', 'group', 'tabungan', 'region', 'obj'));
     }
+
+    
 
 }

@@ -74,6 +74,8 @@
                                 <li>
                                     @if ($menu->slug == "key-performance-matrix")
                                         <a href="{{ route($menu->slug) }}">{{ ucwords($menu->name) }}</a>
+                                    @elseif($menu->slug == "funding-topbottom-nasabah")
+                                        <a href="{{ route($menu->slug) }}">{{ ucwords($menu->name) }}</a>
                                     @else
                                         <a class="has-arrow" href="#" aria-expanded="false"><span class="hide-menu">{{ ucwords($menu->name) }}</span></a>
                                     @endif

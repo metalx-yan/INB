@@ -58,6 +58,14 @@
                         <br>
                         <div class="row">
                             <div class="col-md-3">
+                                <label for="">Branch</label>
+                                <br>
+                                <select name="branch" id="branch" class="form-control">
+                                    <option value="">All Branch</option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-3">
                                 <label for="">Jenis</label>
                                 <br>
                                 <select name="types[]" id="types" class="form-control">
@@ -104,7 +112,7 @@
                         {{-- <a href="{{ route('export.file') }}" class="btn btn-success my-3" target="_blank">EXPORT EXCEL</a> --}}
                         <table class="table border" id="myTable">
                             <thead>
-                                <tr style="background-color: #2157f1; color:white;">
+                                <tr style="background-color: #5f3423; color:white;">
                                     <td>Keterangan</td>
                                     <td>Group Produk</td>
                                     <td>Saldo Posisi</td>
@@ -136,7 +144,7 @@
                                     @endisset
                                 @endforeach
 
-                                <tr style="background-color: #2157f1; color:white;">
+                                <tr style="background-color: #5f3423; color:white;">
                                     <td style="text-align:right">Total Reguler</td>
                                     @isset($tidak_berbayar)
                                     <td>{{ ucwords($tidak_berbayar->type_product->name) }}</td>
@@ -169,7 +177,7 @@
                                     @endisset
                                 @endforeach
 
-                                <tr style="background-color: #2157f1; color:white;">
+                                <tr style="background-color: #5f3423; color:white;">
                                     <td style="text-align:right">Total Reguler</td>
                                     @isset($berbayar)
                                     <td>{{ ucwords($berbayar->type_product->name) }}</td>
@@ -202,7 +210,7 @@
                                     @endisset
                                 @endforeach
 
-                                <tr style="background-color: #2157f1; color:white;">
+                                <tr style="background-color: #5f3423; color:white;">
                                     <td style="text-align:right">Total</td>
                                     @isset($mandatory)
                                     <td>{{ ucwords($mandatory->type_product->name) }}</td>
@@ -228,7 +236,7 @@
                                     @endisset
                                 @endforeach
 
-                                <tr style="background-color: #2157f1; color:white;">
+                                <tr style="background-color: #5f3423; color:white;">
                                     <td style="text-align:right">Total</td>
                                     <td> Tabungan</td>
                                     <td>{{ number_format($int10) }}</td>
@@ -326,6 +334,38 @@
     
     </script>
 
+    <script>
+        $(document).ready(function(){
+            $('#region').on('change', function(e){
+                console.log(e.target.value);
+                var region_id = e.target.value;
+                if (region_id == "") {
+                    $.get('/api/json-branches', function(data){
+                        console.log(data);
+                        $('#branch').empty();
+                        $('#branch').append('<option value="0" selected="true">All Region</option>');
+
+                        $.each(data, function(index, monthsObj) {
+                            console.log(monthsObj.name);
+                            $('#branch').append('<option value="' + monthsObj.id + '" >' + monthsObj.name + '</option>');
+                        });
+                    });
+                } else {
+                    $.get('/api/json-branches?region_id=' + region_id , function(data){
+                        console.log(data);
+                        $('#branch').empty();
+                        $('#branch').append('<option value="0" selected="true">=====</option>');
+
+                        $.each(data, function(index, monthsObj) {
+                            console.log(monthsObj.name);
+                            $('#branch').append('<option value="' + monthsObj.id + '" >' + monthsObj.name + '</option>');
+                        });
+                    });
+                }
+            });
+        });
+    </script>
+    
     <script>
         $(document).ready(function(){
             $('#year').on('change', function(e){

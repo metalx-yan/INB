@@ -111,9 +111,9 @@ class UserController extends Controller
         
     }
 
-    public function viewData($id)
+    public function viewData($name)
     {
-        $view = User::find($id);
+        $view = User::where('name', $name)->first();
 
         $applications = Permission::whereNull('permission_id')->get();
 

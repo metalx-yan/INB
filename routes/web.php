@@ -21,7 +21,7 @@
         
 Route::group(['middleware' => ['auth']], function() {
 
-    Route::get('/user/viewdata/{id}', 'UserController@viewData')->name('viewdata');
+    Route::get('/user/viewdata/{name}', 'UserController@viewData')->name('viewdata');
 
     Route::put('/user/updatedata/{id}', 'UserController@updatePassword')->name('updatedata');
 
@@ -68,6 +68,8 @@ Route::group(['prefix' => 'user', 'middleware' => ['auth', 'level:user']], funct
     Route::post('query-upload' , 'QueryController@getFilePost')->name('query-upload.post');
 
     Route::get('key-performance-matrix' , 'QueryController@getMatrix')->name('key-performance-matrix');
+
+    Route::get('top-bottom-nasabah' , 'QueryController@getTopBottom')->name('funding-topbottom-nasabah');
 
     Route::get('saldo-posisi' , 'QueryController@getPosition')->name('saldo-posisi');
 

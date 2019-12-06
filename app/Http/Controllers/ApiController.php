@@ -17,6 +17,23 @@ use Illuminate\Support\Facades\DB;
 
 class ApiController extends Controller
 {
+    public function getTopBotDay()
+    {
+        $req = Req::input('tables_in_bni');
+
+        $day = DB::select("show tables where tables_in_bni like '%$req%'");
+
+        return response()->json($day);
+    }
+    public function getTopBot()
+    {
+        $req = Req::input('tables_in_bni');
+
+        $month = DB::select("show tables where tables_in_bni like '%$req%'");
+
+        return response()->json($month);
+    }
+
     public function months()
     {
         $year = Req::input('date');

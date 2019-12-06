@@ -76,7 +76,7 @@
                                             <h5>Region : {{ ucfirst(Auth::user()->region->name) }} </h5>
                                             {{-- <p class="text-muted">--------------------</p> --}}
                                             <hr>
-                                            <a href=" {{ route('viewdata', Auth::user()->id) }} " class="btn btn-rounded btn-danger btn-sm">View Profile</a></div>
+                                            <a href=" {{ route('viewdata', Auth::user()->name) }} " class="btn btn-rounded btn-danger btn-sm">View Profile</a></div>
                                     </div>
                                 </li>
                                 <li role="separator" class="divider"></li>

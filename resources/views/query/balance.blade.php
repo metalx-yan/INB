@@ -94,7 +94,7 @@
                                             <span class="caret" style="margin-left:88%;"></span>
                                         </button>
                                         <ul class="dropdown-menu checkbox-menu allow-focus" id="menu" aria-labelledby="dropdownMenu1" style="width:100%;">
-                                                <input type="text" id="myInput" class="form-control" placeholder="Search Data" onkeyup="myFunction()" title="Type in a name" style="width:95%; margin-left:6px; padding: 12px 20px 12px 40px; background-repeat:no-repeat; background-size: 35px; background-image:url('https://cdn1.iconfinder.com/data/icons/venetian-red-to-beautify-your-website/512/Search_Magnifying_Glass_Find-512.png');">
+                                                <input type="text" id="myInput" class="form-control" placeholder="Search Data" onkeyup="myFunction()" title="Type in a name" style="width:95%; margin-left:6px; padding: 12px 20px 12px 40px; background-repeat:no-repeat; background-size: 35px; ">
                                                 <p style="margin-top:14px; margin-left:15px;">
                                                 <b><input type="checkbox" name="select-all" id="select-all"> Select All</b>
                                                 <hr>
@@ -117,7 +117,7 @@
                                             <span class="caret" style="margin-left:88%;"></span>
                                         </button>
                                         <ul class="dropdown-menu checkbox-menu allow-focus" id="menus" aria-labelledby="dropdownMenu1" style="width:100%;">
-                                                <input type="text" id="myInputs" class="form-control" placeholder="Search Data" onkeyup="myFunctions()" title="Type in a name" style="width:95%; margin-left:6px; padding: 12px 20px 12px 40px; background-repeat:no-repeat; background-size: 35px; background-image:url('https://cdn1.iconfinder.com/data/icons/venetian-red-to-beautify-your-website/512/Search_Magnifying_Glass_Find-512.png');">
+                                                <input type="text" id="myInputs" class="form-control" placeholder="Search Data" onkeyup="myFunctions()" title="Type in a name" style="width:95%; margin-left:6px; padding: 12px 20px 12px 40px; background-repeat:no-repeat; background-size: 35px; ">
                                                 <p style="margin-top:14px; margin-left:15px;">
                                                 <b><input type="checkbox" name="select-alls" id="select-alls"> Select All</b>
                                                 <hr>
@@ -212,12 +212,16 @@
                                                     @foreach ($row->toArray() as $item => $val)
                                                         @foreach ($account as $same)
                                                             @if ($same == $item)
-                                                                @if ($row->product_id == $val)
-                                                                    <td>{{ $row->product->name }}</td>
-                                                                @elseif($row->branch_id == $val)
-                                                                    <td>{{ $row->branch->name }}</td>
+                                                               
+                                                                @if ($item == "product_id")
+                                                                <td>{{ $row->product->name }}</td>
+                                                                    
+                                                                @elseif($item == "branch_id")
+                                                                <td>{{ $row->branch->name }}</td>
+
                                                                 @else
-                                                                    <td>{{ $val }}</td>
+                                                                <td>{{ $val }}</td>
+                                                                    
                                                                 @endif
                                                             @endif
                                                         @endforeach
