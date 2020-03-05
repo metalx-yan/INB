@@ -4,7 +4,7 @@
             <!-- User profile -->
             <div class="user-profile">
                 <!-- User profile image -->
-                <div class="profile-img"> <img src=" /images/profile/{{ Auth::user()->avatar }}" alt="user" /> </div>
+                <div class="profile-img"> <img src="{{ asset('images\profile') }}\{{ Auth::user()->avatar }}" alt="user" /> </div>
                 <!-- User profile text-->
                 <br>
                 <div class="profile-text"> <a href="#"  role="button" aria-haspopup="true" aria-expanded="true">{{ ucfirst(Auth::user()->name) }}<span class="caret"></span></a>
@@ -74,18 +74,23 @@
                                 <li>
                                     @if ($menu->slug == "key-performance-matrix")
                                         <a href="{{ route($menu->slug) }}">{{ ucwords($menu->name) }}</a>
-                                    @elseif($menu->slug == "funding-topbottom-nasabah")
-                                        <a href="{{ route($menu->slug) }}">{{ ucwords($menu->name) }}</a>
+                                    {{-- @elseif($menu->slug == "funding-top-bottom-nasabah") --}}
+                                        {{-- <a href="{{ route($menu->slug) }}">{{ ucwords($menu->name) }}</a> --}}
                                     @else
                                         <a class="has-arrow" href="#" aria-expanded="false"><span class="hide-menu">{{ ucwords($menu->name) }}</span></a>
                                     @endif
                                     @foreach ($menu->sub_menus as $sub)
                                     <ul>
-                                        <a href=" {{ route($sub->slug) }} ">{{ ucwords($sub->name) }}</a>
+                                        @if ($menu->slug == "funding-top-bottom-nasabah")
+                                            <a href=" {{ route($sub->slug) }} ">{{ ucwords($sub->name) }} Tabungan</a>
+                                        @else
+                                            <a href=" {{ route($sub->slug) }} ">{{ ucwords($sub->name) }}</a>
+                                        @endif
                                     </ul>
                                     @endforeach
                                 </li>
                             @endforeach
+                               
                         </ul>
                     </li>
                     @endforeach

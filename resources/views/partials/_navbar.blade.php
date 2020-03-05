@@ -17,7 +17,7 @@
                     <!-- Logo text -->
                     <span>
                      <!-- dark Logo text -->
-                     <img src="http://infobanknews.com/wp-content/uploads/2018/05/logo-BNI-46-1.png" height="50%" width="65%" alt="homepage" class="dark-logo" />
+                     <img src="{{ asset('images/logo-BNI-46-1.png') }}" height="50%" width="65%" alt="homepage" class="dark-logo" />
                      <!-- Light Logo text -->    
                      <img src="{{ asset('images/logo-light-text.png') }}" class="light-logo" alt="homepage" /></span> </a>
             </div>
@@ -63,12 +63,12 @@
                             <input type="text" class="form-control" placeholder="Search for..."> <a class="srh-btn"><i class="ti-search"></i></a> </form>
                     </li> --}}
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle text-muted waves-effect waves-dark" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src=" /images/profile/{{ Auth::user()->avatar }}" alt="user" class="profile-pic" /></a>
+                        <a class="nav-link dropdown-toggle text-muted waves-effect waves-dark" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="{{ asset('images\profile') }}\{{ Auth::user()->avatar }}" alt="user" class="profile-pic" /></a>
                         <div class="dropdown-menu dropdown-menu-right animated flipInY">
                             <ul class="dropdown-user">
                                 <li>
                                     <div class="dw-user-box">
-                                        <div class="u-img"><img src=" /images/profile/{{ Auth::user()->avatar }} " alt="user"></div>
+                                        <div class="u-img"><img src="{{ asset('images\profile') }}\{{ Auth::user()->avatar }}" alt="user"></div>
                                         <div class="u-text">
                                             <h4> {{ ucfirst(Auth::user()->name) }} </h4>
                                             <hr>

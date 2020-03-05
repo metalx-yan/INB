@@ -204,7 +204,6 @@ class UserController extends Controller
 
     public function uploadPhoto(Request $request, $id)
     {
-        
         $update  = User::findOrFail($id);
 
         if ($request->hasFile('avatar')) {

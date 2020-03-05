@@ -1,5 +1,6 @@
 @extends('main')
 
+@section('title', 'Average')
 @section('content')
 <div class="container-fluid">
        
@@ -22,25 +23,25 @@
                             <input type="hidden" name="id">
                             <div class="col-md-3">
                                 <label for="">Tahun</label>
-                                <select name="year" id="year" class="form-control">
-                                    <option value="">=====</option>
+                                <select name="year" id="year" class="form-control" required>
+                                    <option value="">Pilih Tahun</option>
                                     @foreach ($years as $year)
-                                        <option value="{{ $year->year }}">{{ $year->year }}</option>
+                                        <option value="{{ $year->tahun }}">{{ $year->tahun }}</option>
                                     @endforeach
                                 </select>
                             </div>
                             
                             <div class="col-md-3">
                                 <label for="">Bulan</label>
-                                <select name="month" id="month" class="form-control">
-                                    <option value="">=====</option>
+                                <select name="month" id="month" class="form-control" required>
+                                    <option value="">Pilih Bulan</option>
                                 </select>
                             </div>
                             
                             <div class="col-md-3">
                                 <label for="">Tanggal</label>
-                                <select name="day" id="day" class="form-control" >
-                                    <option value="">=====</option>
+                                <select name="day" id="day" class="form-control" required>
+                                    <option value="">Pilih Tahun</option>
                                 </select>
                             </div>
                             
@@ -48,51 +49,95 @@
                                 <label for="">Region</label>
                                 <br>
                                 <select name="region" id="region" class="form-control">
-                                    <option value="">All Region</option>
+                                    <option value="">Pilih Region</option>
                                     @foreach ($regions as $region)
-                                        <option value="{{ $region->id }}">{{ $region->code }}</option>
+                                        <option value="{{ $region->region.'-'.$region->regDigit }}">{{ $region->regDigit }}</option>
                                     @endforeach                                   
                                 </select>
                             </div>
                         </div>
                         <br>
                         <div class="row">
-                            <div class="col-md-3">
+                            {{-- <div class="col-md-3">
                                 <label for="">Branch</label>
                                 <br>
                                 <select name="branch" id="branch" class="form-control">
                                     <option value="">All Branch</option>
                                 </select>
-                            </div>
+                            </div> --}}
 
                             <div class="col-md-3">
                                 <label for="">Jenis</label>
                                 <br>
-                                <select name="types[]" id="types" class="form-control">
-                                    <option value="">=====</option>
-                                    <option value="">All Type</option>
-                                    @foreach ($types as $type)
-                                        <option value="{{ $type->id }}">{{ $type->name }}</option>
-                                    @endforeach
-                                </select>
+                                <div class="dropdown">
+                                    <button class="btn btn-default dropdown-toggle" type="button" 
+                                            id="dropdownMenu1" data-toggle="dropdown" 
+                                            aria-haspopup="true" aria-expanded="true" style="border-color:#ced4da; width:100%;">
+                                        {{-- <i class="glyphicon glyphicon-cog"></i> --}}
+                                        <span class="caret" style="margin-left:-59%;">Pilih Jenis</span>
+                                    </button>
+                                    <ul class="dropdown-menu checkbox-menu allow-focus" id="menus" aria-labelledby="dropdownMenu1" style="width:100%;">
+                                            <input type="text" id="myInputs" class="form-control" placeholder="Search Data" onkeyup="myFunctions()" title="Type in a name" style="width:95%; margin-left:6px; padding: 12px 20px 12px 40px; background-repeat:no-repeat; background-size: 35px; ">
+                                            <p style="margin-top:14px; margin-left:15px;">
+                                            <b><input type="checkbox" name="select-alls" id="select-alls"> Select All</b>
+                                            <hr>
+                                            <div id="type">
+                                            @foreach ($types as $type)
+                                                    <li>
+                                                        <label>
+                                                            <input type="checkbox" name="types[]" style="margin-left: 15px;" class="brans" value="{{ $type->jenis }}"> {{ $type->jenis }}
+                                                        </label>
+                                                    </li>
+                                                    @endforeach
+                                                </div>
+                                    </ul>
+                                </div>
                             </div>
 
                             <div class="col-md-3">
                                 <label for="">Group</label>
                                 <br>
-                                <select name="groups[]" id="groups" class="form-control" >
-                                </select>
+                                <div class="dropdown gonta">
+                                    <button class="btn btn-default dropdown-toggle ganti" type="button" 
+                                            id="dropdownMenu" data-toggle="dropdown" 
+                                            aria-haspopup="true" aria-expanded="true" style="border-color:#ced4da; width:100%;">
+                                        {{-- <i class="glyphicon glyphicon-cog"></i> --}}
+                                        <span class="caret" style="margin-left:-59%;">Pilih Group</span>
+                                    </button>
+                                    <ul class="dropdown-menu checkbox-menu allow-focus" id="menu" aria-labelledby="dropdownMenu" style="width:100%;">
+                                            <input type="text" id="myInput" class="form-control" placeholder="Search Data" onkeyup="myFunction()" title="Type in a name" style="width:95%; margin-left:6px; padding: 12px 20px 12px 40px; background-repeat:no-repeat; background-size: 35px; ">
+                                            <p style="margin-top:14px; margin-left:15px;">
+                                            <b><input type="checkbox" name="select-all" id="select-all"> Select All</b>
+                                            <hr>
+                                                <div id="groupe">
+
+                                                </div>
+                                    </ul>
+                                </div>
                             </div>
 
                             <div class="col-md-3">
                                 <label for="">Product</label>
                                 <br>
-                                <select name="products[]" id="products" class="form-control">
-                                    {{-- <option value="">=====</option> --}}
-                                </select>
+                                <div class="dropdown">
+                                    <button class="btn btn-default dropdown-toggle" type="button" 
+                                            id="dropdownMenua" data-toggle="dropdown" 
+                                            aria-haspopup="true" aria-expanded="true" style="border-color:#ced4da; width:100%;">
+                                        <i class="glyphicon glyphicon-cog"></i>
+                                        <span class="caret" style="margin-left:-53%;">Pilih Product</span>
+                                    </button>
+                                    <ul class="dropdown-menu checkbox-menu allow-focus" id="menua" aria-labelledby="dropdownMenu" style="width:100%;">
+                                            <input type="text" id="myInputa" class="form-control" placeholder="Search Data" onkeyup="myFunctiona()" title="Type in a name" style="width:95%; margin-left:6px; padding: 12px 20px 12px 40px; background-repeat:no-repeat; background-size: 35px; ">
+                                            <p style="margin-top:14px; margin-left:15px;">
+                                            <b><input type="checkbox" name="select-alla" id="select-alla"> Select All</b>
+                                            <hr>
+                                                <div id="product">
+                                                    
+                                                </div>
+                                    </ul>
+                                </div>
                             </div>
-                           
-                            </div>
+                        </div>
 
                             <div class="row">
                                 <div class="col-md-3">
@@ -112,13 +157,17 @@
                         {{-- <a href="{{ route('export.file') }}" class="btn btn-success my-3" target="_blank">EXPORT EXCEL</a> --}}
                         <table class="table border" id="myTable" >
                             <thead>
-                                <tr style="background-color: #2157f1; color:white;">
+                                <tr style="background-color: #5f3423; color:white;">
                                     <td>Keterangan</td>
                                     <td>Group Produk</td>
                                     <td>Saldo Average</td>
                                 </tr>
                             </thead>
                             <tbody>
+                                @if (count($result1) == 0)
+                                    
+                                @else
+                                    
                                 @php
                                     $int1 = 0;
                                 @endphp
@@ -126,9 +175,9 @@
                                 @foreach ($result1 as $tidak_berbayar)
                                     @isset($tidak_berbayar)
                                         <tr>
-                                            <td>{{ $tidak_berbayar->type_product->name }}</td>
-                                            <td>{{ $tidak_berbayar->group_product->name }}</td>
-                                            <td>{{ number_format($tidak_berbayar->balance,2) }}</td>
+                                            <td>{{ $tidak_berbayar->jenis }}</td>
+                                            <td>{{ $tidak_berbayar->group_prod_3 }}</td>
+                                            <td>{{ number_format($tidak_berbayar->balance) }}</td>
                                         </tr>
                                         @php
                                             $int1 += $tidak_berbayar->balance;
@@ -136,14 +185,17 @@
                                     @endisset
                                 @endforeach
 
-                                <tr style="background-color: #2157f1; color:white;">
-                                    @isset($tidak_berbayar)
-                                    <td style="text-align:right">Total Reguler {{ ucwords($tidak_berbayar->type_product->name) }}</td>
-                                    @endisset
+                                <tr style="background-color: #5f3423; color:white;">
+                                    <td style="text-align:right">Total Tidak Berbayar</td>
                                     <td></td>
-                                    <td>{{ number_format($int1,2) }}</td>
+                                    <td>{{ number_format($int1) }}</td>
                                 </tr>
+                                @endif
 
+                                @if (count($result2) == 0)
+                                    
+                                @else
+                                    
                                 @php
                                     $int2 = 0;
                                 @endphp
@@ -151,9 +203,9 @@
                                 @foreach ($result2 as $berbayar)
                                     @isset($berbayar)
                                         <tr>
-                                            <td>{{ $berbayar->type_product->name }}</td>
-                                            <td>{{ $berbayar->group_product->name }}</td>
-                                            <td>{{ number_format($berbayar->balance,2) }}</td>
+                                            <td>{{ $berbayar->jenis }}</td>
+                                            <td>{{ $berbayar->group_prod_3 }}</td>
+                                            <td>{{ number_format($berbayar->balance) }}</td>
                                         </tr>
                                         @php
                                             $int2 += $berbayar->balance;
@@ -161,14 +213,19 @@
                                     @endisset
                                 @endforeach
 
-                                <tr style="background-color: #2157f1; color:white;">
+                                <tr style="background-color: #5f3423; color:white;">
                                     @isset($berbayar)
-                                    <td style="text-align:right">Total Reguler {{ ucwords($berbayar->type_product->name) }}</td>
+                                    <td style="text-align:right">Total Berbayar</td>
                                     @endisset
                                     <td></td>
-                                    <td>{{ number_format($int2,2) }}</td>
+                                    <td>{{ number_format($int2) }}</td>
                                 </tr>
-
+                                @endif
+                                
+                                @if (count($result3) == 0)
+                                    
+                                @else
+                                    
                                 @php
                                     $int3 = 0;
                                 @endphp
@@ -176,9 +233,9 @@
                                 @foreach ($result3 as $mandatory)
                                     @isset($mandatory)
                                         <tr>
-                                            <td>{{ $mandatory->type_product->name }}</td>
-                                            <td>{{ $mandatory->group_product->name }}</td>
-                                            <td>{{ number_format($mandatory->balance,2) }}</td>
+                                            <td>{{ $mandatory->jenis }}</td>
+                                            <td>{{ $mandatory->group_prod_3 }}</td>
+                                            <td>{{ number_format($mandatory->balance) }}</td>
                                         </tr>
                                         @php
                                             $int3 += $mandatory->balance;
@@ -186,14 +243,20 @@
                                     @endisset
                                 @endforeach
 
-                                <tr style="background-color: #2157f1; color:white;">
-                                    <td style="text-align:right">Total Reguler</td>
-                                    @isset($mandatory)
-                                    <td>{{ ucwords($mandatory->type_product->name) }}</td>
-                                    @endisset
-                                    <td>{{ number_format($int3,2) }}</td>
+                                <tr style="background-color: #5f3423; color:white;">
+                                    <td style="text-align:right">Total Mandatory</td>
+                                   
+                                    <td></td>
+                                    
+                                    <td>{{ number_format($int3) }}</td>
                                 </tr>
+                                @endif
 
+
+                                @if (count($result4) == 0)
+                                    
+                                @else
+                                    
                                 @php
                                     $int4 = 0;
                                 @endphp
@@ -206,11 +269,13 @@
                                     @endisset
                                 @endforeach
 
-                                <tr style="background-color: #2157f1; color:white;">
-                                    <td style="text-align:right">Total</td>
-                                    <td> Tabungan</td>
-                                    <td>{{ number_format($int4,2) }}</td>
+                                <tr style="background-color: #5f3423; color:white;">
+                                    <td style="text-align:right">Total Tabungan</td>
+                                    <td></td>
+                                    <td>{{ number_format($int4) }}</td>
                                 </tr>
+                                @endif
+
                             </tbody>
                         </table>
 
@@ -229,16 +294,16 @@
 
 @section('scripts')
     
-    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="{{ asset('js/js/highcharts.js') }}"></script>
     {{-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script> --}}
-    <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/1.5.6/js/dataTables.buttons.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/1.5.6/js/buttons.flash.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
-    <script src="https://cdn.datatables.net/buttons/1.5.6/js/buttons.html5.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/1.5.6/js/buttons.print.min.js"></script>
+    <script src="{{ asset('js/js/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('js/js/dataTables.buttons.min.js') }}"></script>
+    <script src="{{ asset('js/js/buttons.flash.min.js') }}"></script>
+    <script src="{{ asset('js/js/jszip.min.js') }}"></script>
+    <script src="{{ asset('js/js/pdfmake.min.js') }}"></script>
+    <script src="{{ asset('js/js/vfs_fonts.js') }}"></script>
+    <script src="{{ asset('js/js/buttons.html5.min.js') }}"></script>
+    <script src="{{ asset('js/js/buttons.print.min.js') }}"></script>
     
     {{-- <script>
         $('#req').submit(function() {
@@ -247,6 +312,223 @@
         });
     </script>
      --}}
+     <script>
+        $(document).ready(function(){
+            $(".gonta").change(function(e){
+                    console.log(e);
+                    if($('.groupes').is(':checked') == true){
+                        console.log(e.target.value);
+                        var count =  document.querySelectorAll('input[type="checkbox"]:checked');
+                        var str = '';
+                        for (let i = 0; i < count.length; i++) {
+                            str += 'group_prod_3[]='+count[i].value+'&';
+                        }
+                        console.log(str);
+                        $.get('http://192.168.7.32:8080/bni/public/api/json-prods-avg?' + str , function(data){
+                            console.log(data);
+                            $('#product').empty();
+
+                            $.each(data, function(index, productsObj) {
+                                console.log(productsObj);
+                                $('#product').append('<li><label><input name="products[]" style="margin-left: 15px;" type="checkbox" class="products" value="'+ productsObj.prd_name +'">' +  productsObj.prd_name +  '</label></li>');
+                            });
+                        });
+                    } else {
+                        console.log(e.target.value);
+                        var count =  document.querySelectorAll('input[type="checkbox"]:checked');
+                        var str = '';
+                        for (let i = 0; i < count.length; i++) {
+                            str += 'group_prod_3[]='+count[i].value+'&';
+                        }
+                        console.log(str);
+                        $.get('http://192.168.7.32:8080/bni/public/api/json-prods-avg?' + str , function(data){
+                            console.log(data);
+                            $('#product').empty();
+
+                            $.each(data, function(index, productsObj) {
+                                console.log(productsObj);
+                                $('#product').append('<li><label><input name="products[]" style="margin-left: 15px;" type="checkbox" class="products" value="'+ productsObj.prd_name +'">' +  productsObj.prd_name +  '</label></li>');
+                            });
+                        });
+                    }
+            });
+        });
+    </script>
+
+    <script>
+        $('.brans').click(function(e){
+            if($(this).is(':checked') == true){
+                var count =  document.querySelectorAll('input[type="checkbox"]:checked');
+                var str = '';
+                for (let i = 0; i < count.length; i++) {
+                    str += 'Jenis[]='+count[i].value+'&';
+                }
+                console.log(str);
+                $.get('http://192.168.7.32:8080/bni/public/api/json-groups-avg?' + str , function(data){
+                    console.log(data);
+                    $('#groupe').empty();
+
+                    $.each(data, function(index, productsObj) {
+                        console.log(productsObj);
+                        $('#groupe').append('<li><label><input name="groups[]" style="margin-left: 15px;" type="checkbox" class="groupes" value="'+ productsObj.group_prod_3 +'">' +  productsObj.group_prod_3 +  '</label></li>');
+                    });
+                });
+
+            } else {
+
+                        var count =  document.querySelectorAll('input[type="checkbox"]:checked');
+                        var str = '';
+                        for (let i = 0; i < count.length; i++) {
+                            str += 'Jenis[]='+count[i].value+'&';
+                        }
+                        console.log(str);
+                        $.get('http://192.168.7.32:8080/bni/public/api/json-groups-avg?' + str , function(data){
+                            console.log(data);
+                            $('#groupe').empty();
+
+                            $.each(data, function(index, productsObj) {
+                                console.log(productsObj);
+                                $('#groupe').append('<li><label><input name="groups[]" style="margin-left: 15px;" type="checkbox" class="groupes" value="'+ productsObj.group_prod_3 +'">' +  productsObj.group_prod_3 +  '</label></li>');
+                            });
+                        });
+            }
+        });
+    </script>
+
+    <script>
+        $('#select-alls').click(function(event) {   
+            if(this.checked) {
+                $.get('http://192.168.7.32:8080/bni/public/api/json-groups-avg'  , function(data){
+                    console.log(data);
+                    $('#groupe').empty();
+
+                    $.each(data, function(index, productsObj) {
+                        console.log(productsObj);
+                        $('#groupe').append('<li><label><input name="groups[]" style="margin-left: 15px;" type="checkbox" class="groupes" value="'+ productsObj.group_prod_3 +'">' +  productsObj.group_prod_3 +  '</label></li>');
+                    });
+                });
+                // Iterate each checkbox
+                $('.brans').each(function() {
+                    this.checked = true;                        
+                });
+            } else {
+                $.get('http://192.168.7.32:8080/bni/public/api/json-groups-avg'  , function(data){
+                    console.log(data);
+                    $('#groupe').empty();
+                });
+
+                $('.brans').each(function() {
+                    this.checked = false;                       
+                });
+            }
+        });
+    </script>
+
+    <script>
+        $('#select-all').click(function(event) {   
+            if(this.checked) {
+                $.get('http://192.168.7.32:8080/bni/public/api/json-prods-avg'  , function(data){
+                    console.log(data);
+
+                    $('#product').empty();
+                    
+                    $.each(data, function(index, productsObj) {
+                        console.log(productsObj);
+                        $('#product').append('<li><label><input name="products[]" style="margin-left: 15px;" type="checkbox" class="products" value="'+ productsObj.prd_name +'">' +  productsObj.prd_name +  '</label></li>');
+                    });
+                });
+                // Iterate each checkbox
+                $('.groupes').each(function() {
+                    this.checked = true;                        
+                });
+            } else {
+                $.get('http://192.168.7.32:8080/bni/public/api/json-prods-avg'  , function(data){
+                    console.log(data);
+                    $('#product').empty();
+                });
+
+                $('.groupes').each(function() {
+                    this.checked = false;                       
+                });
+            }
+        });
+    </script>
+
+<script>
+        $('#select-alla').click(function(event) {   
+            if(this.checked) {
+                
+                // Iterate each checkbox
+                $('.products').each(function() {
+                    this.checked = true;                        
+                });
+            } else {
+               
+                $('.products').each(function() {
+                    this.checked = false;                       
+                });
+            }
+        });
+    </script>
+
+
+    <script>
+        function myFunctions() {
+            var FilterValue, input, ul, li, i;
+                input = document.getElementById('myInputs');
+                FilterValue = input.value;
+                ul = document.getElementById('menus');
+                li = ul.getElementsByTagName('li');
+
+                for (i = 0; i < li.length ; i++) {
+                    var a = li[i].getElementsByTagName('label')[0];
+                    if (a.innerHTML.indexOf(FilterValue) > -1 ) {
+                        li[i].style.display = "";
+                    } else {
+                        li[i].style.display = "none";
+                    }
+                }
+            }
+    </script>
+
+    <script>
+        function myFunction() {
+            var FilterValue, input, ul, li, i;
+                input = document.getElementById('myInput');
+                FilterValue = input.value;
+                ul = document.getElementById('menu');
+                li = ul.getElementsByTagName('li');
+
+                for (i = 0; i < li.length ; i++) {
+                    var a = li[i].getElementsByTagName('label')[0];
+                    if (a.innerHTML.indexOf(FilterValue) > -1 ) {
+                        li[i].style.display = "";
+                    } else {
+                        li[i].style.display = "none";
+                    }
+                }
+            }
+    </script>
+
+    <script>
+        function myFunctiona() {
+            var FilterValue, input, ul, li, i;
+                input = document.getElementById('myInputa');
+                FilterValue = input.value;
+                ul = document.getElementById('menua');
+                li = ul.getElementsByTagName('li');
+
+                for (i = 0; i < li.length ; i++) {
+                    var a = li[i].getElementsByTagName('label')[0];
+                    if (a.innerHTML.indexOf(FilterValue) > -1 ) {
+                        li[i].style.display = "";
+                    } else {
+                        li[i].style.display = "none";
+                    }
+                }
+            }
+    </script>
+
     <script type="text/javascript"> 
         $(document).ready(function () {
                 $('#myTable').DataTable({
@@ -309,21 +591,21 @@
             $('#year').on('change', function(e){
                 console.log(e.target.value);
                 var date = e.target.value;
-                $.get('/api/json-months?date=' + date , function(data){
+                $.get('http://192.168.7.32:8080/bni/public/api/json-months-avg?tahun=' + date , function(data){
                     console.log(data);
                     $('#month').empty();
-                    $('#month').append('<option value="0" selected="true">=====</option>');
+                    $('#month').append('<option value="0" selected="true">Pilih Bulan</option>');
 
                     $.each(data, function(index, monthsObj) {
-                        console.log(String("00" + monthsObj.month).slice(-2));
-                        $('#month').append('<option value="' + String("00" + monthsObj.month).slice(-2) + '" >' + String("00" + monthsObj.month).slice(-2) + '</option>');
+                        console.log(monthsObj.bulan);
+                        $('#month').append('<option value="' + monthsObj.bulan + '" >' + String("00" + monthsObj.bulan).slice(-2) + '</option>');
                     });
                 });
             });
         });
     </script>
 
-    <script>
+    {{-- <script>
         $(document).ready(function(){
             $('#region').on('change', function(e){
                 console.log(e.target.value);
@@ -353,28 +635,28 @@
                 }
             });
         });
-    </script>
+    </script> --}}
 
     <script>
         $(document).ready(function(){
             $('#month').on('change', function(e){
                 console.log(e.target.value);
                 var date = e.target.value;
-                $.get('/api/json-days?date=' + date , function(data){
+                $.get('http://192.168.7.32:8080/bni/public/api/json-days-avg?bulan=' + date , function(data){
                     console.log(data);
                     $('#day').empty();
-                    $('#day').append('<option value="0" selected="true">=====</option>');
+                    $('#day').append('<option value="0" selected="true">Pilih Tanggal</option>');
 
                     $.each(data, function(index, monthsObj) {
-                        console.log(String("00" + monthsObj.day).slice(-2));
-                        $('#day').append('<option value="' + String("00" + monthsObj.day).slice(-2) + '" >' + String("00" + monthsObj.day).slice(-2) + '</option>');
+                        console.log(String("00" + monthsObj.tgl).slice(-2));
+                        $('#day').append('<option value="' + monthsObj.tgl + '" >' + String("00" + monthsObj.tgl).slice(-2) + '</option>');
                     });
                 });
             });
         });
     </script>
 
-    <script>
+    {{-- <script>
         $(document).ready(function(){
             $('#types').on('change', function(e){
                 console.log(e.target.value);
@@ -391,9 +673,9 @@
                 });
             });
         });
-    </script>
+    </script> --}}
 
-    <script>
+    {{-- <script>
         $(document).ready(function(){
             $('#regions').on('change', function(e){
                 console.log(e.target.value);
@@ -424,9 +706,9 @@
                 }
             });
         });
-    </script>
+    </script> --}}
 
-    <script>
+    {{-- <script>
         $(document).ready(function(){
             $('#groups').on('change', function(e){
                 console.log(e.target.value);
@@ -443,7 +725,7 @@
                 });
             });
         });
-    </script>
+    </script> --}}
 
        
 @endsection

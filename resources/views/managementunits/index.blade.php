@@ -104,7 +104,7 @@
 @endsection
 
 @section('scripts')
-    <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <script src="{{ asset('js/js/jquery.dataTables.min.js') }}"></script>
 
     <script>
         $(document).ready( function () {

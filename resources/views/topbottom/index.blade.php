@@ -1,5 +1,7 @@
 @extends('main')
 
+@section('title', 'Top Bottom Nasabah')
+
 @section('content')
 <div class="container-fluid">
        
@@ -19,90 +21,137 @@ onfocus='this.size=5;' onblur='this.size=1;' onchange='this.size=1; this.blur();
         <div class="card">
             <div class="card-title">
                 <div class="container">
-                    <form action="" method="get">
+                    <form action="{{ route('funding-top-bottom-nasabah') }}" method="post">
+                        @csrf
                         <br>
                             <div class="row">
                                 <div class="col-md-3">
-                                    <label for="">Tahun</label>
-                                    <select name="year" id="year" class="form-control">
-                                        <option value="">=====</option>
-                                        @foreach (array_unique($tahun) as $year)
-                                            <option value="deposit_prod_{{ $year }}">{{ $year }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                
-                                <div class="col-md-3">
-                                    <label for="">Bulan</label>
-                                    <select name="month" id="month" class="form-control">
-                                        <option value="">=====</option>
-                                    </select>
-                                </div>
-                                
-                                <div class="col-md-3">
                                     <label for="">Tanggal</label>
-                                        <select name="day" id="day" class="form-control" >
-                                        <option value="">=====</option>
+                                    <select name="years" id="years" class="form-control" required>
+                                        <option value="">Pilih Tanggal</option>
+                                        {{-- @foreach (array_unique($tahun) as $year) --}}
+                                            <option value=""></option>
+                                        {{-- @endforeach --}}
                                     </select>
                                 </div>
                                 
                                 <div class="col-md-3">
-                                    <label for="">Region</label>
-                                    <br>
-                                    <select name="region" id="region" class="form-control">
-                                        <option value="">All Region</option>
-                                        @foreach ($regions as $region)
-                                            <option value="{{ $region->id }}">{{ $region->code }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-                            <br>
-                            <div class="row">
-                                <div class="col-md-3">
-                                    <label for="">Branch</label>
-                                    <br>
-                                    <select name="branch" id="branch" class="form-control">
-                                        <option value="">All Branch</option>
-                                    </select>
-                                </div>
-    
-                                <div class="col-md-3">
-                                    <label for="">Status</label>
-                                    <br>
-                                    <select name="types" id="types" class="form-control">
-                                        <option value="">=====</option>
-                                                <option value="1">Active</option>
-                                                <option value="0">Dormant</option>
-                                    </select>
-                                </div>
+                                        <label for="">Region</label>
+                                        <br>
+                                        <div class="dropdown">
+                                            <button class="btn btn-default dropdown-toggle" type="button" 
+                                                    id="dropdownMenu1" data-toggle="dropdown" 
+                                                    aria-haspopup="true" aria-expanded="true" style="border-color:#ced4da; width:100%;" >
+                                                <i class="glyphicon glyphicon-cog"></i>
+                                                <span class="caret" style="margin-left:88%;"></span>
+                                            </button>
+                                            <ul class="dropdown-menu checkbox-menu allow-focus" id="menu" aria-labelledby="dropdownMenu1" style="width:100%; top:265px; bottom:-420px; left:0; right:0; overflow-y: auto;">
+                                                    <input type="text" id="myInput" class="form-control" placeholder="Search Data" onkeyup="myFunction()" title="Type in a name" style="width:95%; margin-left:6px; padding: 12px 20px 12px 40px; background-repeat:no-repeat; background-size: 35px; ">
+                                                    <p style="margin-top:14px; margin-left:15px;">
+                                                    <b><input type="checkbox" name="select-all" id="select-all"> Select All</b>
+                                                    <hr>
+                                                    <div id="type">
+                                                    @foreach ($regions as $region)
+                                                            <li>
+                                                                <label>
+                                                                    <input type="checkbox" name="region[]" style="margin-left: 15px;" class="region" value="{{ $region->regDigit }}"> {{ $region->region }} - {{ $region->regDigit }}
+                                                                </label>
+                                                            </li>
+                                                            @endforeach
+                                                        </div>
+                                            </ul>
+                                        </div>
+                                    </div>
 
-                                <div class="col-md-3">
-                                    <label for="">Product</label>
-                                    <br>
-                                    <select name="products" id="products" class="form-control">
-                                        <option value="">=====</option>
-                                        @foreach ($prod as $type)
-                                            <option value="{{$type->name}}">{{$type->name}}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                
+                                    <div class="col-md-3">
+                                        <label for="">Branch</label>
+                                        <div class="dropdown">
+                                            <button class="btn btn-default dropdown-toggle" type="button" 
+                                                    id="dropdownMenu1" data-toggle="dropdown" 
+                                                    aria-haspopup="true" aria-expanded="true" style="border-color:#ced4da; width:100%;">
+                                                <i class="glyphicon glyphicon-cog"></i>
+                                                <span class="caret" style="margin-left:88%;"></span>
+                                            </button>
+                                            <ul class="dropdown-menu checkbox-menu allow-focus" id="menus" aria-labelledby="dropdownMenu1" style="width:210%; top:265px; bottom:-420px; left:0; right:0; overflow-y: auto;">
+                                                    <input type="text" id="myInputs" class="form-control" placeholder="Search Data" onkeyup="myFunctions()" title="Type in a name" style="width:95%; margin-left:6px; padding: 12px 20px 12px 40px; background-repeat:no-repeat; background-size: 35px; ">
+                                                    <p style="margin-top:14px; margin-left:15px;">
+                                                    <b><input type="checkbox" name="select-alls" id="select-alls"> Select All</b>
+                                                    <hr>
+                                                    <div id="branchess">
+                                                    </div>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-md-3">
+                                        <label for="">Products</label>
+                                        <br>
+                                        <div class="dropdown">
+                                            <button class="btn btn-default dropdown-toggle" type="button" 
+                                                    id="dropdownMenu1" data-toggle="dropdown" 
+                                                    aria-haspopup="true" aria-expanded="true" style="border-color:#ced4da; width:100%;" >
+                                                <i class="glyphicon glyphicon-cog"></i>
+                                                <span class="caret" style="margin-left:88%;"></span>
+                                            </button>
+                                            <ul class="dropdown-menu checkbox-menu allow-focus" id="menub" aria-labelledby="dropdownMenu1" style="width:210%; top:265px; bottom:-420px; left:0; right:0; overflow-y: auto;">
+                                                    <input type="text" id="myInput" class="form-control" placeholder="Search Data" onkeyup="myFunctionb()" title="Type in a name" style="width:95%; margin-left:6px; padding: 12px 20px 12px 40px; background-repeat:no-repeat; background-size: 35px; ">
+                                                    <p style="margin-top:14px; margin-left:15px;">
+                                                    <b><input type="checkbox" name="select-allb" id="select-allb"> Select All</b>
+                                                    <hr>
+                                                    <div id="type">
+                                                    @foreach ($prod as $type)
+                                                            <li>
+                                                                <label>
+                                                                    <input type="checkbox" name="products[]" style="margin-left: 15px;" class="region" value="{{$type->bni_account_type}}-{{$type->bni_sub_category}}"> {{$type->bni_account_type}} - {{$type->bni_sub_category}} {{$type->product_name}}
+                                                                </label>
+                                                            </li>
+                                                            @endforeach
+                                                        </div>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    {{-- <div class="col-md-3">
+                                        <label for="">Status</label>
+                                        <br>
+                                        <select name="types" id="types" class="form-control">
+                                            <option value="">Pilih Type</option>
+                                                    <option value="1">Active</option>
+                                                    <option value="0">Dormant</option>
+                                        </select>
+                                    </div> --}}
                             </div>
                             <br>
                             <div class="row">
+                                
+                                
+                                
                                 <div class="col-md-3">
-                                    <label for="">Cats</label>
+                                    <label for="">Filter</label>
+                                    <br>
+                                    <select name="filter" id="filter" class="form-control">
+                                        <option value="">Pilih Filter</option>
+                                        <option value="10">10</option>
+                                        <option value="25">25</option>
+                                        <option value="50">50</option>
+                                        <option value="100">100</option>
+                                    </select>
+                                </div>
+                                {{-- <div class="col-md-3">
+                                    <label for="">Category</label>
                                     <br>
                                     <select name="cats" id="cats" class="form-control">
-                                        <option value="">====</option>
+                                        <option value="">Pilih Category</option>
                                         <option value="dtd">DTD</option>
                                         <option value="mtd">MTD</option>
                                         <option value="ytd">YTD</option>
                                     </select>
-                                </div>
+                                </div> --}}
+                            </div>
+                            <br>
+                            <div class="row">
+                                
 
-                                <div class="col-md-3">
+                                {{-- <div class="col-md-3">
                                     <label for="">&nbsp;</label>
                                     <br>
                                     <select name="date" id="date" class="form-control">
@@ -111,28 +160,19 @@ onfocus='this.size=5;' onblur='this.size=1;' onchange='this.size=1; this.blur();
                                                 <option value="{{ substr($item, 13,4).'-'.substr($item,17,2).'-'.substr($item,19,2) }}">{{ substr($item, 13,4) . '-' .substr($item, 19, 2) }}</option>
                                         @endforeach
                                     </select>
-                                </div>
-
+                                </div> --}}
+{{-- 
                                 <div class="col-md-3">
                                     <label for="">Order By</label>
                                     <br>
                                     <select name="order" id="order" class="form-control">
-                                        <option value="">====</option>
+                                        <option value="">Pilih Order By</option>
                                         <option value="asc">Asc</option>
                                         <option value="desc">Desc</option>
                                     </select>
-                                </div>
+                                </div> --}}
 
-                                <div class="col-md-3">
-                                    <label for="">Filter</label>
-                                    <br>
-                                    <select name="filter" id="filter" class="form-control">
-                                        <option value="">====</option>
-                                        <option value="10">10</option>
-                                        <option value="25">25</option>
-                                        <option value="50">50</option>
-                                    </select>
-                                </div>
+                               
                             </div>
     
                                 <div class="row">
@@ -148,9 +188,14 @@ onfocus='this.size=5;' onblur='this.size=1;' onchange='this.size=1; this.blur();
 
                     @else
 
+                    @if ($sa == null)
+                        
+                    @else
+                        
+
                     <br>
                     <table class="table border" id="myTable">
-                        <thead>
+                        <thead >
                             <tr style="background-color: #5f3423; color:white;">
                                 <td>Produk</td>
                                 <td>Saldo Sesudah</td>
@@ -171,9 +216,7 @@ onfocus='this.size=5;' onblur='this.size=1;' onchange='this.size=1; this.blur();
                                         <td>{{number_format($val->saldo1,2)}}</td>
                                         <td>{{number_format($val->saldo2,2)}}</td>
                                         <td>{{number_format($val->saldo1-$val->saldo2,2)}}</td>
-                                        {{-- <td>{{$val->saldo1}}</td>
-                                        <td>{{$val->saldo2}}</td>
-                                        <td>{{$val->saldo1-$val->saldo2}}</td> --}}
+                                        
                                     </tr>
                                         @php
                                             $int1 += $val->saldo1;
@@ -187,16 +230,17 @@ onfocus='this.size=5;' onblur='this.size=1;' onchange='this.size=1; this.blur();
                                     <td>{{number_format($int1,2)}}</td>
                                     <td>{{number_format($int2,2)}}</td>
                                     <td>{{number_format($int3,2)}}</td>
-                                    {{-- <td>{{$int1}}</td>
-                                    <td>{{$int2}}</td>
-                                    <td>{{$int3}}</td> --}}
+                                    
                                 </tr>
                             
                         </tbody>
+
+                        
                     </table>
                     <div class="container" id="container" style="min-widh: 310px; height:400px; margin: 0 auto;">
-
                     </div>
+                    @endif
+
                     @endif
 
                  
@@ -208,18 +252,17 @@ onfocus='this.size=5;' onblur='this.size=1;' onchange='this.size=1; this.blur();
 
 @section('scripts')
     
-    <script src="https://code.highcharts.com/highcharts.js"></script>
-    {{-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script> --}}
-    <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/1.5.6/js/dataTables.buttons.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/1.5.6/js/buttons.flash.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
-    <script src="https://cdn.datatables.net/buttons/1.5.6/js/buttons.html5.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/1.5.6/js/buttons.print.min.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
-   
+<script src="{{ asset('js/js/highcharts.js') }}"></script>
+{{-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script> --}}
+<script src="{{ asset('js/js/jquery.dataTables.min.js') }}"></script>
+<script src="{{ asset('js/js/dataTables.buttons.min.js') }}"></script>
+<script src="{{ asset('js/js/buttons.flash.min.js') }}"></script>
+<script src="{{ asset('js/js/jszip.min.js') }}"></script>
+<script src="{{ asset('js/js/pdfmake.min.js') }}"></script>
+<script src="{{ asset('js/js/vfs_fonts.js') }}"></script>
+<script src="{{ asset('js/js/buttons.html5.min.js') }}"></script>
+<script src="{{ asset('js/js/buttons.print.min.js') }}"></script>
+
     <script type="text/javascript"> 
         $(document).ready(function () {
                 $('#myTable').DataTable({
@@ -230,6 +273,163 @@ onfocus='this.size=5;' onblur='this.size=1;' onchange='this.size=1; this.blur();
                     buttons: ['excel']
                 });
         });
+    </script>
+
+    <script>
+    $('.region').click(function(e){
+            if($(this).is(':checked') == true){
+                var count =  document.querySelectorAll('input[type="checkbox"]:checked');
+                var str = '';
+                for (let i = 0; i < count.length; i++) {
+                    str += 'regDigit[]='+count[i].value+'&';
+                }
+                console.log(str);
+                $.get('http://192.168.7.32:8080/bni/public/api/json-branches?' + str , function(data){
+                    console.log(data);
+                    $('#branchess').empty();
+
+                    $.each(data, function(index, productsObj) {
+                        console.log(productsObj);
+                        $('#branchess').append('<li><label><input name="groups[]" style="margin-left: 15px;" type="checkbox" class="groupes" value="'+ productsObj.branch_name +'">' +  productsObj.branch_name +  '</label></li>');
+                    });
+                });
+
+            } else {
+
+                var count =  document.querySelectorAll('input[type="checkbox"]:checked');
+                var str = '';
+                for (let i = 0; i < count.length; i++) {
+                    str += 'regDigit[]='+count[i].value+'&';
+                }
+                console.log(str);
+                $.get('http://192.168.7.32:8080/bni/public/api/json-branches?' + str , function(data){
+                    console.log(data);
+                    $('#branchess').empty();
+
+                    $.each(data, function(index, productsObj) {
+                        console.log(productsObj);
+                        $('#branchess').append('<li><label><input name="groups[]" style="margin-left: 15px;" type="checkbox" class="groupes" value="'+ productsObj.branch_name +'">' +  productsObj.branch_name +  '</label></li>');
+                    });
+                });
+                    
+            }
+        });
+        </script>
+
+{{-- <script>
+        $(document).ready(function(){
+            $('#regions').on('change', function(e){
+                console.log(e.target.value);
+                var region_id = e.target.value;
+                if (region_id=="all_region") {
+                    $.get('http://192.168.7.32:8080/bni/public/api/json-branches' , function(data){
+    
+                    $('#branchess').empty();
+                
+                    $.each(data, function(index, branchesObj) {
+                        $('#branchess').append('<li style="margin-left:15px;"><label><input name="branches[]" type="checkbox" class="bran" value="'+ branchesObj.branch_name +'">' +  branchesObj.branch_name +  '</label></li>');
+                    });
+                }); 
+                } else {
+                    $.get('http://192.168.7.32:8080/bni/public/api/json-branches?regDigit=' + region_id , function(data){
+                    console.log(data);
+                    $('#branchess').empty();
+    
+                    $.each(data, function(index, branchesObj) {
+                        console.log(branchesObj);
+                        $('#branchess').append('<li style="margin-left:15px;"><label><input name="branches[]" type="checkbox" class="bran" value="'+ branchesObj.branch_name +'">' + branchesObj.branch_name +  '</label></li>');
+                    });
+                });    
+                }
+            });
+        });
+    </script> --}}
+
+    <script>
+        $('#select-all').click(function(event) {   
+            if(this.checked) {
+                $.get('http://192.168.7.32:8080/bni/public/api/json-branches'  , function(data){
+                    console.log(data);
+                    $('#branchess').empty();
+
+                    $.each(data, function(index, productsObj) {
+                        console.log(productsObj);
+                        $('#branchess').append('<li><label><input name="groups[]" style="margin-left: 15px;" type="checkbox" class="groupes" value="'+ productsObj.branch_name +'">' +  productsObj.branch_name +  '</label></li>');
+                    });
+                });
+                // Iterate each checkbox
+                $('.region').each(function() {
+                    this.checked = true;                        
+                });
+            } else {
+
+                $.get('http://192.168.7.32:8080/bni/public/api/json-branches'  , function(data){
+                    console.log(data);
+                    $('#branchess').empty();
+                    
+                });
+
+                $('.region').each(function() {
+                    this.checked = false;                       
+                });
+            }
+        });
+    </script>
+
+    <script>
+        $('#select-alls').click(function(event) {   
+            if(this.checked) {
+                
+                // Iterate each checkbox
+                $('.groupes').each(function() {
+                    this.checked = true;                        
+                });
+            } else {
+
+
+                $('.groupes').each(function() {
+                    this.checked = false;                       
+                });
+            }
+        });
+    </script>
+    
+    <script>
+        function myFunction() {
+            var FilterValue, input, ul, li, i;
+                input = document.getElementById('myInput');
+                FilterValue = input.value;
+                ul = document.getElementById('menu');
+                li = ul.getElementsByTagName('li');
+    
+                for (i = 0; i < li.length ; i++) {
+                    var a = li[i].getElementsByTagName('label')[0];
+                    if (a.innerHTML.indexOf(FilterValue) > -1 ) {
+                        li[i].style.display = "";
+                    } else {
+                        li[i].style.display = "none";
+                    }
+                }
+            }
+    </script>
+
+    <script>
+        function myFunctions() {
+            var FilterValue, input, ul, li, i;
+                input = document.getElementById('myInputs');
+                FilterValue = input.value;
+                ul = document.getElementById('menus');
+                li = ul.getElementsByTagName('li');
+    
+                for (i = 0; i < li.length ; i++) {
+                    var a = li[i].getElementsByTagName('label')[0];
+                    if (a.innerHTML.indexOf(FilterValue) > -1 ) {
+                        li[i].style.display = "";
+                    } else {
+                        li[i].style.display = "none";
+                    }
+                }
+            }
     </script>
 
     <script>
@@ -280,7 +480,7 @@ onfocus='this.size=5;' onblur='this.size=1;' onchange='this.size=1; this.blur();
     
     </script>
 
-    {{-- <script>
+    <script>
         $(document).ready(function(){
             $('#cats').on('change', function(e){
                 console.log(e.target.value);
@@ -321,80 +521,86 @@ onfocus='this.size=5;' onblur='this.size=1;' onchange='this.size=1; this.blur();
                 }
             });
         });
-    </script> --}}
-        
-    <script>
-        $(document).ready(function(){
-            $('#region').on('change', function(e){
-                console.log(e.target.value);
-                var region_id = e.target.value;
-                if (region_id == "") {
-                    $.get('/api/json-branches', function(data){
-                        console.log(data);
-                        $('#branch').empty();
-                        $('#branch').append('<option value="0" selected="true">All Branch</option>');
+    </script> 
 
-                        $.each(data, function(index, monthsObj) {
-                            console.log(monthsObj.name);
-                            $('#branch').append('<option value="' + monthsObj.id + '" >' + monthsObj.name + '</option>');
+<script>
+        $(document).ready(function(){
+            $('#years').on('change', function(e){
+                var year = e.target.value;
+                var sub = year.substr(0,25);
+                
+                    $.get('http://192.168.7.32:8080/bni/public/api/json-month-balance?TABLE_NAME=' + year , function(data){
+                        console.log(data);
+                        var as = data.map(item => item.TABLE_NAME.slice(0,19))
+                        .filter((value, index, self) => self.indexOf(value) === index)
+                        $('#months').empty();
+                        $('#months').append('<option value="0" selected="true">Pilih Bulan</option>');
+
+                        $.each(as, function(index, monthsObj) {
+                            console.log(monthsObj);
+                            $('#months').append('<option value="' + monthsObj + '" >' + monthsObj.substr(17,2) + '</option>');
                         });
                     });
-                } else {
-                    $.get('/api/json-branches?region_id=' + region_id , function(data){
-                        console.log(data);
-                        $('#branch').empty();
-                        $('#branch').append('<option value="0" selected="true">=====</option>');
-
-                        $.each(data, function(index, monthsObj) {
-                            console.log(monthsObj.name);
-                            $('#branch').append('<option value="' + monthsObj.branch_code + '" >' + monthsObj.name + '</option>');
-                        });
-                    });
-                }
-            });
-        });
-    </script>
-    
-    <script>
-        $(document).ready(function(){
-            $('#year').on('change', function(e){
-                // console.log(e.target.value);
-                var date = e.target.value;
-                $.get('/api/json-month-topbot?tables_in_bni=' + date , function(data){
-                    console.log(data);
-                     var as = data.map(item => item.Tables_in_bni.slice(0,19))
-                    .filter((value, index, self) => self.indexOf(value) === index)
-                    $('#month').empty();
-                    $('#month').append('<option value="0" selected="true">=====</option>');
-
-                    $.each(as, function(index, monthsObj) {
-                        $('#month').append('<option value="' + monthsObj.slice(0,19) + '" >' +  monthsObj.slice(17,19) + '</option>');
-                    });
-                });
             });
         });
     </script>
 
     <script>
         $(document).ready(function(){
-            $('#month').on('change', function(e){
-                console.log(e.target.value);
-                var dates = e.target.value;
-                $.get('/api/json-day-topbot?tables_in_bni=' + dates , function(data){
-                    console.log(data);
-                    $('#day').empty();
-                    $('#day').append('<option value="0" selected="true">=====</option>');
+            $('#months').on('change', function(e){
+                var month = e.target.value;
+                var sub = month.substr(0,25);
+                    $.get('http://192.168.7.32:8080/bni/public/api/json-day-balance?TABLE_NAME=' + month , function(data){
 
-                    $.each(data, function(index, monthsObj) {
-                        var str = monthsObj.Tables_in_bni;
-                        console.log(monthsObj);
-                        $('#day').append('<option value="' + monthsObj.Tables_in_bni.substring(19) + '" >' +  monthsObj.Tables_in_bni.substring(19) + '</option>');
+                        var cont = parseInt(month.substr(17,2)) + '_' + month.substr(13,4);
+                        var par = @json($a);
+                        var ex = par.indexOf(cont);
+
+                        if (ex != -1) {
+                            var merge = data.yearss;
+
+                            var as = merge.map(item => item.TABLE_NAME.slice(0,21))
+                            .filter((value, index, self) => self.indexOf(value) === index)
+
+                            var final = as.push('deposit_prod_' + parseInt(month.substr(17,2)) + '_' + month.substr(13,4))
+
+                            console.log(as);
+
+                            $('#days').empty();
+                            $('#days').append('<option value="0" selected="true">Pilih Tanggal</option>');
+
+                            $.each(as, function(index, daysObj) {
+
+                                if (daysObj.substr(19,2).length < 2) {
+                                    $('#days').append('<option value="' + daysObj + '" >' + 'lastdate' + '</option>');
+                                } else {
+                                    $('#days').append('<option value="' + daysObj + '" >' + daysObj.substr(19,2) + '</option>');
+                                }
+
+                            });
+
+                        } else {
+
+                            var merge = data.yearss;
+                            var asa = merge.map(item => item.TABLE_NAME.slice(0,21))
+                            .filter((value, index, self) => self.indexOf(value) === index)
+                            console.log(asa);
+                            
+                            $('#days').empty();
+                            $('#days').append('<option value="0" selected="true">Pilih Tanggal</option>');
+
+                            $.each(asa, function(index, daysObj) {
+
+                                $('#days').append('<option value="' + daysObj + '" >' + daysObj.substr(19,2) + '</option>');
+
+                            });
+                        }
+
                     });
-                });
             });
         });
     </script>
-{{-- 
+
     <script>
         $(document).ready(function(){
             $('#types').on('change', function(e){
@@ -407,47 +613,14 @@ onfocus='this.size=5;' onblur='this.size=1;' onchange='this.size=1; this.blur();
 
                     $.each(data, function(index, productsObj) {
                         console.log(productsObj);
-                        // $('#products').append('<option value="' + productsObj.id + '" >' + productsObj.name.substring( 0, 1 ).toUpperCase() + productsObj.name.substring( 1 ) + '</option>');
+                         $('#products').append('<option value="' + productsObj.id + '" >' + productsObj.name.substring( 0, 1 ).toUpperCase() + productsObj.name.substring( 1 ) + '</option>');
                     });
                 });
             });
         });
-    </script> --}}
-
-    {{-- <script>
-        $(document).ready(function(){
-            $('#regions').on('change', function(e){
-                console.log(e.target.value);
-                var id = e.target.value;
-                if (id == "all_region") {
-                    $.get('/api/json-regions' , function(data){
-                    console.log(data);
-                    // $('#groups').empty();
-                    // $('#groups').append('<option value="0" selected="true">=======</option>');
-
-                        $.each(data, function(index, regionsObj) {
-                            console.log(regionsObj.id + '-' + regionsObj.name);
-                            $('#regions').append('<option value="' + regionsObj.id + '" ></option>');
-                        });
-                    });    
-                } else {
-                    
-                $.get('/api/json-regions?id=' + id , function(data){
-                    console.log(data);
-                    // $('#groups').empty();
-                    // $('#groups').append('<option value="0" selected="true">=======</option>');
-
-                    $.each(data, function(index, regionsObj) {
-                        console.log(regionsObj.id + '-' + regionsObj.name);
-                        // $('#groups').append('<option value="' + productsObj.id + '" >' + productsObj.name.substring( 0, 1 ).toUpperCase() + productsObj.name.substring( 1 ) + '</option>');
-                    });
-                });
-                }
-            });
-        });
-    </script> --}}
-
-    {{-- <script>
+    </script> 
+     
+     <script>
         $(document).ready(function(){
             $('#groups').on('change', function(e){
                 console.log(e.target.value);
@@ -464,6 +637,6 @@ onfocus='this.size=5;' onblur='this.size=1;' onchange='this.size=1; this.blur();
                 });
             });
         });
-    </script> --}}
+    </script> 
     
 @endsection

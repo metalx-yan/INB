@@ -17,41 +17,85 @@ use Illuminate\Support\Facades\DB;
 
 class ApiController extends Controller
 {
-    public function getTopBotDay()
+    public function getYear()
     {
-        $req = Req::input('tables_in_bni');
+        $categories = Req::input('TABLE_NAME');
+       
+        $yearss = DB::connection('sqlsrv158')->select("SELECT * FROM FUNDING.INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME LIKE '$categories%'");
 
-        $day = DB::select("show tables where tables_in_bni like '%$req%'");
+        return response()->json($yearss);
+    }
+    
+    public function dayBalance()
+    {
+        $months = Req::input('TABLE_NAME');
+
+        $yearss = DB::connection('sqlsrv158')->select("SELECT * FROM FUNDING.INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME LIKE '$months%'");
+
+        $arr = [];
+        foreach ($yearss as $value) {
+            $arr[] = substr($value->TABLE_NAME, 17,2) . '_' . substr($value->TABLE_NAME, 13,4);
+        }
+
+        return response()->json(array('yearss' => $yearss, 'arr' => $arr));
+    }   
+
+    public function getTopDayDtd()
+    {
+        $months = Req::input('TABLE_NAME');
+
+        $day = DB::connection('sqlsrv159')->select("SELECT * FROM DATAMART.INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME LIKE '$months%'");
 
         return response()->json($day);
     }
-    public function getTopBot()
+    
+    public function getTopMonthDtd()
     {
-        $req = Req::input('tables_in_bni');
+        $months = Req::input('TABLE_NAME');
 
-        $month = DB::select("show tables where tables_in_bni like '%$req%'");
+        $month = DB::connection('sqlsrv159')->select("SELECT * FROM DATAMART.INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME LIKE '$months%'");
+
+        return response()->json($month);
+    }
+
+    public function getDate()
+    {
+        $date = Req::input('TABLE_NAME');               
+
+        $tabungan = Req::input('flag_tabungan');
+
+        $month = DB::connection('sqlsrv159')->table('datamart.dbo.'.$date)->whereIn('flag_tabungan', $tabungan)->where('product_name', '!=', null)->select('product_name')->distinct()->get();
 
         return response()->json($month);
     }
 
     public function months()
     {
-        $year = Req::input('date');
+        $year = Req::input('tahun');
 
-        $month =  RegionalSaving::select(DB::raw('MONTH(date) as month'))->whereYear('date', $year)->distinct()->orderBy('month')->get();
+        $month = DB::connection('sqlsrv158')->table('db_reza.dbo.tbl_tabungan_perwilayah_perproduk_2')->select('bulan')->where('tahun',$year)->distinct()->orderBy('bulan', 'asc')->get();
 
         return response()->json($month);
 
     }
 
-    public function monthBalance()
+    public function monthsAvg()
     {
-        $year = Req::input('created_at');
+        $year = Req::input('tahun');
 
-        $month = Account::select(DB::raw('MONTH(created_at) as month'))->whereYear('created_at', $year)->distinct()->orderBy('month')->get();
+        $month = DB::connection('sqlsrv158')->table('db_reza.dbo.tbl_avg_perproduk_perwilayah')->select('bulan')->where('tahun',$year)->distinct()->orderBy('bulan', 'asc')->get();
 
         return response()->json($month);
 
+    }
+ 
+    public function monthBalance()
+    {
+        $year = Req::input('TABLE_NAME');
+
+        $month = DB::connection('sqlsrv158')->select("SELECT * FROM FUNDING.INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME LIKE '$year%'");
+
+        return response()->json($month); 
     }
 
     public function monthUpload()
@@ -66,22 +110,46 @@ class ApiController extends Controller
 
     public function days()
     {
-        $month = Req::input('date');
+        $month = Req::input('bulan');
 
-        $day = RegionalSaving::select(DB::raw('DAY(date) as day'))->whereMonth('date', $month)->distinct()->orderBy('day')->get();
-
-        return response()->json($day);
-
+        $tgl = DB::connection('sqlsrv158')->table('db_reza.dbo.tbl_tabungan_perwilayah_perproduk_2')->select('tgl')->where('bulan',$month)->distinct()->orderBy('tgl', 'asc')->get();
+        
+        return response()->json($tgl);
+                       
     }
 
+    public function daysAvg()
+    {
+        $month = Req::input('bulan');
+
+        $tgl = DB::connection('sqlsrv158')->table('db_reza.dbo.tbl_avg_perproduk_perwilayah')->select('tgl')->where('bulan',$month)->distinct()->orderBy('tgl', 'asc')->get();
+        
+        return response()->json($tgl);
+                       
+    }
+    
     public function groups()
     {
-        $type = Req::input('type_product_id');
+        $type = Req::input('jenis');
 
         if (isset($type)) {
-            $groups = GroupProduct::where('type_product_id', '=', $type)->get();
+            $groups = DB::connection('sqlsrv158')->table('db_reza.dbo.tbl_tabungan_perwilayah_perproduk_2')->select('group_prod_3')->whereIn('jenis', $type)->distinct()->get();
         }else {
-            $groups = GroupProduct::all();
+            $groups = DB::connection('sqlsrv158')->table('db_reza.dbo.tbl_tabungan_perwilayah_perproduk_2')->select('group_prod_3')->distinct()->get();
+        }
+
+        return response()->json($groups);
+    }
+
+    public function groupsAvg()
+    {
+        $type = Req::input('Jenis');
+
+        if (isset($type)) {
+            $groups = DB::connection('sqlsrv158')->table('db_reza.dbo.tbl_avg_perproduk_perwilayah')->select('group_prod_3')->whereIn('Jenis', $type)->distinct()->get();
+            // dd($groups);
+        }else {
+            $groups = DB::connection('sqlsrv158')->table('db_reza.dbo.tbl_avg_perproduk_perwilayah')->select('group_prod_3')->distinct()->get();
         }
 
         return response()->json($groups);
@@ -89,12 +157,26 @@ class ApiController extends Controller
     
     public function prods()
     {
-        $group = Req::input('group_product_id');
+        $group = Req::input('group_prod_3');
 
         if (isset($group)) {
-            $prods = Product::where('group_product_id', '=', $group)->get();
+            $prods = DB::connection('sqlsrv158')->table('db_reza.dbo.tbl_tabungan_perwilayah_perproduk_2')->select('prd_name')->whereIn('group_prod_3', $group)->distinct()->get();
         }else {
-            $prods = Product::all();
+            $prods = DB::connection('sqlsrv158')->table('db_reza.dbo.tbl_tabungan_perwilayah_perproduk_2')->select('prd_name')->distinct()->get();
+        }
+
+        return response()->json($prods);
+    }
+
+    public function prodsAvg()
+    {
+        $group = Req::input('group_prod_3');
+
+        if (isset($group)) {
+            $prods = DB::connection('sqlsrv158')->table('db_reza.dbo.tbl_avg_perproduk_perwilayah')->select('prd_name')->whereIn('group_prod_3', $group)->distinct()->get();
+            // dd($prods);
+        }else {
+            $prods = DB::connection('sqlsrv158')->table('db_reza.dbo.tbl_avg_perproduk_perwilayah')->select('prd_name')->distinct()->get();
         }
 
         return response()->json($prods);
@@ -102,12 +184,12 @@ class ApiController extends Controller
 
     public function branches()
     {
-        $region_id = Req::input('region_id');
+        $type_reg = Req::input('regDigit');
 
-        if(isset($region_id)){
-            $branches = Branch::where('region_id', '=' , $region_id)->get();
+        if(isset($type_reg)){
+            $branches = DB::connection('sqlsrv158')->table('funding.dbo.tbl_branch_code')->whereIn('regDigit',$type_reg)->select('branch_name', 'region')->distinct()->get();
         } else {
-            $branches = Branch::all();
+            $branches = DB::connection('sqlsrv158')->table('funding.dbo.tbl_branch_code')->select('branch_name', 'region')->distinct()->get();
         }
         
         return response()->json($branches);
@@ -115,14 +197,14 @@ class ApiController extends Controller
 
     public function products()
     {
-        $category_id = Req::input('category_id');
+        $type_prod = Req::input('Jenis');
 
-        if(isset($category_id)){
-            $products = Product::where('category_id', '=', $category_id)->get();
+        if(isset($type_prod)){
+            $products = DB::connection('sqlsrv158')->table('datamart.dbo.list_prd_dpk')->where('Jenis', $type_prod)->select('product_name', 'bni_account_type', 'bni_sub_category')->distinct()->get();
         } else {
-            $products = Product::all();
+            $products = DB::connection('sqlsrv158')->table('datamart.dbo.list_prd_dpk')->select('product_name', 'bni_account_type', 'bni_sub_category')->distinct()->get();
         }
-
+      
         return response()->json($products);
     }
 
@@ -141,12 +223,12 @@ class ApiController extends Controller
 
     public function groupMatrix()
     {
-        $type_product = Req::input('type_product_id');
+        $type_product = Req::input('jenis');
         
         if (isset($type_product)) {
-            $parameter =  ParameterProduct::select('group_product_third as group')->where('type_product_id', $type_product)->distinct()->orderBy('group')->get();
+            $parameter =  DB::connection('sqlsrv158')->table('funding.dbo.prm_grouping_produk')->select('group_prod_3')->where('jenis', $type_product)->distinct()->get();
         } else {
-            $parameter =  ParameterProduct::select('group_product_third as group')->distinct()->orderBy('group')->get();
+            $parameter =  DB::connection('sqlsrv158')->table('funding.dbo.prm_grouping_produk')->select('group_prod_3')->distinct()->get();
         }
         
         return response()->json($parameter);
@@ -154,10 +236,10 @@ class ApiController extends Controller
 
     public function accMatrix()
     {
-        $group = Req::input('group_product_third');
+        $group = Req::input('group_prod_3');
 
-        $option = ParameterProduct::select('acc_type_id', 'product_id')->where('group_product_third', $group)->distinct()->orderBy('acc_type_id')->get()->load('product', 'acc_type');
+        $acc =  DB::connection('sqlsrv158')->table('funding.dbo.prm_grouping_produk')->select('acc_type', 'prd_name')->where('group_prod_3', $group)->distinct()->get();
 
-        return response()->json($option);
+        return response()->json($acc);
     }
 }

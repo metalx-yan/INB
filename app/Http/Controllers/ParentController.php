@@ -36,6 +36,11 @@ class ParentController extends Controller
         //
     }
 
+    public function home()
+    {
+        return view('dashboard');
+    }
+
     /**
      * Store a newly created resource in storage.
      *

@@ -1,4 +1,5 @@
 <head>
+        <meta name="csrf-token" content="{{ csrf_token() }}">
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <!-- Tell the browser to be responsive to screen width -->
@@ -9,23 +10,25 @@
         <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/favicon.png">
         <title>@yield('title', 'Welcome to Application')</title>
         <!-- Bootstrap Core CSS -->
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
         {{-- <link href=" {{ asset('assets/plugins/bootstrap/css/bootstrap.min.css') }} " rel="stylesheet"> --}}
         <!-- chartist CSS -->
         
-        <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
+        <link rel="stylesheet" href="{{ asset('css/css/jquery.dataTables.min.css') }}">
         <link href="{{ asset('assets/plugins/chartist-js/dist/chartist.min.css') }}" rel="stylesheet">
         <link href="{{ asset('assets/plugins/chartist-js/dist/chartist-init.css') }}" rel="stylesheet">
-        <link href=" {{ asset('assets/plugins/chartist-plugin-tooltip-master/dist/chartist-plugin-tooltip.css') }} " rel="stylesheet">
+        <link href="{{asset('assets/plugins/chartist-plugin-tooltip-master/dist/chartist-plugin-tooltip.css')}}" rel="stylesheet">
         <link href="{{ asset('assets/plugins/css-chart/css-chart.css') }}" rel="stylesheet">
         <!-- Custom CSS -->
         {{-- <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css"> --}}
-        <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.5.6/css/buttons.dataTables.min.css">
+        {{-- <link rel="stylesheet" href="{{ asset('css/css/buttons.dataTables.min.css') }}"> --}}
         <link href="{{ asset('css/style.css') }}" rel="stylesheet">
         <!-- You can change the theme colors from here -->
         <link href="{{ asset('css/colors/blue.css') }}" id="theme" rel="stylesheet">
 
-        
+        {{-- <link href="{{ asset('css/material.css') }}" id="theme" rel="stylesheet"> --}}
+
+        @yield('link')
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
         <!--[if lt IE 9]>

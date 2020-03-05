@@ -1,10 +1,66 @@
 @extends('main')
 
-@section('links')
+@section('title', 'Key Performance Matrix')
+
+@section('link')
     <style>
         /* body {
   padding: 15px;
     } */
+    .dropbtn {
+  background-color: white;
+  border-radius: 3px;
+  color: #666;
+  padding: 8px;
+  font-size: 16px;
+  border: 1px solid #ced4da;
+  cursor: pointer;
+  width: 230px;
+}
+
+.dropbtn:hover, .dropbtn:focus {
+  background-color: #CED4DA;
+}
+
+#myInputa {
+  box-sizing: border-box;
+  background-image: url('searchicon.png');
+  background-position: 14px 12px;
+  background-repeat: no-repeat;
+  font-size: 16px;
+  padding: 14px 20px 12px 16px;
+  border: none;
+  border-bottom: 1px solid #ddd;
+  position:fixed;
+}
+
+#myInput:focus {outline: 3px solid #ddd;}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f6f6f6;
+  min-width: 230px;
+  overflow: auto;
+  border: 1px solid #ddd;
+  z-index: 1;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown a:hover {background-color: #ddd;}
+
+.show {display: block;}
 
     .checkbox-menu li label {
         display: block;
@@ -61,14 +117,14 @@
                         <div class="row">
                             <div class="col-md-3">
                                 <label for="">....</label>
-                                <select name="perorangan" id="perorangan" class="form-control">
+                                <select id="perorangan" class="form-control">
                                     <option value="">All</option>
                                 </select>
                             </div>
                             
                             <div class="col-md-3">
                                 <label for="">Tabungan</label>
-                                <select name="tabungan" id="tabungan" class="form-control">
+                                <select  id="tabungan" class="form-control">
                                     <option value="">Tabungan</option>
                                 </select>
                             </div>
@@ -76,9 +132,9 @@
                             <div class="col-md-3">
                                 <label for="">Region</label>
                                 <select name="region" id="region" class="form-control">
-                                    <option value="">All Region</option>
+                                    <option value="">Pilih Region</option>
                                     @foreach ($regions as $region)
-                                        <option value="{{ $region->id }}">{{ $region->name }}</option>
+                                        <option value="{{ $region->region }}">{{ $region->region }} - {{ $region->region_name }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -87,15 +143,16 @@
                                 <label for="">Jenis</label>
                                 <br>
                                 <select name="type" id="type" class="form-control">
-                                    <option value="">All Jenis</option>
-                                    @foreach ($parameter as $type)
-                                        <option value="{{ $type->type_product->id }}">{{ $type->type_product->name }}</option>
+                                    <option value="">Pilih Jenis</option>
+                                    @foreach ($types as $type)
+                                        <option value="{{ $type->jenis }}">{{ $type->jenis }}</option>
                                     @endforeach
                                 </select>
                             </div>
                         </div>
                         <br>
                         <div class="row">
+
                             <div class="col-md-3">
                                 <label for="">Group</label>
                                 <br>
@@ -105,122 +162,137 @@
                             </div>
 
                             <div class="col-md-3">
-                                <label for="">Acc Type</label>
-                                <div class="dropdown">
-                                    <button class="btn btn-default dropdown-toggle" type="button" 
-                                            id="dropdownMenu1" data-toggle="dropdown" 
-                                            aria-haspopup="true" aria-expanded="true" style="border-color:#ced4da; width:100%;">All
-                                        <i class="glyphicon glyphicon-cog"></i>
-                                        <span class="caret" style="margin-left:88%;"></span>
-                                    </button>
-                                    <ul class="dropdown-menu checkbox-menu allow-focus" id="menu" aria-labelledby="dropdownMenu1" style="width:100%;">
-                                            <input type="text" id="myInput" class="form-control" placeholder="Search Data" onkeyup="myFunction()" title="Type in a name" style="width:95%; margin-left:6px; padding: 12px 20px 12px 40px; background-repeat:no-repeat; background-size: 35px;">
-                                            <p style="margin-top:14px; margin-left:15px;">
-                                            <b><input type="checkbox" name="select-all" id="select-all"> Select All</b>
-                                            <hr>
+                                    <label for="">Acc Type</label>
+                                    <div class="dropdown">
+                                        <button type="button"  class="dropbtn">Pilih Acc Type</button>
+                                        <br>
+                                        <div id="myDropdowna" class="dropdown-content" style="overflow-y: auto; top:40px; bottom:-250px;">
+                                        <input type="text" placeholder="Search.." id="myInputa" onkeyup="filterFunctiona()" >
+                                        
+                                        <br><br><br>
+                                        <b><input style="margin-left: 30px;" type="checkbox" name="select-all" id="select-all"> Select All</b>
+                                        <hr>
                                             <div id="options">
                                             </div>
-                                            
-                                    </ul>
-                                </div>
+                                        </div>
+                                    </div>
                             </div>
+
+                   
                         </div>
 
                             <div class="row">
                                 <div class="col-md-3">
                                     <label for="">&nbsp;</label>
                                     <br>
-                                    <button type="submit" id="buttonsa" value="button" name="button" class="btn btn-primary" style="margin-left: 404%;">Execute</button>
+                                    <button type="submit" id="buttonsa" value="button" name="cari" class="btn btn-primary" style="margin-left: 404%;">Execute</button>
                                 </div>
                             </div>
+
                         </form>
-                        <hr>
-                        
                         <br>
 
-                        @if($obj)
+                        <?php 
+                            if (!isset($_GET["region"]) || !isset($_GET["type"]) || !isset($_GET["group"])) {
+                                $reg = '';
+                                $type = '';
+                                $group = '';
+                            } else {
+                                $reg = $_GET["region"];
+                                $type = $_GET["type"];
+                                $group = $_GET["group"];
+                            }
+
+                            if (!isset($_GET["acctypes"])) {
+                                $acc = '';
+                            } else {
+                                $acc = implode(' ',$_GET["acctypes"]);
+                            }
+                            
                         
-                        @if ($balance == [] && $balance2 == [])
-                            
-                        @else
-                            
+                        ?>
 
-                        <div class="container" id="container" style="min-widh: 310px; height:400px; margin: 0 auto;"></div>
-                        <hr>
 
-                        @endif
-
-                        @if ($total1 == [] && $total2 == [])
-                            
-                        @else
-                            
-                        <div class="container" id="container1" style="min-widh: 310px; height:400px; margin: 0 auto;"></div>
-                        <hr>
-                        @endif
-
-                        @if ($total3 == [] && $total4 == [])
-                            
-                        @else
-                            
-                        <div class="container" id="container2" style="min-widh: 310px; height:400px; margin: 0 auto;"></div>
-
-                        @endif
-
-                        @if ($total5 == [] && $total6 == [])
-                            
-                        @else
-                            
-                        <div class="container" id="container3" style="min-widh: 310px; height:400px; margin: 0 auto;"></div>
-                        <hr>
-                        @endif
-
-                        @if ($total7 == [] && $total8 == [])
-                            
-                        @else
-                            
-                        <div class="container" id="container4" style="min-widh: 310px; height:400px; margin: 0 auto;"></div>
-                        @endif
-
-                        @if ($total9 == [] && $total10 == [])
-                            
-                        @else
-                            
-                        <div class="container" id="container5" style="min-widh: 310px; height:400px; margin: 0 auto;"></div>
-                        <hr>
-                        @endif
-
-                        @if ($total11 == [] && $total12 == [])
-                            
-                        @else
-                            
-                        <div class="container" id="container6" style="min-widh: 310px; height:400px; margin: 0 auto;"></div>
-                        @endif
-
-                        @if ($total13 == [] && $total14 == [])
-                            
-                        @else
-                            
-                        <div class="container" id="container7" style="min-widh: 310px; height:400px; margin: 0 auto;"></div>
-                        <hr>
-                        @endif
-
-                        @if ($total15 == [] && $total16 == [])
-                            
-                        @else
-                            
-                        <div class="container" id="container8" style="min-widh: 310px; height:400px; margin: 0 auto;"></div>
-                        @endif
-
-                        @if ($total17 == [] && $total18 == [])
-                            
-                        @else
-                            
-                        <div class="container" id="container9" style="min-widh: 310px; height:400px; margin: 0 auto;"></div>
-                        @endif
+                        @if ($cari == "button")
+                        <a href="{{ url('user/export-performance') }}?region=<?php echo ($reg) ?>&type=<?php echo ($type) ?>&group=<?php echo ($group) ?>&acctypes=<?php echo ($acc) ?>" class="btn btn-info">Excel</a>
                         
-                        @else
+                            @if (count($query1) == 0 || count($query2) == 0)
+                                
+                            @else
+                                
+                            <div class="container" id="container" style="min-widh: 310px; height:400px; margin: 0 auto;"></div>
+                            <hr>
 
-                        @endif
+                            @endif
+
+                            @if (count($query3) == 0 || count($query4) == 0)
+                                
+                            @else
+                            
+                            <div class="container" id="container1" style="min-widh: 310px; height:400px; margin: 0 auto;"></div>
+                            <hr>
+
+                            @endif  
+                            
+                            @if (count($query5) == 0 || count($query6) == 0)
+                                
+                            @else
+                            <div class="container" id="container2" style="min-widh: 310px; height:400px; margin: 0 auto;"></div>
+
+                            @endif
+                            
+                            @if (count($query7) == 0 || count($query8) == 0)
+                                
+                            @else
+
+                            <div class="container" id="container3" style="min-widh: 310px; height:400px; margin: 0 auto;"></div>
+                            <hr>
+                            
+                            @endif
+
+                            @if (count($query9) == 0 || count($query10) == 0)
+                                
+                            @else
+
+                            <div class="container" id="container4" style="min-widh: 310px; height:400px; margin: 0 auto;"></div>
+                            
+                            @endif
+
+                            @if (count($query11) == 0 || count($query12) == 0)
+                                
+                            @else
+                            <div class="container" id="container5" style="min-widh: 310px; height:400px; margin: 0 auto;"></div>
+                            <hr>
+                            @endif
+
+                            @if (count($query13) == 0 || count($query14) == 0)
+                                
+                            @else
+                            <div class="container" id="container6" style="min-widh: 310px; height:400px; margin: 0 auto;"></div>
+                            @endif
+
+                            @if (count($query15) == 0 || count($query16) == 0)
+                                
+                            @else
+                            <div class="container" id="container7" style="min-widh: 310px; height:400px; margin: 0 auto;"></div>
+                            <hr>
+                            @endif
+
+                            @if (count($query17) == 0 || count($query18) == 0)
+                                
+                            @else
+                            <div class="container" id="container8" style="min-widh: 310px; height:400px; margin: 0 auto;"></div>
+                            @endif
+
+                            @if (count($query19) == 0 || count($query20) == 0)
+                                
+                            @else
+                            <div class="container" id="container9" style="min-widh: 310px; height:400px; margin: 0 auto;"></div>
+                            @endif
+
+                        @else
+                            
+                        @endif 
         </div>
     </div>
 </div>
@@ -228,16 +300,16 @@
 
 @section('scripts')
     
-    <script src="https://code.highcharts.com/highcharts.js"></script>
-    {{-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script> --}}
-    <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/1.5.6/js/dataTables.buttons.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/1.5.6/js/buttons.flash.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
-    <script src="https://cdn.datatables.net/buttons/1.5.6/js/buttons.html5.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/1.5.6/js/buttons.print.min.js"></script>
+<script src="{{ asset('js/highcharts.js') }}"></script>
+{{-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script> --}}
+<script src="{{ asset('js/jquery.dataTables.min.js') }}"></script>
+<script src="{{ asset('js/dataTables.buttons.min.js') }}"></script>
+<script src="{{ asset('js/buttons.flash.min.js') }}"></script>
+<script src="{{ asset('js/jszip.min.js') }}"></script>
+<script src="{{ asset('js/pdfmake.min.js') }}"></script>
+<script src="{{ asset('js/vfs_fonts.js') }}"></script>
+<script src="{{ asset('js/buttons.html5.min.js') }}"></script>
+<script src="{{ asset('js/buttons.print.min.js') }}"></script>
     
     <script>
         $('#select-all').click(function(event) {   
@@ -255,22 +327,36 @@
     </script>
 
     <script>
-        function myFunction() {
-            var FilterValue, input, ul, li, i;
-                input = document.getElementById('myInput');
-                FilterValue = input.value;
-                ul = document.getElementById('menu');
-                li = ul.getElementsByTagName('li');
-
-                for (i = 0; i < li.length ; i++) {
-                    var a = li[i].getElementsByTagName('label')[0];
-                    if (a.innerHTML.indexOf(FilterValue) > -1 ) {
-                        li[i].style.display = "";
-                    } else {
-                        li[i].style.display = "none";
-                    }
-                }
+    function filterFunctiona() {
+          var input, filter, ul, li, a, i;
+          input = document.getElementById("myInputa");
+          filter = input.value.toUpperCase();
+          div = document.getElementById("myDropdowna");
+          a = div.getElementsByClassName("cak");
+          for (i = 0; i < a.length; i++) {
+            txtValue = a[i].textContent || a[i].innerText;
+            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+              a[i].style.display = "";
+            } else {
+              a[i].style.display = "none";
             }
+          }
+        }
+    </script>
+
+    <script>
+        $(".dropbtn").click(function(e){
+            $("#myDropdowna").show();
+            e.stopPropagation();
+        });
+
+        $("#myDropdowna").click(function(e){
+            e.stopPropagation();
+        });
+
+        $(document).click(function(){
+            $("#myDropdowna").hide();
+        });
     </script>
     
     <script type="text/javascript"> 
@@ -297,7 +383,7 @@
             text: 'Source: X'
         },
         xAxis: {
-            categories: {!! json_encode($month) !!},
+            categories: {!! json_encode($month2) !!},
             crosshair: true
         },
         yAxis: {
@@ -344,7 +430,7 @@
             text: 'Source: X'
         },
         xAxis: {
-            categories: {!! json_encode($month) !!},
+            categories: {!! json_encode($month4) !!},
             crosshair: true
         },
         yAxis: {
@@ -378,6 +464,7 @@
         }]
     });
     </script>
+    
         <script>
         Highcharts.chart('container2', {
         chart: {
@@ -390,7 +477,7 @@
             text: 'Source: X'
         },
         xAxis: {
-            categories: {!! json_encode($month) !!},
+            categories: {!! json_encode($month6) !!},
             crosshair: true
         },
         yAxis: {
@@ -437,7 +524,7 @@
             text: 'Source: X'
         },
         xAxis: {
-            categories: {!! json_encode($month) !!},
+            categories: {!! json_encode($month8) !!},
             crosshair: true
         },
         yAxis: {
@@ -484,7 +571,7 @@
             text: 'Source: X'
         },
         xAxis: {
-            categories: {!! json_encode($month) !!},
+            categories: {!! json_encode($month10) !!},
             crosshair: true
         },
         yAxis: {
@@ -531,7 +618,7 @@
             text: 'Source: X'
         },
         xAxis: {
-            categories: {!! json_encode($month) !!},
+            categories: {!! json_encode($month12) !!},
             crosshair: true
         },
         yAxis: {
@@ -578,7 +665,7 @@
             text: 'Source: X'
         },
         xAxis: {
-            categories: {!! json_encode($month) !!},
+            categories: {!! json_encode($month14) !!},
             crosshair: true
         },
         yAxis: {
@@ -625,7 +712,7 @@
             text: 'Source: X'
         },
         xAxis: {
-            categories: {!! json_encode($month) !!},
+            categories: {!! json_encode($month16) !!},
             crosshair: true
         },
         yAxis: {
@@ -672,7 +759,7 @@
             text: 'Source: X'
         },
         xAxis: {
-            categories: {!! json_encode($month) !!},
+            categories: {!! json_encode($month18) !!},
             crosshair: true
         },
         yAxis: {
@@ -719,7 +806,7 @@
             text: 'Source: X'
         },
         xAxis: {
-            categories: {!! json_encode($month) !!},
+            categories: {!! json_encode($month20) !!},
             crosshair: true
         },
         yAxis: {
@@ -770,27 +857,27 @@
                 console.log(e.target.value);
                 var groupid = e.target.value;
                 if (groupid == "all_type") {
-                    $.get('/api/json-group-matrix' , function(data){
+                    $.get('http://192.168.7.32:8080/bni/public/api/json-group-matrix' , function(data){
                     console.log(data);
                     $('#group').empty();
                     $('#group').append('<option value="0" selected="true">All Group</option>');
 
                     $.each(data, function(index, groupsObj) {
-                        console.log(groupsObj.group);
-                        $('#group').append('<option value="' + groupsObj.group + '" >' + groupsObj.group + '</option>');
+                        console.log(groupsObj.prd_name);
+                        $('#group').append('<option value="' + groupsObj.group_prod_3 + '" >' + groupsObj.group_prod_3 + '</option>');
                     });
                 });    
                 
                 } else {
                     
-                $.get('/api/json-group-matrix?type_product_id=' + groupid , function(data){
+                $.get('http://192.168.7.32:8080/bni/public/api/json-group-matrix?jenis=' + groupid , function(data){
                     console.log(data);
                     $('#group').empty();
-                    $('#group').append('<option value="0" selected="true">=======</option>');
+                    $('#group').append('<option value="0" selected="true">Pilih Group</option>');
 
                     $.each(data, function(index, groupsObj) {
-                        console.log(groupsObj.group);
-                        $('#group').append('<option value="' + groupsObj.group + '" >' + groupsObj.group + '</option>');
+                        console.log(groupsObj.prd_name);
+                        $('#group').append('<option value="' + groupsObj.group_prod_3 + '" >' + groupsObj.group_prod_3 + '</option>');
                     });
                 });
                 }
@@ -803,14 +890,16 @@
             $('#group').on('change', function(e){
                 console.log(e.target.value);
                 var group_product_third = e.target.value;
-                $.get('/api/json-acc-matrix?group_product_third=' + group_product_third , function(data){
+                $.get('http://192.168.7.32:8080/bni/public/api/json-acc-matrix?group_prod_3=' + group_product_third , function(data){
                     console.log(data);
                     // $('#options').append('<li><label><input name="options" type="checkbox" value="">All Group</label></li>');
                     $('#options').empty();
 
                     $.each(data, function(index, optionObj) {
-                        // console.log(optionObj.acc_type_id);
-                        $('#options').append('<li><label><input name="options[]" type="checkbox" value="'+ optionObj.acc_type_id +'">' + optionObj.acc_type.acc + '  ' + optionObj.product.name + '</label></li>');
+                        console.log(optionObj.prd_name);
+                        $('#options').append('<div class="cik" style="margin-left: 15px;"><input name="products[]" style="margin-left: 15px;" type="checkbox" class="products" value="'+ optionObj.prd_name +'">' + '&nbsp;' + optionObj.acc_type + ' ' + optionObj.prd_name +  '</div>');
+
+                        // $('#options').append('<input name="acctypes[]" type="checkbox" value="'+ optionObj.acc_type +'">' + '&nbsp;' + optionObj.acc_type + ' ' + optionObj.prd_name );
                     });
                 });
             });
