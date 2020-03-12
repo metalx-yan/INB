@@ -65,6 +65,14 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'level:admin']], fun
 
 Route::group(['prefix' => 'user', 'middleware' => ['auth', 'level:user']], function() {
 
+    Route::get('mtd-account' , 'MovementController@getAccountMtd')->name('mtd-account');
+
+    // Route::post('top-bottom-nasabah' , 'QueryController@getTopBottom')->name('funding-top-bottom-nasabah');
+
+    Route::get('ytd-account' , 'MovementController@getAccountYtd')->name('ytd-account');
+
+    // Route::post('top-bottom-nasabah' , 'QueryController@getTopBottom')->name('funding-top-bottom-nasabah');
+
     Route::get('/query-balance' , 'QueryController@getBalance')->name('query-balance');
 
     Route::get('/serverside' , 'QueryController@serverSide')->name('server-side');
@@ -74,7 +82,7 @@ Route::group(['prefix' => 'user', 'middleware' => ['auth', 'level:user']], funct
     Route::post('query-upload' , 'QueryController@getFilePost')->name('query-upload.post');
 
     Route::get('key-performance-matrix' , 'QueryController@getMatrix')->name('key-performance-matrix');
-
+    
     Route::post('top-bottom-nasabah' , 'QueryController@getTopBottom')->name('funding-top-bottom-nasabah');
 
     Route::get('dtd-top' , 'QueryController@getTopBottomDtd')->name('dtd-top');
@@ -106,6 +114,8 @@ Route::group(['prefix' => 'user', 'middleware' => ['auth', 'level:user']], funct
     Route::get('logActivity', 'UserController@logActivity')->name('log.user');
 
     Route::get('saldo-posisi', 'QueryController@getPositionGet')->name('saldo-posisi.get');
+
+    Route::get('/dashboard2','Dashboard2Controller@index');
     // Route::get('/', function () {
     //     \LogActivity::addToLog('Open Beranda');
     //     return view('dashboard');

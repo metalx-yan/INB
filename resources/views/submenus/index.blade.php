@@ -116,7 +116,7 @@
 @endsection
 
 @section('scripts')
-    <script src="{{ asset('js/js/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('js/jquery.dataTables.min.js') }}"></script>
 
     <script>
         $(document).ready( function () {

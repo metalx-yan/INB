@@ -44,7 +44,7 @@ class QueryController extends Controller
         $regi = DB::connection('sqlsrv158')->table('funding.dbo.tbl_branch_code')->select(DB::raw("CONVERT(INT, region) as reg"), 'regDigit')->distinct('reg', 'regDigit')->get();
         $regions = $regi->toArray();
 
-        $tables = DB::connection('sqlsrv158')->select("SELECT * FROM FUNDING.INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME LIKE '%deposit_prod_%'");
+        $tables =  DB::connection('sqlsrv158')->select("SELECT * FROM FUNDING.INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME LIKE '%deposit_prod_%'");
         $tables2 = DB::connection('sqlsrv158')->select("SELECT * FROM FUNDING.INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME LIKE '%pdm_hsl_summary_deposito_%'");
 
         $list = [];
@@ -382,6 +382,8 @@ class QueryController extends Controller
 
    public function getPosition(Request $request) 
     {
+        //     dd();
+        $getdate = Carbon::parse($request->day . '-' . $request->month . '-' .$request->year)->format('d-m-Y');
         // $regions = DB::connection('sqlsrv158')->table('db_reza.dbo.tbl_tabungan_perwilayah_perproduk_2')->select('db_reza.dbo.tbl_tabungan_perwilayah_perproduk_2.region', 'db_reza.dbo.tbl_tabungan_perwilayah_perproduk_2.regDigit', 'funding.dbo.tbl_branch_code.branch_name')
         // ->leftJoin('funding.dbo.tbl_branch_code', DB::raw("CONCAT(db_reza.dbo.tbl_tabungan_perwilayah_perproduk_2.region , '-' , db_reza.dbo.tbl_tabungan_perwilayah_perproduk_2.regDigit)") , '=' , DB::raw("CONCAT(funding.dbo.tbl_branch_code.region , '-' , funding.dbo.tbl_branch_code.regDigit)"))
         // ->where('db_reza.dbo.tbl_tabungan_perwilayah_perproduk_2.regDigit', '!=' , null)->distinct()->orderBy('db_reza.dbo.tbl_tabungan_perwilayah_perproduk_2.region', 'asc')->get();
@@ -568,7 +570,7 @@ class QueryController extends Controller
         $types = DB::connection('sqlsrv158')->table('db_reza.dbo.tbl_tabungan_perwilayah_perproduk_2')->select('jenis')
         ->where('jenis', '!=' , null)->distinct()->get();
        
-       return view('balance.position', compact('columns','regions', 'years', 'types', 'result1', 'result2', 'result3', 'result4', 'charts', 'reg', 'balance', 'number_account', 'null'));
+       return view('balance.position', compact('columns','regions', 'years', 'types', 'result1', 'result2', 'result3', 'result4', 'charts', 'reg', 'balance', 'number_account', 'null', 'getdate'));
 //        return redirect()->back();
     }
 
@@ -794,6 +796,8 @@ class QueryController extends Controller
                 $br[] = $branch->branch_name;
         }
 
+        if ($request->groups != null && $request->products != null && $request->jenas != null && $request->region != null && $request->jentab != null ) {
+
         $res = DB::connection('sqlsrv159')->table('datamart.dbo.' .$request->day)
         ->select('product_name', 'bni_cif_key', 'id_number', 'branch_name', 'regDigit' ,'saldoskrng', 'saldo_sblm', 'delta', 'customer_name', 'flag_tabungan', 'flag_nasabah');
 
@@ -828,7 +832,11 @@ class QueryController extends Controller
         }
    
         $sa =  $show5->take($request->filter)->orderBy('delta')->get();
-        
+
+        } else {
+                return redirect()->back();
+        }        
+
         $null = is_null($request->day);
 
         $tb = DB::connection('sqlsrv159')->select("SELECT * FROM DATAMART.INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME LIKE '%bottom_ytd_%'");
@@ -867,6 +875,8 @@ class QueryController extends Controller
                 $br[] = $branch->branch_name;
         }
 
+        if ($request->groups != null && $request->products != null && $request->jenas != null && $request->region != null && $request->jentab != null ) {
+
         $res = DB::connection('sqlsrv159')->table('datamart.dbo.' .$request->day)
         ->select('product_name', 'bni_cif_key', 'id_number', 'branch_name', 'regDigit' ,'saldoskrng', 'saldo_sblm', 'delta', 'customer_name', 'flag_tabungan', 'flag_nasabah');
 
@@ -901,7 +911,11 @@ class QueryController extends Controller
         }
    
         $sa =  $show5->take($request->filter)->orderBy('delta')->get();
-        
+
+        } else {
+                return redirect()->back();
+        }
+
         $null = is_null($request->day);
 
         $tb = DB::connection('sqlsrv159')->select("SELECT * FROM DATAMART.INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME LIKE '%bottom_mtd_%'");
@@ -941,9 +955,11 @@ class QueryController extends Controller
                 $br[] = $branch->branch_name;
         }
 
+        if ($request->groups != null && $request->products != null && $request->jenas != null && $request->region != null && $request->jentab != null ) {
+        
         $res = DB::connection('sqlsrv159')->table('datamart.dbo.' .$request->day)
         ->select('product_name', 'bni_cif_key', 'id_number', 'branch_name', 'regDigit' ,'saldoskrng', 'saldo_sblm', 'delta', 'customer_name', 'flag_tabungan', 'flag_nasabah');
-
+        
         if (Req::input('select-all') == 'on') {
                 $show5 = $res->whereIn('datamart.dbo.' . $request->day . '.branch_name', $br);
         } else {
@@ -976,6 +992,9 @@ class QueryController extends Controller
    
         $sa =  $show5->take($request->filter)->orderBy('delta', 'desc')->get();
 
+        } else {
+                return redirect()->back();
+        }
         $null = is_null($request->day);
 
         $tb = DB::connection('sqlsrv159')->select("SELECT * FROM DATAMART.INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME LIKE '%top_dtd_%'");
@@ -1016,6 +1035,8 @@ class QueryController extends Controller
                 $br[] = $branch->branch_name;
         }
 
+        if ($request->groups != null && $request->products != null && $request->jenas != null && $request->region != null && $request->jentab != null ) {
+        
         $res = DB::connection('sqlsrv159')->table('datamart.dbo.' .$request->day)
         ->select('product_name', 'bni_cif_key', 'id_number', 'branch_name', 'regDigit' ,'saldoskrng', 'saldo_sblm', 'delta', 'customer_name', 'flag_tabungan', 'flag_nasabah');
 
@@ -1050,6 +1071,10 @@ class QueryController extends Controller
         }
    
         $sa =  $show5->take($request->filter)->orderBy('delta', 'asc')->get();
+
+        } else {
+                return redirect()->back();
+        }
 
         $null = is_null($request->day);
 
@@ -1091,6 +1116,8 @@ class QueryController extends Controller
                 $br[] = $branch->branch_name;
         }
 
+        if ($request->groups != null && $request->products != null && $request->jenas != null && $request->region != null && $request->jentab != null ) {
+
         $res = DB::connection('sqlsrv159')->table('datamart.dbo.' .$request->day)
         ->select('product_name', 'bni_cif_key', 'id_number', 'branch_name', 'regDigit' ,'saldoskrng', 'saldo_sblm', 'delta', 'customer_name', 'flag_tabungan', 'flag_nasabah');
 
@@ -1125,6 +1152,10 @@ class QueryController extends Controller
         }
    
         $sa =  $show5->take($request->filter)->orderBy('delta', 'desc')->get();
+
+        } else {
+                return redirect()->back();
+        }
 
         $null = is_null($request->day);
 
@@ -1165,6 +1196,8 @@ class QueryController extends Controller
                 $br[] = $branch->branch_name;
         }
 
+        if ($request->groups != null && $request->products != null && $request->jenas != null && $request->region != null && $request->jentab != null ) {
+
         $res = DB::connection('sqlsrv159')->table('datamart.dbo.' .$request->day)
         ->select('product_name', 'bni_cif_key', 'id_number', 'branch_name', 'regDigit' ,'saldoskrng', 'saldo_sblm', 'delta', 'customer_name', 'flag_tabungan', 'flag_nasabah');
 
@@ -1199,6 +1232,10 @@ class QueryController extends Controller
         }
    
         $sa =  $show5->take($request->filter)->orderBy('delta', 'desc')->get();
+
+        } else {
+                return redirect()->back();
+        }
 
         $null = is_null($request->day);
 
@@ -2308,11 +2345,11 @@ class QueryController extends Controller
         ,'query1', 'query2', 'query3', 'query4', 'query5', 'query6', 'query7', 'query8', 'query9', 'query10', 'query11', 'query12', 'query13', 'query14', 'query15', 'query16', 'query17', 'query18', 'query19', 'query20'));
     }
 
-//     public function exportPerformance()
-//     {
-//         // $aut = DB::connection('sqlsrv158')->table('db_reza.dbo.grafik_cur_balance')->select(DB::raw("CONVERT(INT, bulan) as bulan"), DB::raw('sum(cast(saldo as BIGINT)) as balance'))->where('tahun', '2018')->groupBy('bulan')->orderBy('bulan', 'asc')->get();
-//         return view('matrix.export', compact('aut'));
-//     }
+    public function exportPerformance()
+    {
+        // $aut = DB::connection('sqlsrv158')->table('db_reza.dbo.grafik_cur_balance')->select(DB::raw("CONVERT(INT, bulan) as bulan"), DB::raw('sum(cast(saldo as BIGINT)) as balance'))->where('tahun', '2018')->groupBy('bulan')->orderBy('bulan', 'asc')->get();
+        return view('matrix.export', compact('aut'));
+    }
 
 //     public function halamanutama(){
 //         $halamanutama = $request->halamanutama;
@@ -2336,12 +2373,3 @@ class QueryController extends Controller
 }
 
 //umam query
-
-// public function grafik (Request $request)
-// {
-// $cari = $request->cari;
-
-// $DEPOSITO = DB::connection('sqlsrv158')->table('funding.dbo.sum.dpk_daily_2020')->select(DB::raw("CONVERT(INT, saldo) as region"), 'region_name')->where('region', '!=', null)->where('region', '<=', 18)->distinct()->orderBy('region', 'asc')->get();
-
-// $types = DB::connection('sqlsrv158')->table('funding.dbo.sum.dpk_daily_2020')->select('saldo')->distinct()->get();
-// }

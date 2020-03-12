@@ -159,7 +159,10 @@
                         @if ($null)
                             
                         @else
-                            
+                        
+                        <p>
+                            <span>Tanggal : <b> {{ $getdate }}</b></span>
+                        </p>
                         {{-- <a href="{{ route('export.file') }}" class="btn btn-success my-3" target="_blank">EXPORT EXCEL</a> --}}
                         <table class="table border" id="myTable">
                             <thead>
@@ -320,16 +323,16 @@
 
 @section('scripts')
     
-<script src="{{ asset('js/js/highcharts.js') }}"></script>
+<script src="{{ asset('js/highcharts.js') }}"></script>
 {{-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script> --}}
-<script src="{{ asset('js/js/jquery.dataTables.min.js') }}"></script>
-<script src="{{ asset('js/js/dataTables.buttons.min.js') }}"></script>
-<script src="{{ asset('js/js/buttons.flash.min.js') }}"></script>
-<script src="{{ asset('js/js/jszip.min.js') }}"></script>
-<script src="{{ asset('js/js/pdfmake.min.js') }}"></script>
-<script src="{{ asset('js/js/vfs_fonts.js') }}"></script>
-<script src="{{ asset('js/js/buttons.html5.min.js') }}"></script>
-<script src="{{ asset('js/js/buttons.print.min.js') }}"></script>
+<script src="{{ asset('js/jquery.dataTables.min.js') }}"></script>
+<script src="{{ asset('js/dataTables.buttons.min.js') }}"></script>
+<script src="{{ asset('js/buttons.flash.min.js') }}"></script>
+<script src="{{ asset('js/jszip.min.js') }}"></script>
+<script src="{{ asset('js/pdfmake.min.js') }}"></script>
+<script src="{{ asset('js/vfs_fonts.js') }}"></script>
+<script src="{{ asset('js/buttons.html5.min.js') }}"></script>
+<script src="{{ asset('js/buttons.print.min.js') }}"></script>
    
     <script>
         $(document).ready(function(){

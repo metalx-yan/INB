@@ -1,5 +1,5 @@
 <?php 
-    $filename = 'export.xls';
+    $filename = 'export-KPM.xls';
     header('Content-type: application/ms-excel');
     header('Content-Disposition: attachment; filename='. $filename);
 

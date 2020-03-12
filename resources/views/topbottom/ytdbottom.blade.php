@@ -343,8 +343,8 @@ onfocus='this.size=5;' onblur='this.size=1;' onchange='this.size=1; this.blur();
                                 <td>ID Number</td>
                                 <td>CIF Key</td>
                                 <td>Customer Name</td>
-                                <td>Wilayah</td>
                                 <td>Cabang</td>
+                                <td>Wilayah</td>
                                 <td>Product</td>
                                 <td>Tabungan</td>
                                 <td>Nasabah</td>

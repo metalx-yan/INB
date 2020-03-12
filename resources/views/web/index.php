@@ -75,11 +75,7 @@
                 <!-- Dropdown Menu -->          
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle page-scroll" href="#about" id="navbarDropdown" role="button" aria-haspopup="true" aria-expanded="false">About</a>
-                    <!-- <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="terms-conditions.html"><span class="item-text">Terms Conditions</span></a>
-                        <div class="dropdown-items-divide-hr"></div>
-                        <a class="dropdown-item" href="privacy-policy.html"><span class="item-text">Privacy Policy</span></a>
-                    </div> -->
+                    
                 </li>
                 <!-- end of dropdown menu -->
 
@@ -87,19 +83,13 @@
                     <a class="nav-link page-scroll" href="#contact">Contact</a>
                 </li>
             </ul>
-            <span class="nav-item social-icons">
-                <span class="fa-stack">
-                    <a href="login">
-                        <i class="fas fa-sign-in-alt"></i>
-                        
-                    </a>
-                </span>
-            </span>
+            
         </div>
     </nav> <!-- end of navbar -->
     <!-- end of navigation -->
 
 
+    
     <!-- Header -->
     <header id="header" class="header">
         <div class="header-content">
@@ -123,7 +113,6 @@
     </header> <!-- end of header -->
     <!-- end of header -->
 
-
     <!-- Customers -->
     <div class="slider-1">
         <div class="container">
@@ -137,17 +126,17 @@
                             <div class="swiper-wrapper">
                                 <div class="swiper-slide">
                                     <div class="image-container">
-                                        <img class="img-responsive" src="/web/images/link.png" alt="alternative">
+                                        <img class="img-responsive" src="../../web/images2/linkaja.png">
                                     </div>
                                 </div>
                                 <div class="swiper-slide">
                                     <div class="image-container">
-                                        <img class="img-responsive" src="images/bni1.png" alt="alternative">
+                                        <img class="img-responsive" src="../bni1.png">
                                     </div>
                                 </div>
                                 <div class="swiper-slide">
                                     <div class="image-container">
-                                        <img class="img-responsive" src="images/bni2.png" alt="alternative">
+                                        <img class="img-responsive" src="../bni1.png"   >
                                     </div>
                                 </div>
                                 
@@ -173,1248 +162,211 @@
                 </div> <!-- end of col -->
                 
             </div> <!-- end of row -->
-            <div class="container">
-                <button type="button" class="btn btn-primary">Export To Excel</button> 
-                
-            </div> <br>
+            <form method="get">
+			<label>Pilih Tanggal</label>
+			<input type="date" name="tanggal">
+            <input type="submit" value="FILTER">
+            <button>Export Excel</button>
+        </form>         
+<!-- grafik performance -->
 
-<!--Koneksi databse-->
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<script src="https://code.highcharts.com/modules/export-data.js"></script>
+<script src="https://code.highcharts.com/modules/accessibility.js"></script>
+
+<figure class="highcharts-figure">
+    <div id="container"></div>  
+      
+</figure>
+
+<style>.highcharts-figure, .highcharts-data-table table {
+    min-width: 0%; 
+    max-width: 90%;
+    margin: 1em auto;
+}
+
+#container {
+    height: 400px;
+}
+
+.highcharts-data-table table {
+	font-family: Verdana, sans-serif;
+	border-collapse: collapse;
+	border: 1px solid #EBEBEB;
+	margin: 10px auto;
+	text-align: center;
+	width: 100%;
+	max-width: 500px;
+}
+.highcharts-data-table caption {
+    padding: 1em 0;
+    font-size: 1.2em;
+    color: #555;
+}
+.highcharts-data-table th {
+	font-weight: 600;
+    padding: 0.5em;
+}
+.highcharts-data-table td, .highcharts-data-table th, .highcharts-data-table caption {
+    padding: 0.5em;
+}
+.highcharts-data-table thead tr, .highcharts-data-table tr:nth-child(even) {
+    background: #f8f8f8;
+}
+.highcharts-data-table tr:hover {
+    background: #f1f7ff;
+}
 
 
-            <!-- <div class="row">
-                <div class="col-lg-12">
+</style>
 
-                    <!-- Card -->
-                    <div class="card">
-                        <div class="card-body">
-                            <h4 class="card-title">Deposito</h4>
-                            <script src="https://code.highcharts.com/highcharts.js"></script>
-                            <script src="https://code.highcharts.com/highcharts-more.js"></script>
-                            <script src="https://code.highcharts.com/modules/exporting.js"></script>
-                            <script src="https://code.highcharts.com/modules/export-data.js"></script>
-                            <script src="https://code.highcharts.com/modules/accessibility.js"></script>
-                            
-                            <figure class="highcharts-figure">
-                                <div id="container3" ng-controller="gaugeController as ctrl">
-                                    <ng-gauge size="{{getBlockSizeForGauge()}}" type="full" thick="5" min="0" max="100" value="getValue()" cap="round" label="" append="%"></ng-gauge>
-                            </div>
-                               
-                            </figure>
+<script>Highcharts.chart('container', {
+    chart: {
+        type: 'column'
+    },
+    title: {
+        text: 'Performance Daily'
+    },
+    subtitle: {
+        text: 'Last Update 09-03-2020'
+    },
+    xAxis: {
+        categories: [
+            'Jan',
+            'Feb',
+            'Mar',
+            'Apr',
+            'May',
+            'Jun',
+            'Jul',
+            'Aug',
+            'Sep',
+            'Oct',
+            'Nov',
+            'Dec'
+        ],
+        crosshair: true
+    },
+    yAxis: {
+        min: 0,
+        title: {
+            text: 'Rainfall (mm)'
+        }
+    },
+    tooltip: {
+        headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+        pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+            '<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
+        footerFormat: '</table>',
+        shared: true,
+        useHTML: true
+    },
+    plotOptions: {
+        column: {
+            pointPadding: 0.2,
+            borderWidth: 0
+        }
+    },
+    series: [{
+        name: 'Deposito',
+        data: [49.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 95.6, 54.4]
 
-                            <style>#container3 {
-                                height: 400px; 
-                            }
-                            
-                            .highcharts-figure, .highcharts-data-table table {
-                                min-width: 280px; 
-                                max-width: 500px;
-                                margin: 1em auto;
-                            }
-                            
-                            .highcharts-data-table table {
-                                font-family: Verdana, sans-serif;
-                                border-collapse: collapse;
-                                border: 1px solid #EBEBEB;
-                                margin: 10px auto;
-                                text-align: center;
-                                width: 100%;
-                                max-width: 500px;
-                            }
-                            .highcharts-data-table caption {
-                                padding: 1em 0;
-                                font-size: 1.2em;
-                                color: #555;
-                            }
-                            .highcharts-data-table th {
-                                font-weight: 600;
-                                padding: 0.5em;
-                            }
-                            .highcharts-data-table td, .highcharts-data-table th, .highcharts-data-table caption {
-                                padding: 0.5em;
-                            }
-                            .highcharts-data-table thead tr, .highcharts-data-table tr:nth-child(even) {
-                                background: #f8f8f8;
-                            }
-                            .highcharts-data-table tr:hover {
-                                background: #f1f7ff;
-                            }
-                            </style>
+    }, {
+        name: 'Tabungan',
+        data: [83.6, 78.8, 98.5, 93.4, 106.0, 84.5, 105.0, 104.3, 91.2, 83.5, 106.6, 92.3]
 
-                            <script>Highcharts.chart('container3', {
+    }, {
+        name: 'Tabungan Perorangan',
+        data: [48.9, 38.8, 39.3, 41.4, 47.0, 48.3, 59.0, 59.6, 52.4, 65.2, 59.3, 51.2]
 
-                                chart: {
-                                    type: 'gauge',
-                                    plotBackgroundColor: null,
-                                    plotBackgroundImage: null,
-                                    plotBorderWidth: 0,
-                                    plotShadow: false
-                                },
-                            
-                                title: {
-                                    text: 'Performance'
-                                },
-                            
-                                pane: {
-                                    startAngle: -150,
-                                    endAngle: 150,
-                                    background: [{
-                                        backgroundColor: {
-                                            linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
-                                            stops: [
-                                                [0, '#FFF'],
-                                                [1, '#333']
-                                            ]
-                                        },
-                                        borderWidth: 0,
-                                        outerRadius: '109%'
-                                    }, {
-                                        backgroundColor: {
-                                            linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
-                                            stops: [
-                                                [0, '#333'],
-                                                [1, '#FFF']
-                                            ]
-                                        },
-                                        borderWidth: 1,
-                                        outerRadius: '107%'
-                                    }, {
-                                        // default background
-                                    }, {
-                                        backgroundColor: '#DDD',
-                                        borderWidth: 0,
-                                        outerRadius: '105%',
-                                        innerRadius: '103%'
-                                    }]
-                                },
-                            
-                                // the value axis
-                                yAxis: {
-                                    min: 100,
-                                    max: 200,
-                            
-                                    minorTickInterval: 'auto',
-                                    minorTickWidth: 1,
-                                    minorTickLength: 10,
-                                    minorTickPosition: 'inside',
-                                    minorTickColor: '#666',
-                            
-                                    tickPixelInterval: 30,
-                                    tickWidth: 2,
-                                    tickPosition: 'inside',
-                                    tickLength: 10,
-                                    tickColor: '#666',
-                                    labels: {
-                                        step: 2,
-                                        rotation: 'auto'
-                                    },
-                                    title: {
-                                        text: 'Target = 02324242',
-                                    },
-                                   
-                                    plotBands: [{
-                                        from: 0,
-                                        to: 100,
-                                        color: '#55BF3B' // green
-                                    }, {
-                                        from: 100,
-                                        to: 140,
-                                        color: '#DDDF0D' // yellow
-                                    }, {
-                                        from: 140,
-                                        to: 200,
-                                        color: '#DF5353' // red
-                                    }]
-                                },
-                            
-                                series: [{
-                                    name: 'saldo',
-                                    data: [10000],
-                                    tooltip: {
-                                        valueSuffix: ' IDR'
-                                    }
-                                }]
-                            
-                            },
+    }, {
+        name: 'Tabungan NP',
+        data: [42.4, 33.2, 34.5, 39.7, 52.6, 75.5, 57.4, 60.4, 47.6, 39.1, 46.8, 51.1]
 
-                            
-                            // Add some life
-                            function (chart) {
-                                if (!chart.renderer.forExport) {
-                                    setInterval(function () {
-                                        var point = chart.series[0].points[0],
-                                            newVal,
-                                            inc = Math.round((Math.random() - 0.5) * 20);
-                            
-                                        newVal = point.y + inc;
-                                        if (newVal < 0 || newVal > 200) {
-                                            newVal = point.y - inc;
-                                        }
-                            
-                                        point.update(newVal);
-                            
-                                    }, 3000);
-                                    //create code responsive
-                                    'use strict';
-                                // create the gauge module
-                                var gaugeModule = angular.module('gaugeModule', []);
-                                // the module controller
-                                gaugeModule
-                                    .controller(
-                                        'gaugeController',
-                                        [
-                                            '$scope',
-                                            '$rootScope',
-                                            function ($scope, $rootScope) {
-                                                $scope.getBlockSizeForGauge = function()
-                                                {
-                                                    var dimension = document.getElementById("gauge-container").offsetWidth;
-                                                    return dimension;
-                                                }
-                                            }]);
-                                }
-                            });</script>
+    }, {
+        name: 'BNI Dollar',
+        data: [42.4, 33.2, 34.5, 39.7, 52.6, 75.5, 57.4, 60.4, 47.6, 39.1, 46.8, 51.1]
 
-<div style="overflow-x:auto;">
-    <table> 
-        <tr>
-            <th>Saldo Terkini : </th>
-            
-        </tr>
+    }, {
+        name: 'TaBI NP',
+        data: [42.4, 33.2, 34.5, 39.7, 52.6, 75.5, 57.4, 60.4, 47.6, 39.1, 46.8, 51.1]
 
-        <tr>
-            <th>Saldo Target :</th>
-        </tr>
-        <tr></tr>
+    }]
+});</script>
 
-    </table></div>
+<!--        
+<table class="table table-striped" width="90%">
+    <tr>
+      <th scope="col">No</th>
+      <th scope="col">Tanggal</th>
+      <th scope="col">Jenis Tabungan</th>
+      <th scope="col">Saldo</th>
+      <th scope="col">Target</th>
+      <th scope="col">Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">1</th>
+      <td>12/03/2020</td>
+      <td>Deposito</td>
+      <td>25.000.000</td>
+      <td>30.000.000</td>ww    
+      <td>down</td>
+    </tr>
 
-                        </div>
-                    </div>
-                    <!-- end of card -->
-                    <!-- Card -->
-                    <div class="card">
-                        
-                        <div class="card-body">
-                            <h4 class="card-title">Tabungan</h4>
-                            <script src="https://code.highcharts.com/highcharts.js"></script>
-                            <script src="https://code.highcharts.com/highcharts-more.js"></script>
-                            <script src="https://code.highcharts.com/modules/exporting.js"></script>
-                            <script src="https://code.highcharts.com/modules/export-data.js"></script>
-                            <script src="https://code.highcharts.com/modules/accessibility.js"></script>
-                            
-                            <figure class="highcharts-figure">
-                                <div id="container4"ng-controller="gaugeController as ctrl">
-                                    <ng-gauge size="{{getBlockSizeForGauge()}}" type="full" thick="5" min="0" max="100" value="getValue()" cap="round" label="" append="%"></ng-gauge>
-                            </div>
-                               
-                            </figure>
+    <tr>
+      <th scope="row">2</th>
+      <td>13/02/2020</td>
+      <td>Tabungan</td>
+      <td>25.000.000</td>
+      <td>30.000.000</td>
+      <td>UP</td>
+    </tr>
 
-                            <style>#container4 {
-                                height: 400px; 
-                            }
-                            
-                            .highcharts-figure, .highcharts-data-table table {
-                                min-width: 280px; 
-                                max-width: 500px;
-                                margin: 1em auto;
-                            }
-                            
-                            .highcharts-data-table table {
-                                font-family: Verdana, sans-serif;
-                                border-collapse: collapse;
-                                border: 1px solid #EBEBEB;
-                                margin: 10px auto;
-                                text-align: center;
-                                width: 100%;
-                                max-width: 500px;
-                            }
-                            .highcharts-data-table caption {
-                                padding: 1em 0;
-                                font-size: 1.2em;
-                                color: #555;
-                            }
-                            .highcharts-data-table th {
-                                font-weight: 600;
-                                padding: 0.5em;
-                            }
-                            .highcharts-data-table td, .highcharts-data-table th, .highcharts-data-table caption {
-                                padding: 0.5em;
-                            }
-                            .highcharts-data-table thead tr, .highcharts-data-table tr:nth-child(even) {
-                                background: #f8f8f8;
-                            }
-                            .highcharts-data-table tr:hover {
-                                background: #f1f7ff;
-                            }
-                            </style>
+    <tr>
+      <th scope="row">3</th>
+      <td>13/02/2020</td>
+      <td>Tabungan Perorangan</td>
+      <td>20.000.000</td>
+      <td>13.000.000</td>
+      <td>UP</td>
+    </tr>
+    <tr>
+      <th scope="row">4</th>
+      <td>15/02/2020</td>
+      <td>TaBi NP</td>
+      <td>10.000.000</td>
+      <td>20.000.000</td>
+      <td>down</td>
+    </tr>
+    <tr>
+        <th scope="row">5</th>
+        <td>13/02/2020</td>
+        <td>BNI Dollar</td>
+      <td>1.000.000</td>
+      <td>2.000.000</td>
+      <td> down </td>
+    </tr>
 
-                            <script>Highcharts.chart('container4', {
+    <tr>
+        <th scope="row">6</th>
+        <td>13/02/2020</td>
+        <td>Tabungan NP</td>
+      <td>9.000.000</td>
+      <td>12.000.000</td>
+      <td>up</td>
+    </tr>
 
-                                chart: {
-                                    type: 'gauge',
-                                    plotBackgroundColor: null,
-                                    plotBackgroundImage: null,
-                                    plotBorderWidth: 0,
-                                    plotShadow: false
-                                },
-                            
-                                title: {
-                                    text: 'Performance'
-                                },
-                            
-                                pane: {
-                                    startAngle: -150,
-                                    endAngle: 150,
-                                    background: [{
-                                        backgroundColor: {
-                                            linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
-                                            stops: [
-                                                [0, '#FFF'],
-                                                [1, '#333']
-                                            ]
-                                        },
-                                        borderWidth: 0,
-                                        outerRadius: '109%'
-                                    }, {
-                                        backgroundColor: {
-                                            linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
-                                            stops: [
-                                                [0, '#333'],
-                                                [1, '#FFF']
-                                            ]
-                                        },
-                                        borderWidth: 1,
-                                        outerRadius: '107%'
-                                    }, {
-                                        // default background
-                                    }, {
-                                        backgroundColor: '#DDD',
-                                        borderWidth: 0,
-                                        outerRadius: '105%',
-                                        innerRadius: '103%'
-                                    }]
-                                },
-                            
-                                // the value axis
-                                yAxis: {
-                                    min: 0,
-                                    max: 200,
-                            
-                                    minorTickInterval: 'auto',
-                                    minorTickWidth: 1,
-                                    minorTickLength: 10,
-                                    minorTickPosition: 'inside',
-                                    minorTickColor: '#666',
-                            
-                                    tickPixelInterval: 30,
-                                    tickWidth: 2,
-                                    tickPosition: 'inside',
-                                    tickLength: 10,
-                                    tickColor: '#666',
-                                    labels: {
-                                        step: 2,
-                                        rotation: 'auto'
-                                    },
-                                    title: {
-                                        text: 'km/h'
-                                    },
-                                    plotBands: [{
-                                        from: 0,
-                                        to: 120,
-                                        color: '#55BF3B' // green
-                                    }, {
-                                        from: 120,
-                                        to: 160,
-                                        color: '#DDDF0D' // yellow
-                                    }, {
-                                        from: 160,
-                                        to: 200,
-                                        color: '#DF5353' // red
-                                    }]
-                                },
-                            
-                                series: [{
-                                    name: 'Speed',
-                                    data: [80],
-                                    tooltip: {
-                                        valueSuffix: ' km/h'
-                                    }
-                                }]
-                            
-                            },
-                             // Add some life
-                             function (chart) {
-                                if (!chart.renderer.forExport) {
-                                    setInterval(function () {
-                                        var point = chart.series[0].points[0],
-                                            newVal,
-                                            inc = Math.round((Math.random() - 0.5) * 20);
-                            
-                                        newVal = point.y + inc;
-                                        if (newVal < 0 || newVal > 200) {
-                                            newVal = point.y - inc;
-                                        }
-                            
-                                        point.update(newVal);
-                            
-                                    }, 3000);
-                                    //create code responsive
-                                    'use strict';
-                                // create the gauge module
-                                var gaugeModule = angular.module('gaugeModule', []);
-                                // the module controller
-                                gaugeModule
-                                    .controller(
-                                        'gaugeController',
-                                        [
-                                            '$scope',
-                                            '$rootScope',
-                                            function ($scope, $rootScope) {
-                                                $scope.getBlockSizeForGauge = function()
-                                                {
-                                                    var dimension = document.getElementById("gauge-container").offsetWidth;
-                                                    return dimension;
-                                                }
-                                            }]);
-                                }
-                            });</script>
-                        </div>
+  </tbody>
+</table> -->
 
-                        <div style="overflow-x:auto;">
-                            <table> 
-                                <tr>
-                                    <th>Saldo Terkini : </th>
-                                    
-                                </tr>
-                        
-                                <tr>
-                                    <th>Saldo Target :</th>
-                                </tr>
-                                <tr></tr>
-                        
-                            </table></div>
 
-                    </div>
-                    <!-- end of card -->
-                    <!-- Card -->
-                    <div class="card">
-                        
-                        <div class="card-body">
-                            <h4 class="card-title">Tabungan perorangan</h4>
-                            <script src="https://code.highcharts.com/highcharts.js"></script>
-                            <script src="https://code.highcharts.com/highcharts-more.js"></script>
-                            <script src="https://code.highcharts.com/modules/exporting.js"></script>
-                            <script src="https://code.highcharts.com/modules/export-data.js"></script>
-                            <script src="https://code.highcharts.com/modules/accessibility.js"></script>
-                            
-                            <figure class="highcharts-figure">
-                                <div id="container5"ng-controller="gaugeController as ctrl">
-                                    <ng-gauge size="{{getBlockSizeForGauge()}}" type="full" thick="5" min="0" max="100" value="getValue()" cap="round" label="" append="%"></ng-gauge>
-                            </div>
-                               
-                            </figure>
-
-                            <style>#container5 {
-                                height: 400px; 
-                            }
-                            
-                            .highcharts-figure, .highcharts-data-table table {
-                                min-width: 280px; 
-                                max-width: 500px;
-                                margin: 1em auto;
-                            }
-                            
-                            .highcharts-data-table table {
-                                font-family: Verdana, sans-serif;
-                                border-collapse: collapse;
-                                border: 1px solid #EBEBEB;
-                                margin: 10px auto;
-                                text-align: center;
-                                width: 100%;
-                                max-width: 500px;
-                            }
-                            .highcharts-data-table caption {
-                                padding: 1em 0;
-                                font-size: 1.2em;
-                                color: #555;
-                            }
-                            .highcharts-data-table th {
-                                font-weight: 600;
-                                padding: 0.5em;
-                            }
-                            .highcharts-data-table td, .highcharts-data-table th, .highcharts-data-table caption {
-                                padding: 0.5em;
-                            }
-                            .highcharts-data-table thead tr, .highcharts-data-table tr:nth-child(even) {
-                                background: #f8f8f8;
-                            }
-                            .highcharts-data-table tr:hover {
-                                background: #f1f7ff;
-                            }
-                            </style>
-
-                            <script>Highcharts.chart('container5', {
-
-                                chart: {
-                                    type: 'gauge',
-                                    plotBackgroundColor: null,
-                                    plotBackgroundImage: null,
-                                    plotBorderWidth: 0,
-                                    plotShadow: false
-                                },
-                            
-                                title: {
-                                    text: 'Performance'
-                                },
-                            
-                                pane: {
-                                    startAngle: -150,
-                                    endAngle: 150,
-                                    background: [{
-                                        backgroundColor: {
-                                            linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
-                                            stops: [
-                                                [0, '#FFF'],
-                                                [1, '#333']
-                                            ]
-                                        },
-                                        borderWidth: 0,
-                                        outerRadius: '109%'
-                                    }, {
-                                        backgroundColor: {
-                                            linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
-                                            stops: [
-                                                [0, '#333'],
-                                                [1, '#FFF']
-                                            ]
-                                        },
-                                        borderWidth: 1,
-                                        outerRadius: '107%'
-                                    }, {
-                                        // default background
-                                    }, {
-                                        backgroundColor: '#DDD',
-                                        borderWidth: 0,
-                                        outerRadius: '105%',
-                                        innerRadius: '103%'
-                                    }]
-                                },
-                            
-                                // the value axis
-                                yAxis: {
-                                    min: 0,
-                                    max: 200,
-                            
-                                    minorTickInterval: 'auto',
-                                    minorTickWidth: 1,
-                                    minorTickLength: 10,
-                                    minorTickPosition: 'inside',
-                                    minorTickColor: '#666',
-                            
-                                    tickPixelInterval: 30,
-                                    tickWidth: 2,
-                                    tickPosition: 'inside',
-                                    tickLength: 10,
-                                    tickColor: '#666',
-                                    labels: {
-                                        step: 2,
-                                        rotation: 'auto'
-                                    },
-                                    title: {
-                                        text: 'km/h'
-                                    },
-                                    plotBands: [{
-                                        from: 0,
-                                        to: 120,
-                                        color: '#55BF3B' // green
-                                    }, {
-                                        from: 120,
-                                        to: 160,
-                                        color: '#DDDF0D' // yellow
-                                    }, {
-                                        from: 160,
-                                        to: 200,
-                                        color: '#DF5353' // red
-                                    }]
-                                },
-                            
-                                series: [{
-                                    name: 'Speed',
-                                    data: [80],
-                                    tooltip: {
-                                        valueSuffix: ' km/h'
-                                    }
-                                }]
-                            
-                            },
-                             // Add some life
-                             function (chart) {
-                                if (!chart.renderer.forExport) {
-                                    setInterval(function () {
-                                        var point = chart.series[0].points[0],
-                                            newVal,
-                                            inc = Math.round((Math.random() - 0.5) * 20);
-                            
-                                        newVal = point.y + inc;
-                                        if (newVal < 0 || newVal > 200) {
-                                            newVal = point.y - inc;
-                                        }
-                            
-                                        point.update(newVal);
-                            
-                                    }, 3000);
-                                    //create code responsive
-                                    'use strict';
-                                // create the gauge module
-                                var gaugeModule = angular.module('gaugeModule', []);
-                                // the module controller
-                                gaugeModule
-                                    .controller(
-                                        'gaugeController',
-                                        [
-                                            '$scope',
-                                            '$rootScope',
-                                            function ($scope, $rootScope) {
-                                                $scope.getBlockSizeForGauge = function()
-                                                {
-                                                    var dimension = document.getElementById("gauge-container").offsetWidth;
-                                                    return dimension;
-                                                }
-                                            }]);
-                                }
-                            });</script>
-                        </div>
-                        <div style="overflow-x:auto;">
-                            <table> 
-                                <tr>
-                                    <th>Saldo Terkini : </th>
-                                    
-                                </tr>
-                        
-                                <tr>
-                                    <th>Saldo Target :</th>
-                                </tr>
-                                <tr></tr>
-                        
-                            </table></div>
-                    </div>
-                    <!-- end of card -->
-                    <!-- Card -->
-                    <div class="card">
-                        
-                        <div class="card-body">
-                            <h4 class="card-title">Tabungan NP</h4>
-                            <script src="https://code.highcharts.com/highcharts.js"></script>
-                            <script src="https://code.highcharts.com/highcharts-more.js"></script>
-                            <script src="https://code.highcharts.com/modules/exporting.js"></script>
-                            <script src="https://code.highcharts.com/modules/export-data.js"></script>
-                            <script src="https://code.highcharts.com/modules/accessibility.js"></script>
-                            
-                            <figure class="highcharts-figure">
-                                <div id="container6"ng-controller="gaugeController as ctrl">
-                                    <ng-gauge size="{{getBlockSizeForGauge()}}" type="full" thick="5" min="0" max="100" value="getValue()" cap="round" label="" append="%"></ng-gauge>
-                            </div>
-                               
-                            </figure>
-
-                            <style>#container6 {
-                                height: 400px; 
-                            }
-                            
-                            .highcharts-figure, .highcharts-data-table table {
-                                min-width: 280px; 
-                                max-width: 500px;
-                                margin: 1em auto;
-                            }
-                            
-                            .highcharts-data-table table {
-                                font-family: Verdana, sans-serif;
-                                border-collapse: collapse;
-                                border: 1px solid #EBEBEB;
-                                margin: 10px auto;
-                                text-align: center;
-                                width: 100%;
-                                max-width: 500px;
-                            }
-                            .highcharts-data-table caption {
-                                padding: 1em 0;
-                                font-size: 1.2em;
-                                color: #555;
-                            }
-                            .highcharts-data-table th {
-                                font-weight: 600;
-                                padding: 0.5em;
-                            }
-                            .highcharts-data-table td, .highcharts-data-table th, .highcharts-data-table caption {
-                                padding: 0.5em;
-                            }
-                            .highcharts-data-table thead tr, .highcharts-data-table tr:nth-child(even) {
-                                background: #f8f8f8;
-                            }
-                            .highcharts-data-table tr:hover {
-                                background: #f1f7ff;
-                            }
-                            </style>
-
-                            <script>Highcharts.chart('container6', {
-
-                                chart: {
-                                    type: 'gauge',
-                                    plotBackgroundColor: null,
-                                    plotBackgroundImage: null,
-                                    plotBorderWidth: 0,
-                                    plotShadow: false
-                                },
-                            
-                                title: {
-                                    text: 'Performance'
-                                },
-                            
-                                pane: {
-                                    startAngle: -150,
-                                    endAngle: 150,
-                                    background: [{
-                                        backgroundColor: {
-                                            linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
-                                            stops: [
-                                                [0, '#FFF'],
-                                                [1, '#333']
-                                            ]
-                                        },
-                                        borderWidth: 0,
-                                        outerRadius: '109%'
-                                    }, {
-                                        backgroundColor: {
-                                            linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
-                                            stops: [
-                                                [0, '#333'],
-                                                [1, '#FFF']
-                                            ]
-                                        },
-                                        borderWidth: 1,
-                                        outerRadius: '107%'
-                                    }, {
-                                        // default background
-                                    }, {
-                                        backgroundColor: '#DDD',
-                                        borderWidth: 0,
-                                        outerRadius: '105%',
-                                        innerRadius: '103%'
-                                    }]
-                                },
-                            
-                                // the value axis
-                                yAxis: {
-                                    min: 0,
-                                    max: 200,
-                            
-                                    minorTickInterval: 'auto',
-                                    minorTickWidth: 1,
-                                    minorTickLength: 10,
-                                    minorTickPosition: 'inside',
-                                    minorTickColor: '#666',
-                            
-                                    tickPixelInterval: 30,
-                                    tickWidth: 2,
-                                    tickPosition: 'inside',
-                                    tickLength: 10,
-                                    tickColor: '#666',
-                                    labels: {
-                                        step: 2,
-                                        rotation: 'auto'
-                                    },
-                                    title: {
-                                        text: 'km/h'
-                                    },
-                                    plotBands: [{
-                                        from: 0,
-                                        to: 120,
-                                        color: '#55BF3B' // green
-                                    }, {
-                                        from: 120,
-                                        to: 160,
-                                        color: '#DDDF0D' // yellow
-                                    }, {
-                                        from: 160,
-                                        to: 200,
-                                        color: '#DF5353' // red
-                                    }]
-                                },
-                            
-                                series: [{
-                                    name: 'Speed',
-                                    data: [80],
-                                    tooltip: {
-                                        valueSuffix: ' km/h'
-                                    }
-                                }]
-                            
-                            },
-                             // Add some life
-                             function (chart) {
-                                if (!chart.renderer.forExport) {
-                                    setInterval(function () {
-                                        var point = chart.series[0].points[0],
-                                            newVal,
-                                            inc = Math.round((Math.random() - 0.5) * 20);
-                            
-                                        newVal = point.y + inc;
-                                        if (newVal < 0 || newVal > 200) {
-                                            newVal = point.y - inc;
-                                        }
-                            
-                                        point.update(newVal);
-                            
-                                    }, 3000);
-                                    //create code responsive
-                                    'use strict';
-                                // create the gauge module
-                                var gaugeModule = angular.module('gaugeModule', []);
-                                // the module controller
-                                gaugeModule
-                                    .controller(
-                                        'gaugeController',
-                                        [
-                                            '$scope',
-                                            '$rootScope',
-                                            function ($scope, $rootScope) {
-                                                $scope.getBlockSizeForGauge = function()
-                                                {
-                                                    var dimension = document.getElementById("gauge-container").offsetWidth;
-                                                    return dimension;
-                                                }
-                                            }]);
-                                }
-                            });</script>
-                        </div>
-                        <div style="overflow-x:auto;">
-                            <table> 
-                                <tr>
-                                    <th>Saldo Terkini : </th>
-                                    
-                                </tr>
-                        
-                                <tr>
-                                    <th>Saldo Target :</th>
-                                </tr>
-                                <tr></tr>
-                        
-                            </table></div>
-                    </div>
-                    <!-- end of card -->
-                    <!-- Card -->
-                    <div class="card">
-                        
-                        <div class="card-body">
-                            <h4 class="card-title">TaBI NP</h4>
-                            <script src="https://code.highcharts.com/highcharts.js"></script>
-                            <script src="https://code.highcharts.com/highcharts-more.js"></script>
-                            <script src="https://code.highcharts.com/modules/exporting.js"></script>
-                            <script src="https://code.highcharts.com/modules/export-data.js"></script>
-                            <script src="https://code.highcharts.com/modules/accessibility.js"></script>
-                            
-                            <figure class="highcharts-figure">
-                                <div id="container7"ng-controller="gaugeController as ctrl">
-                                    <ng-gauge size="{{getBlockSizeForGauge()}}" type="full" thick="5" min="0" max="100" value="getValue()" cap="round" label="" append="%"></ng-gauge>
-                            </div>
-                               
-                            </figure>
-
-                            <style>#container7 {
-                                height: 400px; 
-                            }
-                            
-                            .highcharts-figure, .highcharts-data-table table {
-                                min-width: 280px; 
-                                max-width: 500px;
-                                margin: 1em auto;
-                            }
-                            
-                            .highcharts-data-table table {
-                                font-family: Verdana, sans-serif;
-                                border-collapse: collapse;
-                                border: 1px solid #EBEBEB;
-                                margin: 10px auto;
-                                text-align: center;
-                                width: 100%;
-                                max-width: 500px;
-                            }
-                            .highcharts-data-table caption {
-                                padding: 1em 0;
-                                font-size: 1.2em;
-                                color: #555;
-                            }
-                            .highcharts-data-table th {
-                                font-weight: 600;
-                                padding: 0.5em;
-                            }
-                            .highcharts-data-table td, .highcharts-data-table th, .highcharts-data-table caption {
-                                padding: 0.5em;
-                            }
-                            .highcharts-data-table thead tr, .highcharts-data-table tr:nth-child(even) {
-                                background: #f8f8f8;
-                            }
-                            .highcharts-data-table tr:hover {
-                                background: #f1f7ff;
-                            }
-                            </style>
-
-                            <script>Highcharts.chart('container7', {
-
-                                chart: {
-                                    type: 'gauge',
-                                    plotBackgroundColor: null,
-                                    plotBackgroundImage: null,
-                                    plotBorderWidth: 0,
-                                    plotShadow: false
-                                },
-                            
-                                title: {
-                                    text: 'Performance'
-                                },
-                            
-                                pane: {
-                                    startAngle: -150,
-                                    endAngle: 150,
-                                    background: [{
-                                        backgroundColor: {
-                                            linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
-                                            stops: [
-                                                [0, '#FFF'],
-                                                [1, '#333']
-                                            ]
-                                        },
-                                        borderWidth: 0,
-                                        outerRadius: '109%'
-                                    }, {
-                                        backgroundColor: {
-                                            linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
-                                            stops: [
-                                                [0, '#333'],
-                                                [1, '#FFF']
-                                            ]
-                                        },
-                                        borderWidth: 1,
-                                        outerRadius: '107%'
-                                    }, {
-                                        // default background
-                                    }, {
-                                        backgroundColor: '#DDD',
-                                        borderWidth: 0,
-                                        outerRadius: '105%',
-                                        innerRadius: '103%'
-                                    }]
-                                },
-                            
-                                // the value axis
-                                yAxis: {
-                                    min: 0,
-                                    max: 200,
-                            
-                                    minorTickInterval: 'auto',
-                                    minorTickWidth: 1,
-                                    minorTickLength: 10,
-                                    minorTickPosition: 'inside',
-                                    minorTickColor: '#666',
-                            
-                                    tickPixelInterval: 30,
-                                    tickWidth: 2,
-                                    tickPosition: 'inside',
-                                    tickLength: 10,
-                                    tickColor: '#666',
-                                    labels: {
-                                        step: 2,
-                                        rotation: 'auto'
-                                    },
-                                    title: {
-                                        text: 'km/h'
-                                    },
-                                    plotBands: [{
-                                        from: 0,
-                                        to: 120,
-                                        color: '#55BF3B' // green
-                                    }, {
-                                        from: 120,
-                                        to: 160,
-                                        color: '#DDDF0D' // yellow
-                                    }, {
-                                        from: 160,
-                                        to: 200,
-                                        color: '#DF5353' // red
-                                    }]
-                                },
-                            
-                                series: [{
-                                    name: 'Speed',
-                                    data: [80],
-                                    tooltip: {
-                                        valueSuffix: ' km/h'
-                                    }
-                                }]
-                            
-                            },
-                             // Add some life
-                             function (chart) {
-                                if (!chart.renderer.forExport) {
-                                    setInterval(function () {
-                                        var point = chart.series[0].points[0],
-                                            newVal,
-                                            inc = Math.round((Math.random() - 0.5) * 20);
-                            
-                                        newVal = point.y + inc;
-                                        if (newVal < 0 || newVal > 200) {
-                                            newVal = point.y - inc;
-                                        }
-                            
-                                        point.update(newVal);
-                            
-                                    }, 3000);
-                                    //create code responsive
-                                    'use strict';
-                                // create the gauge module
-                                var gaugeModule = angular.module('gaugeModule', []);
-                                // the module controller
-                                gaugeModule
-                                    .controller(
-                                        'gaugeController',
-                                        [
-                                            '$scope',
-                                            '$rootScope',
-                                            function ($scope, $rootScope) {
-                                                $scope.getBlockSizeForGauge = function()
-                                                {
-                                                    var dimension = document.getElementById("gauge-container").offsetWidth;
-                                                    return dimension;
-                                                }
-                                            }]);
-                                }
-                            });</script>
-                        </div>
-                        <div style="overflow-x:auto;">
-                            <table> 
-                                <tr>
-                                    <th>Saldo Terkini : </th>
-                                    
-                                </tr>
-                        
-                                <tr>
-                                    <th>Saldo Target :</th>
-                                </tr>
-                                <tr></tr>
-                        
-                            </table></div>
-                    </div>
-                    <!-- end of card -->
-
-                    <!-- Card -->
-                    <div class="card">
-                        <div class="card-body">
-                            <h4 class="card-title">Dollar BNI</h4>
-                            <script src="https://code.highcharts.com/highcharts.js"></script>
-                            <script src="https://code.highcharts.com/highcharts-more.js"></script>
-                            <script src="https://code.highcharts.com/modules/exporting.js"></script>
-                            <script src="https://code.highcharts.com/modules/export-data.js"></script>
-                            <script src="https://code.highcharts.com/modules/accessibility.js"></script>
-                            
-                            <figure class="highcharts-figure">
-                                <div id="container8"ng-controller="gaugeController as ctrl">
-                                    <ng-gauge size="{{getBlockSizeForGauge()}}" type="full" thick="5" min="0" max="100" value="getValue()" cap="round" label="" append="%"></ng-gauge>
-                            </div>
-                               
-                            </figure>
-
-                            <style>#container8 {
-                                height: 400px; 
-                            }
-                            
-                            .highcharts-figure, .highcharts-data-table table {
-                                min-width: 280px; 
-                                max-width: 500px;
-                                margin: 1em auto;
-                            }
-                            
-                            .highcharts-data-table table {
-                                font-family: Verdana, sans-serif;
-                                border-collapse: collapse;
-                                border: 1px solid #EBEBEB;
-                                margin: 10px auto;
-                                text-align: center;
-                                width: 100%;
-                                max-width: 500px;
-                            }
-                            .highcharts-data-table caption {
-                                padding: 1em 0;
-                                font-size: 1.2em;
-                                color: #555;
-                            }
-                            .highcharts-data-table th {
-                                font-weight: 600;
-                                padding: 0.5em;
-                            }
-                            .highcharts-data-table td, .highcharts-data-table th, .highcharts-data-table caption {
-                                padding: 0.5em;
-                            }
-                            .highcharts-data-table thead tr, .highcharts-data-table tr:nth-child(even) {
-                                background: #f8f8f8;
-                            }
-                            .highcharts-data-table tr:hover {
-                                background: #f1f7ff;
-                            }
-                            </style>
-
-                            <script>Highcharts.chart('container8', {
-
-                                chart: {
-                                    type: 'gauge',
-                                    plotBackgroundColor: null,
-                                    plotBackgroundImage: null,
-                                    plotBorderWidth: 0,
-                                    plotShadow: false
-                                },
-                            
-                                title: {
-                                    text: 'Performance'
-                                },
-                            
-                                pane: {
-                                    startAngle: -150,
-                                    endAngle: 150,
-                                    background: [{
-                                        backgroundColor: {
-                                            linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
-                                            stops: [
-                                                [0, '#FFF'],
-                                                [1, '#333']
-                                            ]
-                                        },
-                                        borderWidth: 0,
-                                        outerRadius: '109%'
-                                    }, {
-                                        backgroundColor: {
-                                            linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
-                                            stops: [
-                                                [0, '#333'],
-                                                [1, '#FFF']
-                                            ]
-                                        },
-                                        borderWidth: 1,
-                                        outerRadius: '107%'
-                                    }, {
-                                        // default background
-                                    }, {
-                                        backgroundColor: '#DDD',
-                                        borderWidth: 0,
-                                        outerRadius: '105%',
-                                        innerRadius: '103%'
-                                    }]
-                                },
-                            
-                                // the value axis
-                                yAxis: {
-                                    min: 0,
-                                    max: 200,
-                            
-                                    minorTickInterval: 'auto',
-                                    minorTickWidth: 1,
-                                    minorTickLength: 10,
-                                    minorTickPosition: 'inside',
-                                    minorTickColor: '#666',
-                            
-                                    tickPixelInterval: 30,
-                                    tickWidth: 2,
-                                    tickPosition: 'inside',
-                                    tickLength: 10,
-                                    tickColor: '#666',
-                                    labels: {
-                                        step: 2,
-                                        rotation: 'auto'
-                                    },
-                                    title: {
-                                        text: 'km/h'
-                                    },
-                                    plotBands: [{
-                                        from: 0,
-                                        to: 120,
-                                        color: '#55BF3B' // green
-                                    }, {
-                                        from: 120,
-                                        to: 160,
-                                        color: '#DDDF0D' // yellow
-                                    }, {
-                                        from: 160,
-                                        to: 200,
-                                        color: '#DF5353' // red
-                                    }]
-                                },
-                            
-                                series: [{
-                                    name: 'Speed',
-                                    data: [80],
-                                    tooltip: {
-                                        valueSuffix: ' km/h'
-                                    }
-                                }]
-                            
-                            },
-                             // Add some life
-                             function (chart) {
-                                if (!chart.renderer.forExport) {
-                                    setInterval(function () {
-                                        var point = chart.series[0].points[0],
-                                            newVal,
-                                            inc = Math.round((Math.random() - 0.5) * 20);
-                            
-                                        newVal = point.y + inc;
-                                        if (newVal < 0 || newVal > 200) {
-                                            newVal = point.y - inc;
-                                        }
-                            
-                                        point.update(newVal);
-                            
-                                    }, 3000);
-                                    //create code responsive
-                                    'use strict';
-                                // create the gauge module
-                                var gaugeModule = angular.module('gaugeModule', []);
-                                // the module controller
-                                gaugeModule
-                                    .controller(
-                                        'gaugeController',
-                                        [
-                                            '$scope',
-                                            '$rootScope',
-                                            function ($scope, $rootScope) {
-                                                $scope.getBlockSizeForGauge = function()
-                                                {
-                                                    var dimension = document.getElementById("gauge-container").offsetWidth;
-                                                    return dimension;
-                                                }
-                                            }]);
-                                }
-                            });</script>
-                        </div>
-                        <div style="overflow-x:auto;">
-                            <table> 
-                                <tr>
-                                    <th>Saldo Terkini : </th>
-                                    
-                                </tr>
-                        
-                                <tr>
-                                    <th>Saldo Target :</th>
-                                </tr>
-                                <tr></tr>
-                        
-                            </table></div>
-                    </div>
-                    <!-- end of card -->
-                    
-                </div> <!-- end of col -->
             </div> <!-- end of row -->
         </div> <!-- end of container -->
-    </div> end of cards-1 -->
+    </div>
     <!-- end of services -->
-
 
     <!-- Details 1 -->
     <div class="basic-1">
@@ -1422,8 +374,8 @@
             <div class="row">
                 <div class="col-lg-6">
                     <div class="text-container">
-                        <h2>Design And Plan Your Business Growth Steps</h2>
-                        <p>Use our staff and our expertise to design and plan your business growth strategy. Evolo team is eager to advise you on the best opportunities that you should look into</p>
+                        <h2>Meningkatkan Performa dalam Tim</h2>
+                        <p>Dalam meningkatkan Performance Staff PDM bekerja keras dalam membangun Tim yang solid untuk memenuhi Target yang ada</p>
                         <a class="btn-solid-reg popup-with-move-anim" href="#details-lightbox-1">LIGHTBOX</a>
                     </div> <!-- end of text-container -->
                 </div> <!-- end of col -->
@@ -1435,9 +387,489 @@
             </div> <!-- end of row -->
         </div> <!-- end of container -->
     </div> <!-- end of basic-1 -->
-    <!-- end of details 1 -->
+    <!-- end of details 1 -->				
+            </div>
+
+            <div>
+
+    <!-- grafik performance -->
+<div>
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<script src="https://code.highcharts.com/modules/export-data.js"></script>
+<script src="https://code.highcharts.com/modules/accessibility.js"></script>
+
+<!-- <figure class="highcharts-figure"> -->
+    <div class="container">
+        <div class="row">
+            
+        <div class="col-lg-6">
+                <div id="container68"></div>
+            </div> 
+
+            
+            <div class="col-lg-6">
+                <div id="container69"></div>
+            </div>
+
+            <div class="col-lg-6">
+                <div id="container70"></div>  
+            </div>
+
+
+            <div class="col-lg-6">
+                <div id="container71"></div>  
+            </div>
+
+                <div class="col-lg-6">
+                    <div id="container72"></div>
+                </div>
+
+                <div class="col-lg-6">
+                    <div id="container73"></div>
+               
+                </div>
+        </div>      
+    </div>
+<!-- </figure> -->
+
+<style>.highcharts-figure, .highcharts-data-table table {
+    min-width: 0%; 
+    max-width: 35%;
+    margin:  1em auto;
+}
+#container71 {
+    height: 400px;
+}
+
+.highcharts-data-table table {
+	font-family: Verdana, sans-serif;
+	border-collapse: collapse;
+	border: 1px solid #EBEBEB;
+	margin: 10px auto;
+	text-align: center;
+	width: 100%;
+	max-width: 500px;
+}
+.highcharts-data-table caption {
+    padding: 1em 0;
+    font-size: 1.2em;
+    color: #555;
+}
+.highcharts-data-table th {
+	font-weight: 600;
+    padding: 0.5em;
+}
+.highcharts-data-table td, .highcharts-data-table th, .highcharts-data-table caption {
+    padding: 0.5em;
+}
+.highcharts-data-table thead tr, .highcharts-data-table tr:nth-child(even) {
+    background: #f8f8f8;
+}
+.highcharts-data-table tr:hover {
+    background: #f1f7ff;
+}
+
+</style>
+<script>Highcharts.chart('container68', {
+    chart: {
+        type: 'column'
+    },
+    title: {
+        text: 'Deposito'
+    },
+    subtitle: {
+        text: 'Last Update 09-03-2020'
+    },
+    xAxis: {
+        categories: [
+            'Jan',
+            'Feb',
+            'Mar',
+            'Apr',
+            'May',
+            'Jun',
+            'Jul',
+            'Aug',
+            'Sep',
+            'Oct',
+            'Nov',
+            'Dec'
+        ],
+        crosshair: true
+    },
+ 
+    yAxis: {
+            min: 0,
+            max: 1000,
+
+            title: {
+                text: ''
+            }
+        },
+    tooltip: {
+        headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+        pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+            '<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
+        footerFormat: '</table>',
+        shared: true,
+        useHTML: true
+    },
+    plotOptions: {
+        column: {
+            pointPadding: 0.2,
+            borderWidth: 0
+        }
+    },
+    series: [{
+        name: 'Saldo',
+        data: [49.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 95.6, 54.4]
+
+    }, {
+        name: 'Target',
+        data: [83.6, 78.8, 98.5, 93.4, 106.0, 84.5, 105.0, 104.3, 91.2, 83.5, 106.6, 92.3]
+
+    }, {
+        name: 'Persen',
+        data: [48.9, 38.8, 39.3, 41.4, 47.0, 48.3, 59.0, 59.6, 52.4, 65.2, 59.3, 51.2]
+
+    }]
+});</script>
+
+<script>Highcharts.chart('container69', {
+    chart: {
+        type: 'column'
+    },
+    title: {
+        text: 'Tabungan'
+    },
+    subtitle: {
+        text: 'Last Update 09-03-2020'
+    },
+    xAxis: {
+        categories: [
+            'Jan',
+            'Feb',
+            'Mar',
+            'Apr',
+            'May',
+            'Jun',
+            'Jul',
+            'Aug',
+            'Sep',
+            'Oct',
+            'Nov',
+            'Dec'
+        ],
+        crosshair: true
+    },
+ 
+    yAxis: {
+            min: 0,
+            max: 1000,
+
+            title: {
+                text: ''
+            }
+        },
+    tooltip: {
+        headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+        pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+            '<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
+        footerFormat: '</table>',
+        shared: true,
+        useHTML: true
+    },
+    plotOptions: {
+        column: {
+            pointPadding: 0.2,
+            borderWidth: 0
+        }
+    },
+    series: [{
+        name: 'Saldo',
+        data: [49.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 95.6, 54.4]
+
+    }, {
+        name: 'Target',
+        data: [83.6, 78.8, 98.5, 93.4, 106.0, 84.5, 105.0, 104.3, 91.2, 83.5, 106.6, 92.3]
+
+    }, {
+        name: 'Persen',
+        data: [48.9, 38.8, 39.3, 41.4, 47.0, 48.3, 59.0, 59.6, 52.4, 65.2, 59.3, 51.2]
+
+    }]
+});</script>
+
+<script>Highcharts.chart('container70', {
+    chart: {
+        type: 'column'
+    },
+    title: {
+        text: 'Tabungan Perorangan'
+    },
+    subtitle: {
+        text: 'Last Update 09-03-2020'
+    },
+    xAxis: {
+        categories: [
+            'Jan',
+            'Feb',
+            'Mar',
+            'Apr',
+            'May',
+            'Jun',
+            'Jul',
+            'Aug',
+            'Sep',
+            'Oct',
+            'Nov',
+            'Dec'
+        ],
+        crosshair: true
+    },
+ 
+    yAxis: {
+            min: 0,
+            max: 1000,
+
+            title: {
+                text: ''
+            }
+        },
+    tooltip: {
+        headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+        pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+            '<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
+        footerFormat: '</table>',
+        shared: true,
+        useHTML: true
+    },
+    plotOptions: {
+        column: {
+            pointPadding: 0.2,
+            borderWidth: 0
+        }
+    },
+    series: [{
+        name: 'Saldo',
+        data: [49.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 95.6, 54.4]
+
+    }, {
+        name: 'Target',
+        data: [83.6, 78.8, 98.5, 93.4, 106.0, 84.5, 105.0, 104.3, 91.2, 83.5, 106.6, 92.3]
+
+    }, {
+        name: 'Persen',
+        data: [48.9, 38.8, 39.3, 41.4, 47.0, 48.3, 59.0, 59.6, 52.4, 65.2, 59.3, 51.2]
+
+    }]
+});</script>
+
+<script>Highcharts.chart('container71', {
+    chart: {
+        type: 'column'
+    },
+    title: {
+        text: 'TaBI NP'
+    },
+    subtitle: {
+        text: 'Last Update 09-03-2020'
+    },
+    xAxis: {
+        categories: [
+            'Jan',
+            'Feb',
+            'Mar',
+            'Apr',
+            'May',
+            'Jun',
+            'Jul',
+            'Aug',
+            'Sep',
+            'Oct',
+            'Nov',
+            'Dec'
+        ],
+        crosshair: true
+    },
+ 
+    yAxis: {
+            min: 0,
+            max: 1000,
+
+            title: {
+                text: ''
+            }
+        },
+    tooltip: {
+        headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+        pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+            '<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
+        footerFormat: '</table>',
+        shared: true,
+        useHTML: true
+    },
+    plotOptions: {
+        column: {
+            pointPadding: 0.2,
+            borderWidth: 0
+        }
+    },
+    series: [{
+        name: 'Saldo',
+        data: [49.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 95.6, 54.4]
+
+    }, {
+        name: 'Target',
+        data: [83.6, 78.8, 98.5, 93.4, 106.0, 84.5, 105.0, 104.3, 91.2, 83.5, 106.6, 92.3]
+
+    }, {
+        name: 'Persen',
+        data: [48.9, 38.8, 39.3, 41.4, 47.0, 48.3, 59.0, 59.6, 52.4, 65.2, 59.3, 51.2]
+
+    }]
+});</script>
+
+<script>Highcharts.chart('container72', {
+    chart: {
+        type: 'column'
+    },
+    title: {
+        text: 'Dollar BNI'
+    },
+    subtitle: {
+        text: 'Last Update 09-03-2020'
+    },
+    xAxis: {
+        categories: [
+            'Jan',
+            'Feb',
+            'Mar',
+            'Apr',
+            'May',
+            'Jun',
+            'Jul',
+            'Aug',
+            'Sep',
+            'Oct',
+            'Nov',
+            'Dec'
+        ],
+        crosshair: true
+    },
+ 
+    yAxis: {
+            min: 0,
+            max: 1000,
+        
+            title: {
+                text: ''
+            }
+        },
+    tooltip: {
+        headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+        pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+            '<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
+        footerFormat: '</table>',
+        shared: true,
+        useHTML: true
+    },
+    plotOptions: {
+        column: {
+            pointPadding: 0.2,
+            borderWidth: 0
+        }
+    },
+    series: [{
+        name: 'Saldo',
+        data: [49.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 95.6, 54.4]
+
+    }, {
+        name: 'Target',
+        data: [83.6, 78.8, 98.5, 93.4, 106.0, 84.5, 105.0, 104.3, 91.2, 83.5, 106.6, 92.3]
+
+    }, {
+        name: 'Persen',
+        data: [48.9, 38.8, 39.3, 41.4, 47.0, 48.3, 59.0, 59.6, 52.4, 65.2, 59.3, 51.2]
+
+    }]
+});</script>
+
+<script>Highcharts.chart('container73', {
+    chart: {
+        type: 'column'
+    },
+    title: {
+        text: 'Tabungan NP'
+    },
+    subtitle: {
+        text: 'Last Update 09-03-2020'
+    },
+    xAxis: {
+        categories: [
+            'Jan',
+            'Feb',
+            'Mar',
+            'Apr',
+            'May',
+            'Jun',
+            'Jul',
+            'Aug',
+            'Sep',
+            'Oct',
+            'Nov',
+            'Dec'
+        ],
+        crosshair: true
+    },
+ 
+    yAxis: {
+            min: 0,
+            max: 1000,
+
+            title: {
+                text: ''
+            }
+        },
+    tooltip: {
+        headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+        pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+            '<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
+        footerFormat: '</table>',
+        shared: true,
+        useHTML: true
+    },
+    plotOptions: {
+        column: {
+            pointPadding: 0.2,
+            borderWidth: 0
+            
+       
+        }
+    },
+    series: [{
+        name: 'Saldo',
+        data: [49.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 95.6, 54.4]
+
+    }, {
+        name: 'Target',
+        data: [83.6, 78.8, 98.5, 93.4, 106.0, 84.5, 105.0, 104.3, 91.2, 83.5, 106.6, 92.3]
+
+    }, {
+        name: 'Persen',
+        data: [48.9, 38.8, 39.3, 41.4, 47.0, 48.3, 59.0, 59.6, 52.4, 65.2, 59.3, 51.2]
+
+    }]
 
     
+});</script>
+
+</script>
+
+
+</div>
+
     <!-- Details 2 -->
     <div class="basic-2">
         <div class="container">
@@ -1449,22 +881,22 @@
                 </div> <!-- end of col -->
                 <div class="col-lg-6">
                     <div class="text-container">
-                        <h2>Search For Optimization Wherever Is Possible</h2>
+                        <h2>Melatih Profesionalitas Tim maupun Individu</h2>
                         <ul class="list-unstyled li-space-lg">
                             <li class="media">
-                                <i class="fas fa-check"></i>
-                                <div class="media-body">Basically we'll teach you step by step what you need to do</div>
+                               <i class="fas fa-check"></i>
+                                <div class="media-body">Bekerjasama dalam mengembangkan dunia bisnis</div>
                             </li>
                             <li class="media">
-                                <i class="fas fa-check"></i>
-                                <div class="media-body">In order to develop your company and reach new heights</div>
+                            <i class="fas fa-check"></i>
+                                <div class="media-body">Meningkatakan idea ataupun gagasan baru dalam bersaing dengan Instansi Lain</div>
                             </li>
                             <li class="media">
-                                <i class="fas fa-check"></i>
-                                <div class="media-body">Everyone will be pleased from stakeholders to employees</div>
+                            <i class="fas fa-check"></i>
+                                <div class="media-body">Membangun Tim yang solid dalam dunia bisnis</div>
                             </li>
                         </ul>
-                        <a class="btn-solid-reg popup-with-move-anim" href="#details-lightbox-2">LIGHTBOX</a>
+                        <a class="btn-solid-reg popup-with-move-anim" href="#details-lightbox-2">Export</a>
                     </div> <!-- end of text-container -->
                 </div> <!-- end of col -->
             </div> <!-- end of row -->
@@ -1509,7 +941,7 @@
                             <i class="fas fa-check"></i><div class="media-body">Fast email checking</div>
                         </li>
                     </ul>
-                    <a class="btn-solid-reg mfp-close page-scroll" href="#request">REQUEST</a> <a class="btn-outline-reg mfp-close as-button" href="#screenshots">BACK</a>
+                    <a class="btn-solid-reg mfp-close page-scroll" href="#request">Export</a> <a class="btn-outline-reg mfp-close as-button" href="#screenshots">BACK</a>
                 </div> <!-- end of col -->
             </div> <!-- end of row -->
         </div> <!-- end of container -->
@@ -1552,7 +984,7 @@
                             <i class="fas fa-check"></i><div class="media-body">Fast email checking</div>
                         </li>
                     </ul>
-                    <a class="btn-solid-reg mfp-close page-scroll" href="#request">REQUEST</a> <a class="btn-outline-reg mfp-close as-button" href="#screenshots">BACK</a>
+                    <a class="btn-solid-reg mfp-close page-scroll" href="#request">Export</a> <a class="btn-outline-reg mfp-close as-button" href="#screenshots">BACK</a>
                 </div> <!-- end of col -->
             </div> <!-- end of row -->
         </div> <!-- end of container -->
@@ -1567,17 +999,18 @@
             <div class="row">
                 <div class="col-lg-12">
                     <h2>Product PDM </h2>
-                    <p class="p-heading p-large">We've prepared pricing plans for all budgets so you can get started right away. They're great for small companies and large organizations</p>
+                    <p class="p-heading p-large">dengan meningkatnya product yang dihasilkan menjadikan traffic per tahun mengalami kenaikan </p>
                 </div> <!-- end of col -->
             </div> <!-- end of row -->
             <div class="row">
                 <div class="col-lg-12">
 
                     <!-- Card-->
-                    <div class="card">
+                       <!-- Card-->
+                       <div class="card">
                         <div class="card-body">
                             <div class="card-title">Tapenas</div>
-                            <div class="card-subtitle">“Wujudkan    rumah    impian    Anda    dengan    lebih    terencana,    lebih    mudah,    dan    lebih    ringan.”</div>
+                            <div class="card-subtitle">“ Wujudkan rumah impian ”</div>
                             <hr class="cell-divide-hr">
                             <div class="price">
                                 <span class="currency">$</span><span class="value">199</span>
@@ -1590,7 +1023,7 @@
                                 </li>
                                 <li class="media">
                                     <i class="fas fa-check"></i><div class="media-body">User And Admin Rights Control</div>
-                                </li>
+                                <!-- </li>
                                 <li class="media">
                                     <i class="fas fa-times"></i><div class="media-body">List Building And Cleaning</div>
                                 </li>
@@ -1599,10 +1032,10 @@
                                 </li>
                                 <li class="media">
                                     <i class="fas fa-times"></i><div class="media-body">More Planning And Evaluation</div>
-                                </li>
+                                </li> -->
                             </ul>
                             <div class="button-wrapper">
-                                <a class="btn-solid-reg page-scroll" href="#request">REQUEST</a>
+                                <a class="btn-solid-reg page-scroll" href="#request">Export</a>
                             </div>
                         </div>
                     </div> <!-- end of card -->
@@ -1626,7 +1059,7 @@
                                 <li class="media">
                                     <i class="fas fa-check"></i><div class="media-body">User And Admin Rights Control</div>
                                 </li>
-                                <li class="media">
+                                <!-- <li class="media">
                                     <i class="fas fa-check"></i><div class="media-body">List Building And Cleaning</div>
                                 </li>
                                 <li class="media">
@@ -1634,10 +1067,44 @@
                                 </li>
                                 <li class="media">
                                     <i class="fas fa-times"></i><div class="media-body">More Planning And Evaluation</div>
-                                </li>
+                                </li> -->
                             </ul>
                             <div class="button-wrapper">
-                                <a class="btn-solid-reg page-scroll" href="#request">REQUEST</a>
+                                <a class="btn-solid-reg page-scroll" href="#request">Export</a>
+                            </div>
+                        </div>
+                    </div> <!-- end of card -->
+                    <!-- end of card -->
+                        <!-- Card-->
+                       <div class="card">
+                        <div class="card-body">
+                            <div class="card-title">Emerald Saving</div>
+                            <div class="card-subtitle">“ Wujudkan    rumah    impian ”</div>
+                            <hr class="cell-divide-hr">
+                            <div class="price">
+                                <span class="currency">$</span><span class="value">199</span>
+                                <div class="frequency">monthly</div>
+                            </div>
+                            <hr class="cell-divide-hr">
+                            <ul class="list-unstyled li-space-lg">
+                                <li class="media">
+                                    <i class="fas fa-check"></i><div class="media-body">Improve Your Email Marketing</div>
+                                </li>
+                                <li class="media">
+                                    <i class="fas fa-check"></i><div class="media-body">User And Admin Rights Control</div>
+                                <!-- </li>
+                                <li class="media">
+                                    <i class="fas fa-times"></i><div class="media-body">List Building And Cleaning</div>
+                                </li>
+                                <li class="media">
+                                    <i class="fas fa-times"></i><div class="media-body">Collected Data Management</div>
+                                </li>
+                                <li class="media">
+                                    <i class="fas fa-times"></i><div class="media-body">More Planning And Evaluation</div>
+                                </li> -->
+                            </ul>
+                            <div class="button-wrapper">
+                                <a class="btn-solid-reg page-scroll" href="#request">Export</a>
                             </div>
                         </div>
                     </div> <!-- end of card -->
@@ -1645,11 +1112,78 @@
 
                     <!-- Card-->
                     <div class="card">
+                        <div class="card-body">
+                            <div class="card-title">Taplus Bisnis Perorangan</div>
+                            <!-- <div class="card-subtitle">Very appropriate for the short term</div> -->
+                            <hr class="cell-divide-hr">
+                            <div class="price">
+                                <span class="currency">$</span><span class="value">299</span>
+                                <div class="frequency">monthly</div>
+                            </div>
+                            <hr class="cell-divide-hr">
+                            <ul class="list-unstyled li-space-lg">
+                                <li class="media">
+                                    <i class="fas fa-check"></i><div class="media-body">Improve Your Email Marketing</div>
+                                </li>
+                                <li class="media">
+                                    <i class="fas fa-check"></i><div class="media-body">User And Admin Rights Control</div>
+                                </li>
+                                <!-- <li class="media">
+                                    <i class="fas fa-check"></i><div class="media-body">List Building And Cleaning</div>
+                                </li>
+                                <li class="media">
+                                    <i class="fas fa-check"></i><div class="media-body">Collected Data Management</div>
+                                </li>
+                                <li class="media">
+                                    <i class="fas fa-times"></i><div class="media-body">More Planning And Evaluation</div>
+                                </li> -->
+                            </ul>
+                            <div class="button-wrapper">
+                                <a class="btn-solid-reg page-scroll" href="#request">Export</a>
+                            </div>
+                        </div>
+                    </div> <!-- end of card -->
+                    <!-- end of card -->
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="card-title">BNI Dollar Perorangan</div>
+                            
+                            <hr class="cell-divide-hr">
+                            <div class="price">
+                                <span class="currency">$</span><span class="value">299</span>
+                                <div class="frequency">monthly</div>
+                            </div>
+                            <hr class="cell-divide-hr">
+                            <ul class="list-unstyled li-space-lg">
+                                <li class="media">
+                                    <i class="fas fa-check"></i><div class="media-body">Improve Your Email Marketing</div>
+                                </li>
+                                <li class="media">
+                                    <i class="fas fa-check"></i><div class="media-body">User And Admin Rights Control</div>
+                                </li>
+                                <!-- <li class="media">
+                                    <i class="fas fa-check"></i><div class="media-body">List Building And Cleaning</div>
+                                </li>
+                                <li class="media">
+                                    <i class="fas fa-check"></i><div class="media-body">Collected Data Management</div>
+                                </li>
+                                <li class="media">
+                                    <i class="fas fa-times"></i><div class="media-body">More Planning And Evaluation</div>
+                                </li> -->
+                            </ul>
+                            <div class="button-wrapper">
+                                <a class="btn-solid-reg page-scroll" href="#request">Export</a>
+                            </div>
+                        </div>
+                    </div> <!-- end of card -->
+                    <!-- Card-->
+                    <div class="card">
                         <div class="label">
                             <p class="best-value">Best Value</p>
                         </div>
                         <div class="card-body">
                             <div class="card-title">Tabungan Haji</div>
+                            <?php echo "data nasabah" ?>
                             <div class="card-subtitle">Must have for large companies</div>
                             <hr class="cell-divide-hr">
                             <div class="price">
@@ -1664,7 +1198,7 @@
                                 <li class="media">
                                     <i class="fas fa-check"></i><div class="media-body">User And Admin Rights Control</div>
                                 </li>
-                                <li class="media">
+                                <!-- <li class="media">
                                     <i class="fas fa-check"></i><div class="media-body">List Building And Cleaning</div>
                                 </li>
                                 <li class="media">
@@ -1672,10 +1206,118 @@
                                 </li>
                                 <li class="media">
                                     <i class="fas fa-check"></i><div class="media-body">More Planning And Evaluation</div>
-                                </li>
+                                </li> -->
                             </ul>
                             <div class="button-wrapper">
-                                <a class="btn-solid-reg page-scroll" href="#request">REQUEST</a>
+                                <a class="btn-solid-reg page-scroll" href="#request">Export</a>
+                            </div>
+                        </div>
+                    </div> <!-- end of card -->
+
+                    <div class="higchart">
+
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="card-title">Taplus Pegawai</div>
+                            <div class="card-subtitle">“Wujudkan    rumah    impian ”</div>
+                            <hr class="cell-divide-hr">
+                            <div class="price">
+                                <span class="currency">$</span><span class="value">199</span>
+                                <div class="frequency">monthly</div>
+                            </div>
+                            <hr class="cell-divide-hr">
+                            <ul class="list-unstyled li-space-lg">
+                                <li class="media">
+                                    <i class="fas fa-check"></i><div class="media-body">Improve Your Email Marketing</div>
+                                </li>
+                                <li class="media">
+                                    <i class="fas fa-check"></i><div class="media-body">User And Admin Rights Control</div>
+                                <!-- </li>
+                                <li class="media">
+                                    <i class="fas fa-times"></i><div class="media-body">List Building And Cleaning</div>
+                                </li>
+                                <li class="media">
+                                    <i class="fas fa-times"></i><div class="media-body">Collected Data Management</div>
+                                </li>
+                                <li class="media">
+                                    <i class="fas fa-times"></i><div class="media-body">More Planning And Evaluation</div>
+                                </li> -->
+                            </ul>
+                            <div class="button-wrapper">
+                                <a class="btn-solid-reg page-scroll" href="#request">Export</a>
+                            </div>
+                        </div>
+                    </div> <!-- end of card -->
+                    <!-- end of card -->
+
+                    <!-- Card-->
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="card-title">Tabunganku</div>
+                            <div class="card-subtitle">Laku,Pandai,Simpel</div>
+                            <hr class="cell-divide-hr">
+                            <div class="price">
+                                <span class="currency">$</span><span class="value">299</span>
+                                <div class="frequency">monthly</div>
+                            </div>
+                            <hr class="cell-divide-hr">
+                            <ul class="list-unstyled li-space-lg">
+                                <li class="media">
+                                    <i class="fas fa-check"></i><div class="media-body">Improve Your Email Marketing</div>
+                                </li>
+                                <li class="media">
+                                    <i class="fas fa-check"></i><div class="media-body">User And Admin Rights Control</div>
+                                </li>
+                                <!-- <li class="media">
+                                    <i class="fas fa-check"></i><div class="media-body">List Building And Cleaning</div>
+                                </li>
+                                <li class="media">
+                                    <i class="fas fa-check"></i><div class="media-body">Collected Data Management</div>
+                                </li>
+                                <li class="media">
+                                    <i class="fas fa-times"></i><div class="media-body">More Planning And Evaluation</div>
+                                </li> -->
+                            </ul>
+                            <div class="button-wrapper">
+                                <a class="btn-solid-reg page-scroll" href="#request">Export</a>
+                            </div>
+                        </div>
+                    </div> <!-- end of card -->
+                    <!-- end of card -->
+
+                    <!-- Card-->
+                    <div class="card">
+                        <div class="label">
+                            <p class="best-value">Best Value</p>
+                        </div>
+                        <div class="card-body">
+                            <div class="card-title">Taplus Muda</div>
+                            <div class="card-subtitle">Must have for large companies</div>
+                            <hr class="cell-divide-hr">
+                            <div class="price">
+                                <span class="currency">$</span><span class="value">399</span>
+                                <div class="frequency">monthly</div>
+                            </div>
+                            <hr class="cell-divide-hr">
+                            <ul class="list-unstyled li-space-lg">
+                                <li class="media">
+                                    <i class="fas fa-check"></i><div class="media-body">Improve Your Email Marketing</div>
+                                </li>
+                                <li class="media">
+                                    <i class="fas fa-check"></i><div class="media-body">User And Admin Rights Control</div>
+                                </li>
+                                <!-- <li class="media">
+                                    <i class="fas fa-check"></i><div class="media-body">List Building And Cleaning</div>
+                                </li>
+                                <li class="media">
+                                    <i class="fas fa-check"></i><div class="media-body">Collected Data Management</div>
+                                </li>
+                                <li class="media">
+                                    <i class="fas fa-check"></i><div class="media-body">More Planning And Evaluation</div>
+                                </li> -->
+                            </ul>
+                            <div class="button-wrapper">
+                                <a class="btn-solid-reg page-scroll" href="#request">Export</a>
                             </div>
                         </div>
                     </div> <!-- end of card -->
@@ -1890,7 +1532,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
-                    <h2>Check Out The Video</h2>
+                    <h2>Company Profile</h2>
                 </div> <!-- end of col -->
             </div> <!-- end of row -->
             <div class="row">
@@ -1986,53 +1628,10 @@
         </div> <!-- end of container -->
     </div> <!-- end of slider-2 -->
     <!-- end of testimonials -->
+    
+<!-- STRUKTUR ORGANISASI -->
 
-
-    <!-- About -->
-    <div id="about" class="basic-4">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <h2>Struktur Organisasi PDM</h2>
-                    <p class="p-heading p-large">Product merupakan sebagai sarana meningkatkan kualitas kinerja Staff PDM dan dapat meningkatkan Instansi dalam dunia Perbankan</p>
-                </div> <!-- end of col -->
-            </div> <!-- end of row -->
-            <div class="row">
-                <div class="col-lg-12">
-                    
-                    <!-- Team Member -->
-                    <div class="team-member">
-                        <div class="image-wrapper">
-                            <img class="img-fluid" src="images/team-member-1.svg" alt="alternative">
-                        </div> <!-- end of image-wrapper -->
-                        <p class="p-large"><strong>Irma Susanti</strong></p>
-                        <p class="job-title">PIMKEL</p>
-                        <span class="social-icons">
-                            <span class="fa-stack">
-                                <a href="#your-link">
-                                    <i class="fas fa-circle fa-stack-2x facebook"></i>
-                                    <i class="fab fa-facebook-f fa-stack-1x"></i>
-                                </a>
-                            </span>
-                            <span class="fa-stack">
-                                <a href="#your-link">
-                                    <i class="fas fa-circle fa-stack-2x twitter"></i>
-                                    <i class="fab fa-twitter fa-stack-1x"></i>
-                                </a>
-                            </span>
-                        </span> <!-- end of social-icons -->
-                    </div> <!-- end of team-member -->
-                    <!-- end of team member -->
-
-                    
-                </div> <!-- end of col -->
-            </div> <!-- end of row -->
-        </div> <!-- end of container -->
-    </div> <!-- end of basic-4 -->
-    <!-- end of about -->
-
-
-
+<!-- END STRUKTUR ORGANISASI -->
     <!-- About -->
     <div id="about" class="basic-4">
         <div class="container">
@@ -2041,101 +1640,8 @@
                 <div class="col-lg-12">
                     
                     <!-- Team Member -->
-                    <div class="team-member">
-                        <div class="image-wrapper">
-                            <img class="img-fluid" src="images/team-member-1.svg" alt="alternative">
-                        </div> <!-- end of image-wrapper -->
-                        <p class="p-large"><strong>Jatisena</strong></p>
-                        <p class="job-title">Manager</p>
-                        <span class="social-icons">
-                            <span class="fa-stack">
-                                <a href="#your-link">
-                                    <i class="fas fa-circle fa-stack-2x facebook"></i>
-                                    <i class="fab fa-facebook-f fa-stack-1x"></i>
-                                </a>
-                            </span>
-                            <span class="fa-stack">
-                                <a href="#your-link">
-                                    <i class="fas fa-circle fa-stack-2x twitter"></i>
-                                    <i class="fab fa-twitter fa-stack-1x"></i>
-                                </a>
-                            </span>
-                        </span> <!-- end of social-icons -->
-                    </div> <!-- end of team-member -->
-                    <!-- end of team member -->
-
-                    <!-- Team Member -->
-                    <div class="team-member">
-                        <div class="image-wrapper">
-                            <img class="img-fluid" src="images/team-member-2.svg" alt="alternative">
-                        </div> <!-- end of image wrapper -->
-                        <p class="p-large"><strong>Mince Hariyanti</strong></p>
-                        <p class="job-title">Manager</p>
-                        <span class="social-icons">
-                            <span class="fa-stack">
-                                <a href="#your-link">
-                                    <i class="fas fa-circle fa-stack-2x facebook"></i>
-                                    <i class="fab fa-facebook-f fa-stack-1x"></i>
-                                </a>
-                            </span>
-                            <span class="fa-stack">
-                                <a href="#your-link">
-                                    <i class="fas fa-circle fa-stack-2x twitter"></i>
-                                    <i class="fab fa-twitter fa-stack-1x"></i>
-                                </a>
-                            </span>
-                        </span> <!-- end of social-icons -->
-                    </div> <!-- end of team-member -->
-                    <!-- end of team member -->
-
-                    <!-- Team Member -->
-                    <div class="team-member">
-                        <div class="image-wrapper">
-                            <img class="img-fluid" src="images/team-member-3.svg" alt="alternative">
-                        </div> <!-- end of image wrapper -->
-                        <p class="p-large"><strong>Irma Suryanti</strong></p>
-                        <p class="job-title">PIMKEL</p>
-                        <span class="social-icons">
-                            <span class="fa-stack">
-                                <a href="#your-link">
-                                    <i class="fas fa-circle fa-stack-2x facebook"></i>
-                                    <i class="fab fa-facebook-f fa-stack-1x"></i>
-                                </a>
-                            </span>
-                            <span class="fa-stack">
-                                <a href="#your-link">
-                                    <i class="fas fa-circle fa-stack-2x twitter"></i>
-                                    <i class="fab fa-twitter fa-stack-1x"></i>
-                                </a>
-                            </span>
-                        </span> <!-- end of social-icons -->
-                    </div> <!-- end of team-member -->
-                    <!-- end of team member -->
-                    
-                    <!-- Team Member -->
-                    <div class="team-member">
-                        <div class="image-wrapper">
-                            <img class="img-fluid" src="images/team-member-4.svg" alt="alternative">
-                        </div> <!-- end of image wrapper -->
-                        <p class="p-large"><strong>Nurdiana</strong></p>
-                        <p class="job-title">Manager</p>
-                        <span class="social-icons">
-                            <span class="fa-stack">
-                                <a href="#your-link">
-                                    <i class="fas fa-circle fa-stack-2x facebook"></i>
-                                    <i class="fab fa-facebook-f fa-stack-1x"></i>
-                                </a>
-                            </span>
-                            <span class="fa-stack">
-                                <a href="#your-link">
-                                    <i class="fas fa-circle fa-stack-2x twitter"></i>
-                                    <i class="fab fa-twitter fa-stack-1x"></i>
-                                </a>
-                            </span>
-                            
-                        </span> <!-- end of social-icons -->
-                    </div> <!-- end of team-member -->
-                    <!-- end of team member -->
+                     <!-- end of image-wrapper -->
+                        
 
                 </div> <!-- end of col -->
             </div> <!-- end of row -->
@@ -2151,47 +1657,12 @@
                     <h2>Contact Information</h2>
                     <ul class="list-unstyled li-space-lg">
                         
-                        <li><i class="fas fa-map-marker-alt"></i>JL. Pejompongan Raya RT/RW 3/5 Jakarta Pusat. Kabupaten/Kota: Kota Jakarta Pusat</li>
-                        <li><i class="fas fa-phone"></i><a class="turquoise" href="">+xxx-xxxx-xxx</a></li>
-                        <li><i class="fas fa-envelope"></i><a class="turquoise" href="mailto:officialpdm@bni.co.id">bni@co.id</a></li>
+                        <li><i class="map-marker-alt-solid.svg"></i>JL. Pejompongan Raya RT/RW 3/5 Jakarta Pusat. Kabupaten/Kota: Kota Jakarta Pusat</li>
+                        
                     </ul>
                 </div> <!-- end of col -->
             </div> <!-- end of row -->
-            <div class="row">
-                <div class="col-lg-6">
-                    <div class="map-responsive">
-                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d100939.98555098464!2d-122.507640204439!3d37.757814996609724!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x80859a6d00690021%3A0x4a501367f076adff!2sSan+Francisco%2C+CA%2C+USA!5e0!3m2!1sen!2sro!4v1498231462606" allowfullscreen></iframe>
-                    </div>
-                </div> <!-- end of col -->
-                <div class="col-lg-6">
-                    
-                    <!-- Contact Form -->
-                    <form id="contactForm" data-toggle="validator" data-focus="false">
-                        <div class="form-group">
-                            <input type="text" class="form-control-input" id="cname" required>
-                            <label class="label-control" for="cname">Name</label>
-                            <div class="help-block with-errors"></div>
-                        </div>
-                        <div class="form-group">
-                            <input type="email" class="form-control-input" id="cemail" required>
-                            <label class="label-control" for="cemail">Email</label>
-                            <div class="help-block with-errors"></div>
-                        </div>
-                        <div class="form-group">
-                            <textarea class="form-control-textarea" id="cmessage" required></textarea>
-                            <label class="label-control" for="cmessage">Your message</label>
-                            <div class="help-block with-errors"></div>
-                        </div>
-                        <div class="form-group checkbox">
-                            <input type="checkbox" id="cterms" value="Agreed-to-Terms" required>I have read and agree with Evolo's stated <a href="privacy-policy.html">Privacy Policy</a> and <a href="terms-conditions.html">Terms Conditions</a> 
-                            <div class="help-block with-errors"></div>
-                        </div>
-                        <div class="form-group">
-                            <button type="submit" class="form-control-submit-button">SUBMIT MESSAGE</button>
-                        </div>
-                        <div class="form-message">
-                            <div id="cmsgSubmit" class="h3 text-center hidden"></div>
-                        </div>
+            
                     </form>
                     <!-- end of contact form -->
 
